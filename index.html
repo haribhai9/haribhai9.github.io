@@ -1,177 +1,153 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Haribhai Brand</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hari Bhai Company</title>
 
 <style>
 body{
 margin:0;
-font-family:Arial, sans-serif;
-background:#f4f6f9;
+font-family:Arial, Helvetica, sans-serif;
+background:#f3f6f9;
 }
 
-/* Navbar */
+/* ===== NAVBAR ===== */
 .navbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-background:#111;
-padding:15px 40px;
-color:white;
+padding:15px 20px;
+background:white;
+box-shadow:0 2px 8px rgba(0,0,0,0.05);
 }
 
-.navbar h2{
-margin:0;
+.logo img{
+height:40px;
 }
 
-.nav-links a{
-color:white;
-text-decoration:none;
-margin:0 15px;
-font-weight:bold;
-}
-
-.auth-buttons button{
-margin-left:10px;
-padding:8px 15px;
-border:none;
-border-radius:5px;
-cursor:pointer;
+.nav-buttons{
+display:flex;
+gap:10px;
 }
 
 .signin{
-background:#444;
-color:white;
-}
-
-.signup{
-background:#00c853;
-color:white;
-}
-
-/* Hero */
-.hero{
-text-align:center;
-padding:80px 20px;
-background:linear-gradient(to right,#1e3c72,#2a5298);
-color:white;
-}
-
-.hero h1{
-font-size:40px;
-margin-bottom:10px;
-}
-
-.hero button{
-padding:12px 25px;
-background:#00c853;
-color:white;
-border:none;
+padding:8px 18px;
+border:1px solid #0a66c2;
 border-radius:25px;
-font-size:16px;
+background:white;
+color:#0a66c2;
+font-weight:bold;
 cursor:pointer;
 }
 
-/* Sections */
-.section{
-padding:60px 20px;
-text-align:center;
-}
-
-.services{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:20px;
-}
-
-.card{
-background:white;
-padding:20px;
-width:250px;
-border-radius:10px;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* Footer */
-.footer{
-background:#111;
+.join{
+padding:8px 18px;
+border:none;
+border-radius:25px;
+background:#0a66c2;
 color:white;
-text-align:center;
-padding:20px;
-margin-top:40px;
+font-weight:bold;
+cursor:pointer;
 }
 
-.footer a{
-color:#00c853;
+/* ===== HERO ===== */
+.hero{
+text-align:center;
+padding:40px 20px;
+}
+
+.hero img{
+max-width:200px;
+margin-bottom:15px;
+}
+
+.hero h1{
+color:#222;
+}
+
+.hero p{
+color:#555;
+}
+
+/* ===== SERVICES ===== */
+.services{
+background:white;
+margin:30px;
+padding:30px;
+border-radius:10px;
+text-align:center;
+box-shadow:0 2px 8px rgba(0,0,0,0.05);
+}
+
+.services h2{
+color:#0a66c2;
+}
+
+/* ===== CONTACT ===== */
+.contact{
+text-align:center;
+padding:30px;
+background:#0a66c2;
+color:white;
+}
+
+.contact a{
+color:white;
 text-decoration:none;
-margin:0 10px;
+font-weight:bold;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+text-align:center;
+padding:15px;
+background:#222;
+color:white;
+font-size:14px;
 }
 </style>
-</head>
 
+</head>
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
-<h2>Haribhai Business</h2>
-<div class="nav-links">
-<a href="#services">Services</a>
-<a href="#blog">Blog</a>
-<a href="#about">About</a>
-<a href="#contact">Contact</a>
+<div class="logo">
+<img src="logo.png">
 </div>
-<div class="auth-buttons">
-<button class="signin">Sign In</button>
-<button class="signup">Sign Up</button>
+
+<div class="nav-buttons">
+<button class="signin">Sign in</button>
+<button class="join">Join now</button>
 </div>
 </div>
 
+<!-- HERO SECTION -->
 <div class="hero">
-<h1>Professional & Trusted Business Services</h1>
-<p>We deliver quality work with honesty & trust.</p>
-<button>Get Started</button>
+<img src="logo.png">
+<h1>Welcome to Hari Bhai Company</h1>
+<p>Trusted Business & Professional Services</p>
 </div>
 
-<div id="services" class="section">
-<h2>Our Services</h2>
+<!-- SERVICES -->
 <div class="services">
-<div class="card">
-<h3>Service 1</h3>
-<p>High quality professional service.</p>
-</div>
-<div class="card">
-<h3>Service 2</h3>
-<p>Reliable and trusted solutions.</p>
-</div>
-<div class="card">
-<h3>Service 3</h3>
-<p>Fast and secure support.</p>
-</div>
-</div>
+<h2>Our Services</h2>
+<p>Coming Soon...</p>
 </div>
 
-<div id="blog" class="section">
-<h2>Latest Blog</h2>
-<p>Coming soon...</p>
+<!-- CONTACT SECTION -->
+<div class="contact">
+<h3>😊 Contact Us</h3>
+<p>📂 Category: Business Services</p>
+<p>📞 Phone: +91 98357 91703</p>
+<p>✉ Email: hacbb2941@gmail.com</p>
+<p>📲 Telegram: <a href="@Hari_ji9">Click Here</a></p>
 </div>
 
-<div id="about" class="section">
-<h2>About Us</h2>
-<p>Haribhai Business provides top-notch services with complete dedication and professionalism.</p>
-</div>
-
-<div id="contact" class="section">
-<h2>Contact Us</h2>
-<p>Email: hacbb2941@gmail.com</p>
-<p>Telegram: @Hari_ji9</p>
-</div>
-
+<!-- FOOTER -->
 <div class="footer">
-<p>© 2026 Haribhai Business | All Rights Reserved</p>
-<a href="#about">About</a>
-<a href="#blog">Blog</a>
-<a href="#contact">Contact</a>
+© 2026 Hari Bhai Company | All Rights Reserved
 </div>
 
 </body>
