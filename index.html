@@ -3,12 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hari Bhai Company</title>
+<title>Hari Bhai Company | Trusted Digital Services</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
+
+*{
 margin:0;
-font-family:'Segoe UI',Arial;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+scroll-behavior:smooth;
+}
+
+body{
 background:#f4f7fb;
 }
 
@@ -17,112 +26,200 @@ background:#f4f7fb;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 25px;
+padding:15px 8%;
 background:white;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
+box-shadow:0 4px 15px rgba(0,0,0,0.05);
 position:sticky;
 top:0;
+z-index:1000;
 }
 
-.logo img{height:45px;}
-
-.nav-buttons{display:flex;gap:10px;}
-
-.signin,.join{
-padding:8px 18px;
-border-radius:25px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.signin{
-border:2px solid #0a66c2;
-background:white;
+.logo{
+font-weight:700;
+font-size:20px;
 color:#0a66c2;
 }
 
-.join{
-border:none;
-background:#0a66c2;
-color:white;
+.nav-links a{
+margin-left:20px;
+text-decoration:none;
+color:#333;
+font-weight:500;
+}
+
+.nav-links a:hover{
+color:#0a66c2;
 }
 
 /* HERO */
 .hero{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 text-align:center;
-padding:60px 20px;
 background:linear-gradient(135deg,#0a66c2,#003366);
 color:white;
+padding:20px;
+}
+
+.hero h1{
+font-size:42px;
+margin-bottom:10px;
+}
+
+.hero p{
+opacity:0.9;
+margin-bottom:20px;
+}
+
+.hero button{
+padding:12px 28px;
+border:none;
+border-radius:30px;
+background:#00acee;
+color:white;
+font-weight:600;
+cursor:pointer;
+transition:0.3s;
+}
+
+.hero button:hover{
+transform:scale(1.05);
 }
 
 /* TRUST ZONE */
 .trust{
+padding:60px 8%;
 text-align:center;
-padding:50px 20px;
 background:white;
-}
-
-.trust img{
-max-width:220px;
-border-radius:12px;
-margin-bottom:15px;
 }
 
 .trust h2{
 color:#0a66c2;
+margin-bottom:10px;
 }
 
-/* Hidden Telegram Button */
-.trust-telegram{
+.telegram-btn{
 margin-top:20px;
 }
 
-.trust-telegram a{
+.telegram-btn a{
 display:inline-block;
-padding:10px 22px;
+padding:10px 25px;
 background:#0088cc;
 color:white;
 border-radius:30px;
 text-decoration:none;
-font-weight:bold;
-font-size:14px;
+font-weight:600;
 transition:0.3s;
-opacity:0.85;
 }
 
-.trust-telegram a:hover{
-opacity:1;
+.telegram-btn a:hover{
 background:#006699;
+transform:scale(1.05);
 }
 
 /* SERVICES */
 .services{
-padding:30px 20px;
+padding:60px 8%;
+}
+
+.section-title{
+text-align:center;
+margin-bottom:40px;
+color:#0a66c2;
 }
 
 .service-box{
 background:white;
-padding:20px;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
 margin-bottom:20px;
-border-radius:12px;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
+transition:0.3s;
 }
 
-.service-box h3{
-margin-top:0;
-color:#0a66c2;
+.service-box:hover{
+transform:translateY(-5px);
 }
 
-/* ABOUT */
-.about{
-background:#111;
+.details{
+display:none;
+margin-top:15px;
+animation:slideDown 0.5s ease;
+}
+
+@keyframes slideDown{
+from{opacity:0;transform:translateY(-10px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+.view-btn{
+margin-top:10px;
+padding:8px 18px;
+border:none;
+border-radius:20px;
+background:#0a66c2;
 color:white;
-padding:40px 20px;
+cursor:pointer;
+}
+
+/* WHY CHOOSE */
+.why{
+background:#eef3f9;
+padding:60px 8%;
 text-align:center;
 }
 
-.about h2{
-color:#0a66c2;
+.why-box{
+margin-bottom:15px;
+}
+
+/* STATS */
+.stats{
+display:flex;
+justify-content:space-around;
+padding:50px 8%;
+background:#0a66c2;
+color:white;
+text-align:center;
+}
+
+.stats div{
+font-size:20px;
+}
+
+/* TESTIMONIAL */
+.testimonial{
+padding:60px 8%;
+text-align:center;
+}
+
+.testimonial-box{
+background:white;
+padding:25px;
+border-radius:15px;
+box-shadow:0 5px 20px rgba(0,0,0,0.05);
+}
+
+/* CONTACT */
+.contact{
+padding:60px 8%;
+background:#111;
+color:white;
+text-align:center;
+}
+
+.contact a{
+display:inline-block;
+margin-top:15px;
+padding:10px 25px;
+background:#0088cc;
+color:white;
+border-radius:30px;
+text-decoration:none;
 }
 
 /* FOOTER */
@@ -133,56 +230,53 @@ background:black;
 color:#aaa;
 }
 
-.footer a{
-color:#00acee;
-text-decoration:none;
-font-weight:bold;
-}
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
-<div class="logo">
-<img src="logo.png">
-</div>
-<div class="nav-buttons">
-<button class="signin">Sign in</button>
-<button class="join">Join now</button>
+<div class="logo">Hari Bhai Company</div>
+<div class="nav-links">
+<a href="#services">Services</a>
+<a href="#contact">Contact</a>
 </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
-<h1>Welcome to Hari Bhai Company</h1>
-<p>Trusted Business & Professional Services</p>
+<h1>Professional Digital Services</h1>
+<p>Trusted | Secure | Fast Delivery</p>
+<button onclick="document.querySelector('#services').scrollIntoView()">Explore Services</button>
 </div>
 
-<!-- TRUST ZONE -->
 <div class="trust">
-<img src="trustzone.jpg">
 <h2>100% Trusted Safe Zone</h2>
-<p>Verified | Secure | Fast Service</p>
+<p>Verified | Secure | Professional Service</p>
 
-<div class="trust-telegram">
-<a href="https://t.me/trus_zone" target="_blank">
-Join Official Telegram
-</a>
+<div class="telegram-btn">
+<a href="https://t.me/trust_zonw" target="_blank">Join Official Telegram</a>
+</div>
 </div>
 
-</div>
+<div class="services" id="services">
 
-<!-- SERVICES -->
-<div class="services">
+<h2 class="section-title">Our Services</h2>
 
 <div class="service-box">
-<h3>ID Sell – Level 7 Seller</h3>
+<h3>ID Sell – (8 Level ID)</h3>
 <p>✔ Trusted Seller</p>
 <p>✔ All Panels Available</p>
 <p>✔ Free Fire Max Service</p>
 <p>✔ Fast Delivery</p>
+
+<button class="view-btn" onclick="toggleDetails(this)">View Details</button>
+
+<div class="details">
+<p>Premium verified accounts available.</p>
+<p>Instant delivery & full support.</p>
+<p>Secure transaction guaranteed.</p>
+</div>
+
 </div>
 
 <div class="service-box">
@@ -192,22 +286,46 @@ Join Official Telegram
 
 </div>
 
-<!-- ABOUT -->
-<div class="about">
-<h2>About Hari Bhai Company</h2>
-<p>We provide trusted gaming and digital services.</p>
-<p>Customer satisfaction and security is our first priority.</p>
-<p>100% Trusted | Secure | Fast Support</p>
+<div class="why">
+<h2>Why Choose Us?</h2>
+<div class="why-box">✔ 100% Secure Transactions</div>
+<div class="why-box">✔ Fast Customer Support</div>
+<div class="why-box">✔ Trusted by Many Clients</div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-© 2026 Hari Bhai Company | All Rights Reserved <br><br>
-Contact Direct Telegram: 
-<a href="https://t.me/Hari_ji9" target="_blank">
-@Hari_ji9
-</a>
+<div class="stats">
+<div><strong>500+</strong><br>Happy Clients</div>
+<div><strong>24/7</strong><br>Support</div>
+<div><strong>100%</strong><br>Secure</div>
 </div>
+
+<div class="testimonial">
+<h2>Client Review</h2>
+<div class="testimonial-box">
+<p>"Best trusted service ever! Fast delivery and great support."</p>
+</div>
+</div>
+
+<div class="contact" id="contact">
+<h2>Contact Us Directly</h2>
+<p>Message us on Telegram for instant reply</p>
+<a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
+</div>
+
+<div class="footer">
+© 2026 Hari Bhai Company | All Rights Reserved
+</div>
+
+<script>
+function toggleDetails(btn){
+let details = btn.nextElementSibling;
+if(details.style.display === "block"){
+details.style.display = "none";
+}else{
+details.style.display = "block";
+}
+}
+</script>
 
 </body>
 </html>
