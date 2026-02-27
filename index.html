@@ -1,165 +1,249 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hari Bhai Company</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#f4f7fb;scroll-behavior:smooth;}
+body{
+margin:0;
+font-family:'Segoe UI',Arial;
+background:linear-gradient(135deg,#e3f2fd,#f4f7fb);
+scroll-behavior:smooth;
+}
+
+/* TEXT GLOBAL ANIMATION */
+h1,h2,h3,p{
+animation:fadeUp 1.2s ease;
+}
+
+@keyframes fadeUp{
+from{opacity:0; transform:translateY(15px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* FLOATING HEADING EFFECT */
+.hero h1, .why h2, .about h2{
+animation:floatText 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatText{
+from{transform:translateY(0px);}
+to{transform:translateY(8px);}
+}
 
 /* NAVBAR */
 .navbar{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 40px;
+padding:15px 25px;
 background:white;
-box-shadow:0 4px 15px rgba(0,0,0,0.05);
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
 position:sticky;
 top:0;
 z-index:1000;
 }
-.logo{font-size:22px;font-weight:700;color:#0a66c2;}
-.nav-links{
-display:flex;
-gap:25px;
-align-items:center;
-}
-.nav-links a{
-text-decoration:none;
-color:#333;
-font-weight:500;
-transition:0.3s;
-}
-.nav-links a:hover{color:#0a66c2;}
 
-.nav-buttons button{
+.logo img{height:45px;}
+.nav-buttons{display:flex;gap:10px;}
+
+.signin,.join{
 padding:8px 18px;
 border-radius:25px;
-border:none;
+font-weight:bold;
 cursor:pointer;
-font-weight:600;
+transition:0.3s;
 }
-.signin{background:white;border:2px solid #0a66c2;color:#0a66c2;}
-.join{background:#0a66c2;color:white;}
-.join:hover{background:#003366;}
+
+.signin{
+border:2px solid #0a66c2;
+background:white;
+color:#0a66c2;
+}
+
+.signin:hover{
+background:#0a66c2;
+color:white;
+}
+
+.join{
+border:none;
+background:#0a66c2;
+color:white;
+}
+
+.join:hover{
+background:#003366;
+}
 
 /* HERO */
 .hero{
-height:90vh;
+text-align:center;
+padding:70px 20px;
 background:linear-gradient(135deg,#0a66c2,#002f6c);
 color:white;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:20px;
 }
-.hero h1{font-size:42px;margin-bottom:15px;}
-.hero p{max-width:600px;margin-bottom:25px;}
-.hero-buttons a{
-padding:12px 25px;
-margin:8px;
+
+/* TRUST */
+.trust{
+padding:40px 15px;
+display:flex;
+justify-content:center;
+}
+
+.trust-box{
+background:white;
+padding:20px;
+border-radius:18px;
+box-shadow:0 6px 18px rgba(0,0,0,0.08);
+text-align:center;
+max-width:380px;
+width:100%;
+}
+
+.trust-img{
+width:180px;
+border-radius:15px;
+margin-bottom:10px;
+}
+
+.trust-box h2{
+color:#0a66c2;
+font-size:20px;
+margin:5px 0;
+}
+
+.trust-sub{
+font-size:14px;
+margin-bottom:12px;
+color:#555;
+}
+
+.main-btn{
+display:inline-block;
+padding:10px 22px;
+background:#0088cc;
+color:white;
 border-radius:30px;
 text-decoration:none;
-font-weight:600;
+font-weight:bold;
+margin-bottom:10px;
 }
-.primary-btn{background:white;color:#0a66c2;}
-.secondary-btn{border:2px solid white;color:white;}
-.secondary-btn:hover{background:white;color:#0a66c2;}
 
-/* STATS */
-.stats{
-display:flex;
-justify-content:space-around;
-padding:50px 20px;
-background:white;
-text-align:center;
-flex-wrap:wrap;
+.details-btn{
+display:block;
+width:100%;
+padding:8px;
+background:#0a66c2;
+color:white;
+border:none;
+border-radius:25px;
+cursor:pointer;
+margin-top:5px;
 }
-.stats div{
-margin:15px;
+
+.owner-details{
+max-height:0;
+overflow:hidden;
+transition:max-height 0.5s ease;
+text-align:left;
+padding-left:10px;
 }
-.stats h2{color:#0a66c2;font-size:32px;}
+
+.owner-details p{
+margin:6px 0;
+font-size:14px;
+}
 
 /* SERVICES */
 .services{
-padding:60px 20px;
-text-align:center;
+padding:30px 20px;
 }
-.service-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-margin-top:30px;
-}
-.service-card{
+
+.service-box{
 background:white;
 padding:25px;
-border-radius:15px;
-box-shadow:0 8px 20px rgba(0,0,0,0.05);
+margin-bottom:25px;
+border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.06);
 transition:0.3s;
 }
-.service-card:hover{transform:translateY(-8px);}
-.service-card h3{color:#0a66c2;margin-bottom:10px;}
 
-/* PRICING */
-.pricing{
-background:#eef3f9;
-padding:60px 20px;
-text-align:center;
+.service-box:hover{
+transform:translateY(-5px);
 }
-.price-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-margin-top:30px;
-}
-.price-card{
-background:white;
-padding:30px;
-border-radius:15px;
-box-shadow:0 8px 20px rgba(0,0,0,0.05);
-}
-.price-card h3{color:#0a66c2;}
-.price-card button{
-margin-top:15px;
-padding:10px 20px;
-border:none;
-border-radius:25px;
-background:#0a66c2;
+
+/* BUY NOW BUTTON */
+.buy-btn{
+display:inline-block;
+margin-top:10px;
+padding:8px 18px;
+background:#28a745;
 color:white;
-cursor:pointer;
+border-radius:25px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
 }
 
-/* GALLERY */
-.gallery{
-padding:60px 20px;
+.buy-btn:hover{
+background:#1e7e34;
+}
+
+/* WHY */
+.why{
+padding:40px 20px;
+text-align:center;
+background:#eef3f9;
+}
+
+.why h2{color:#0a66c2;}
+
+/* TESTIMONIAL */
+.testimonial{
+padding:40px 20px;
 text-align:center;
 }
-.gallery-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-margin-top:30px;
-}
-.gallery-grid img{
-width:100%;
+
+.testimonial-box{
+background:white;
+padding:20px;
 border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.06);
+margin-bottom:15px;
+}
+
+/* FAQ */
+.faq{
+padding:40px 20px;
+background:#f9fbff;
+}
+
+.faq-item{
+background:white;
+margin-bottom:10px;
+padding:15px;
+border-radius:10px;
+cursor:pointer;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+.faq-answer{
+display:none;
+margin-top:8px;
+color:#555;
 }
 
 /* CONTACT */
-.contact{
-padding:60px 20px;
+.contact-form{
+padding:40px 20px;
 text-align:center;
-background:white;
 }
-.contact input,.contact textarea{
+
+.contact-form input,
+.contact-form textarea{
 width:100%;
 max-width:400px;
 padding:10px;
@@ -167,27 +251,67 @@ margin:8px 0;
 border-radius:8px;
 border:1px solid #ccc;
 }
-.contact button{
-padding:10px 25px;
+
+.contact-form button{
+padding:10px 20px;
 border:none;
-border-radius:25px;
 background:#0a66c2;
 color:white;
+border-radius:20px;
 cursor:pointer;
+}
+
+/* FLOAT WHATSAPP */
+.whatsapp-float{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:12px 15px;
+border-radius:50%;
+font-size:20px;
+text-decoration:none;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* SCROLL TOP */
+#scrollTop{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#0a66c2;
+color:white;
+padding:8px 12px;
+border-radius:20px;
+cursor:pointer;
+display:none;
+}
+
+/* ABOUT */
+.about{
+background:#111;
+color:white;
+padding:50px 20px;
+text-align:center;
+}
+
+.about h2{
+color:#0a66c2;
 }
 
 /* FOOTER */
 .footer{
-background:#111;
-color:#aaa;
-padding:30px 20px;
 text-align:center;
+padding:20px;
+background:black;
+color:#aaa;
 }
-.footer a{color:#0a66c2;text-decoration:none;}
 
-@media(max-width:768px){
-.nav-links{display:none;}
-.hero h1{font-size:30px;}
+.footer a{
+color:#00acee;
+text-decoration:none;
+font-weight:bold;
 }
 </style>
 </head>
@@ -195,104 +319,137 @@ text-align:center;
 <body>
 
 <div class="navbar">
-<div class="logo">Hari Bhai Company</div>
-<div class="nav-links">
-<a href="#">Home</a>
-<a href="#services">Services</a>
-<a href="#pricing">Pricing</a>
-<a href="#contact">Contact</a>
+<div class="logo">
+<img src="logo.png">
 </div>
 <div class="nav-buttons">
-<button class="signin">Sign In</button>
-<button class="join">Join Now</button>
+<button class="signin">Sign in</button>
+<button class="join">Join now</button>
 </div>
 </div>
 
-<section class="hero">
-<h1>Professional Gaming & Digital Services</h1>
-<p>Trusted • Secure • Instant Delivery • 24/7 Support</p>
-<div class="hero-buttons">
-<a href="#services" class="primary-btn">Get Started</a>
-<a href="#contact" class="secondary-btn">Contact Us</a>
+<div class="hero">
+<h1>Welcome to Hari Bhai Company</h1>
+<p>Trusted Business & Professional Services</p>
 </div>
-</section>
 
-<section class="stats">
-<div>
-<h2>500+</h2>
-<p>Happy Clients</p>
+<div class="trust">
+<div class="trust-box">
+<img src="trustzone.jpg" class="trust-img">
+<h2>100% Trusted Safe Zone</h2>
+<p class="trust-sub">Verified | Secure | Fast Service</p>
+<a href="https://t.me/trust_zonw" target="_blank" class="main-btn">
+Join (Tiger Service)
+</a>
+<button class="details-btn" onclick="toggleOwnerDetails()">
+Our Owner Services Details
+</button>
+<div class="owner-details" id="ownerDetails">
+<p>✔ Trusted Seller</p>
+<p>✔ All Panels Available</p>
+<p>✔ Free Fire Max Service</p>
+<p>✔ Instant Delivery</p>
 </div>
-<div>
-<h2>1000+</h2>
-<p>Orders Completed</p>
 </div>
-<div>
-<h2>24/7</h2>
-<p>Support</p>
 </div>
-</section>
 
-<section class="services" id="services">
-<h2>Our Services</h2>
-<div class="service-grid">
-<div class="service-card">
-<h3>ID Sell</h3>
-<p>8 Level Verified ID with instant delivery.</p>
-</div>
-<div class="service-card">
-<h3>Rank Push</h3>
-<p>Professional Rank Push service.</p>
-</div>
-<div class="service-card">
-<h3>Top-Up Service</h3>
-<p>Fast and secure game top-up.</p>
-</div>
-</div>
-</section>
+<div class="services">
+<div class="service-box">
+<h3>ID Sell – (8 Level ID)</h3>
+<p>Available Now</p>
 
-<section class="pricing" id="pricing">
-<h2>Pricing Plans</h2>
-<div class="price-grid">
-<div class="price-card">
-<h3>Basic</h3>
-<p>₹499</p>
-<button>Buy Now</button>
-</div>
-<div class="price-card">
-<h3>Premium</h3>
-<p>₹999</p>
-<button>Buy Now</button>
-</div>
-<div class="price-card">
-<h3>Ultimate</h3>
-<p>₹1999</p>
-<button>Buy Now</button>
-</div>
-</div>
-</section>
+<!-- GREEN BUY BUTTON -->
+<a href="https://t.me/TIGER0095" target="_blank" class="buy-btn">
+Buy Now
+</a>
 
-<section class="gallery">
-<h2>Our Work</h2>
-<div class="gallery-grid">
-<img src="https://via.placeholder.com/300x200">
-<img src="https://via.placeholder.com/300x200">
-<img src="https://via.placeholder.com/300x200">
 </div>
-</section>
 
-<section class="contact" id="contact">
-<h2>Contact Us</h2>
+<div class="service-box">
+<h3>Rank Pushing Service</h3>
+<p>🚀 Coming Soon...</p>
+</div>
+</div>
+
+<div class="why">
+<h2>Why Choose Us?</h2>
+<p>✔ 100% Secure Transactions</p>
+<p>✔ Fast Delivery</p>
+<p>✔ 24/7 Customer Support</p>
+<p>✔ Trusted By Many Clients</p>
+</div>
+
+<div class="testimonial">
+<h2>Client Reviews</h2>
+<div class="testimonial-box">
+<p>"Best trusted service. Very fast delivery!" ⭐⭐⭐⭐⭐</p>
+</div>
+<div class="testimonial-box">
+<p>"Highly recommended. 100% genuine service." ⭐⭐⭐⭐⭐</p>
+</div>
+</div>
+
+<div class="faq">
+<h2 style="text-align:center;color:#0a66c2;">Frequently Asked Questions</h2>
+<div class="faq-item" onclick="toggleFaq(this)">
+What payment methods are accepted?
+<div class="faq-answer">UPI, Bank Transfer and International Transfer accepted.</div>
+</div>
+</div>
+
+<div class="contact-form">
+<h2 style="color:#0a66c2;">Quick Contact</h2>
 <input type="text" placeholder="Your Name">
 <input type="email" placeholder="Your Email">
 <textarea placeholder="Your Message"></textarea>
 <br>
 <button>Send Message</button>
-</section>
+</div>
+
+<div class="about">
+<h2>About Hari Bhai Company</h2>
+<p>We provide trusted gaming and digital services.</p>
+<p>Customer satisfaction and security is our first priority.</p>
+<p>Secure Payments | Fast Response | 24/7 Support</p>
+</div>
+
+<a href="https://wa.me/919999999999" class="whatsapp-float" target="_blank">💬</a>
+<div id="scrollTop" onclick="scrollToTop()">⬆</div>
 
 <div class="footer">
-© 2026 Hari Bhai Company <br><br>
-Telegram: <a href="https://t.me/Hari_ji9">@Hari_ji9</a>
+© 2026 Hari Bhai Company | All Rights Reserved <br><br>
+Direct Telegram: 
+<a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
 </div>
+
+<script>
+function toggleOwnerDetails(){
+var box = document.getElementById("ownerDetails");
+if (box.style.maxHeight){
+box.style.maxHeight = null;
+} else {
+box.style.maxHeight = box.scrollHeight + "px";
+}
+}
+
+function toggleFaq(element){
+let answer = element.querySelector(".faq-answer");
+answer.style.display = answer.style.display === "block" ? "none" : "block";
+}
+
+window.onscroll = function(){
+let btn = document.getElementById("scrollTop");
+if(document.documentElement.scrollTop > 200){
+btn.style.display="block";
+}else{
+btn.style.display="none";
+}
+};
+
+function scrollToTop(){
+window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
 
 </body>
 </html>
