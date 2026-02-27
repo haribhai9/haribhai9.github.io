@@ -8,8 +8,8 @@
 <style>
 body{
 margin:0;
-font-family:Arial, Helvetica, sans-serif;
-background:#f3f6f9;
+font-family: 'Segoe UI', Arial, sans-serif;
+background:#f4f7fb;
 }
 
 /* ===== NAVBAR ===== */
@@ -17,83 +17,141 @@ background:#f3f6f9;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 20px;
+padding:15px 25px;
 background:white;
-box-shadow:0 2px 8px rgba(0,0,0,0.05);
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+position:sticky;
+top:0;
 }
 
 .logo img{
-height:40px;
+height:45px;
 }
 
 .nav-buttons{
 display:flex;
-gap:10px;
+gap:12px;
 }
 
 .signin{
-padding:8px 18px;
-border:1px solid #0a66c2;
-border-radius:25px;
+padding:8px 20px;
+border:2px solid #0a66c2;
+border-radius:30px;
 background:white;
 color:#0a66c2;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+}
+
+.signin:hover{
+background:#0a66c2;
+color:white;
 }
 
 .join{
-padding:8px 18px;
+padding:8px 20px;
 border:none;
-border-radius:25px;
+border-radius:30px;
 background:#0a66c2;
 color:white;
 font-weight:bold;
 cursor:pointer;
+transition:0.3s;
+}
+
+.join:hover{
+background:#004a99;
 }
 
 /* ===== HERO ===== */
 .hero{
 text-align:center;
-padding:40px 20px;
+padding:60px 20px;
+background:linear-gradient(135deg,#0a66c2,#004a99);
+color:white;
+border-bottom:5px solid #003366;
 }
 
 .hero img{
-max-width:200px;
-margin-bottom:15px;
+max-width:180px;
+margin-bottom:20px;
+background:white;
+padding:10px;
+border-radius:10px;
 }
 
 .hero h1{
-color:#222;
+margin:0;
+font-size:28px;
 }
 
 .hero p{
-color:#555;
+margin-top:10px;
+font-size:16px;
+opacity:0.9;
+}
+
+/* ===== TRUST ZONE ===== */
+.trust{
+text-align:center;
+padding:40px 20px;
+}
+
+.trust img{
+max-width:220px;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.trust h2{
+color:#0a66c2;
+margin-top:20px;
 }
 
 /* ===== SERVICES ===== */
 .services{
-background:white;
 margin:30px;
 padding:30px;
-border-radius:10px;
-text-align:center;
-box-shadow:0 2px 8px rgba(0,0,0,0.05);
+background:white;
+border-radius:12px;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
 }
 
 .services h2{
+text-align:center;
 color:#0a66c2;
+margin-bottom:25px;
+}
+
+.service-box{
+background:#f9fbff;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+border-left:5px solid #0a66c2;
+}
+
+.service-box h3{
+margin-top:0;
+color:#222;
+}
+
+.service-box p{
+margin:5px 0;
+color:#555;
 }
 
 /* ===== CONTACT ===== */
 .contact{
 text-align:center;
-padding:30px;
+padding:40px 20px;
 background:#0a66c2;
 color:white;
 }
 
 .contact a{
-color:white;
+color:#ffd700;
 text-decoration:none;
 font-weight:bold;
 }
@@ -101,13 +159,12 @@ font-weight:bold;
 /* ===== FOOTER ===== */
 .footer{
 text-align:center;
-padding:15px;
-background:#222;
-color:white;
+padding:20px;
+background:#111;
+color:#bbb;
 font-size:14px;
 }
 </style>
-
 </head>
 <body>
 
@@ -130,24 +187,45 @@ font-size:14px;
 <p>Trusted Business & Professional Services</p>
 </div>
 
+<!-- TRUST ZONE -->
+<div class="trust">
+<img src="trust.png">
+<h2>100% Trusted Seller Zone</h2>
+<p>Verified | Secure | Fast Service</p>
+</div>
+
 <!-- SERVICES -->
 <div class="services">
 <h2>Our Services</h2>
-<p>Coming Soon...</p>
+
+<div class="service-box">
+<h3>Gaming Panel & ID Services</h3>
+<p>✔ Seller ID: 8 Level Rank</p>
+<p>✔ Trusted & Verified Seller</p>
+<p>✔ All Panels Available</p>
+<p>✔ Free Fire Max Services Available</p>
+<p>✔ Instant Response & Fast Delivery</p>
+</div>
+
+<div class="service-box">
+<h3>Extra Premium Service</h3>
+<p>🚀 Coming Soon...</p>
+</div>
+
 </div>
 
 <!-- CONTACT SECTION -->
 <div class="contact">
-<h3>😊 Contact Us</h3>
+<h3>Contact Us</h3>
 <p>📂 Category: Business Services</p>
 <p>📞 Phone: +91 98357 91703</p>
 <p>✉ Email: hacbb2941@gmail.com</p>
-<p>📲 Telegram: <a href="@Hari_ji9">Click Here</a></p>
+<p>📲 Telegram: <a href="#">@Hari_ji9</a></p>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-© 2026 Hari Bhai Company | All Rights Reserved
+© 2026 Hari Bhai Company | All Rights Reserved | Designed by HBC
 </div>
 
 </body>
