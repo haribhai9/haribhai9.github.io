@@ -3,22 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hari Bhai Company | Trusted Digital Services</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>Hari Bhai Company</title>
 
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Poppins',sans-serif;
-scroll-behavior:smooth;
-}
-
 body{
+margin:0;
+font-family:'Segoe UI',Arial;
 background:#f4f7fb;
+scroll-behavior:smooth;
 }
 
 /* NAVBAR */
@@ -26,118 +18,103 @@ background:#f4f7fb;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:15px 8%;
+padding:15px 25px;
 background:white;
-box-shadow:0 4px 15px rgba(0,0,0,0.05);
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
 position:sticky;
 top:0;
 z-index:1000;
 }
 
-.logo{
-font-weight:700;
-font-size:20px;
-color:#0a66c2;
-}
+.logo img{height:45px;}
 
-.nav-links a{
-margin-left:20px;
-text-decoration:none;
-color:#333;
-font-weight:500;
-}
+.nav-buttons{display:flex;gap:10px;}
 
-.nav-links a:hover{
-color:#0a66c2;
-}
-
-/* HERO */
-.hero{
-height:80vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-background:linear-gradient(135deg,#0a66c2,#003366);
-color:white;
-padding:20px;
-}
-
-.hero h1{
-font-size:42px;
-margin-bottom:10px;
-}
-
-.hero p{
-opacity:0.9;
-margin-bottom:20px;
-}
-
-.hero button{
-padding:12px 28px;
-border:none;
-border-radius:30px;
-background:#00acee;
-color:white;
-font-weight:600;
+.signin,.join{
+padding:8px 18px;
+border-radius:25px;
+font-weight:bold;
 cursor:pointer;
 transition:0.3s;
 }
 
-.hero button:hover{
-transform:scale(1.05);
+.signin{
+border:2px solid #0a66c2;
+background:white;
+color:#0a66c2;
 }
 
-/* TRUST ZONE */
-.trust{
-padding:60px 8%;
+.signin:hover{
+background:#0a66c2;
+color:white;
+}
+
+.join{
+border:none;
+background:#0a66c2;
+color:white;
+}
+
+.join:hover{
+background:#003366;
+}
+
+/* HERO */
+.hero{
 text-align:center;
+padding:70px 20px;
+background:linear-gradient(135deg,#0a66c2,#002f6c);
+color:white;
+animation:fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* TRUST */
+.trust{
+text-align:center;
+padding:50px 20px;
 background:white;
 }
 
-.trust h2{
-color:#0a66c2;
-margin-bottom:10px;
+.trust img{
+max-width:220px;
+border-radius:12px;
+margin-bottom:15px;
 }
 
-.telegram-btn{
-margin-top:20px;
-}
+.trust h2{color:#0a66c2;}
 
-.telegram-btn a{
+.trust a{
 display:inline-block;
-padding:10px 25px;
+margin-top:15px;
+padding:10px 22px;
 background:#0088cc;
 color:white;
 border-radius:30px;
 text-decoration:none;
-font-weight:600;
+font-weight:bold;
 transition:0.3s;
 }
 
-.telegram-btn a:hover{
+.trust a:hover{
 background:#006699;
-transform:scale(1.05);
 }
 
 /* SERVICES */
 .services{
-padding:60px 8%;
-}
-
-.section-title{
-text-align:center;
-margin-bottom:40px;
-color:#0a66c2;
+padding:30px 20px;
 }
 
 .service-box{
 background:white;
 padding:25px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
-margin-bottom:20px;
+margin-bottom:25px;
+border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.06);
 transition:0.3s;
 }
 
@@ -145,81 +122,137 @@ transition:0.3s;
 transform:translateY(-5px);
 }
 
-.details{
-display:none;
-margin-top:15px;
-animation:slideDown 0.5s ease;
+.service-box h3{
+margin-top:0;
+color:#0a66c2;
 }
 
-@keyframes slideDown{
-from{opacity:0;transform:translateY(-10px);}
-to{opacity:1;transform:translateY(0);}
+.details{
+max-height:0;
+overflow:hidden;
+transition:max-height 0.6s ease;
+}
+
+.details p{
+margin:8px 0;
 }
 
 .view-btn{
-margin-top:10px;
+margin-top:15px;
 padding:8px 18px;
-border:none;
-border-radius:20px;
 background:#0a66c2;
 color:white;
+border:none;
+border-radius:20px;
 cursor:pointer;
 }
 
-/* WHY CHOOSE */
+/* WHY */
 .why{
+padding:40px 20px;
+text-align:center;
 background:#eef3f9;
-padding:60px 8%;
-text-align:center;
 }
 
-.why-box{
-margin-bottom:15px;
-}
-
-/* STATS */
-.stats{
-display:flex;
-justify-content:space-around;
-padding:50px 8%;
-background:#0a66c2;
-color:white;
-text-align:center;
-}
-
-.stats div{
-font-size:20px;
-}
+.why h2{color:#0a66c2;}
 
 /* TESTIMONIAL */
 .testimonial{
-padding:60px 8%;
+padding:40px 20px;
 text-align:center;
 }
 
 .testimonial-box{
 background:white;
-padding:25px;
-border-radius:15px;
-box-shadow:0 5px 20px rgba(0,0,0,0.05);
+padding:20px;
+border-radius:12px;
+box-shadow:0 6px 15px rgba(0,0,0,0.06);
+margin-bottom:15px;
 }
 
-/* CONTACT */
-.contact{
-padding:60px 8%;
-background:#111;
-color:white;
+/* FAQ */
+.faq{
+padding:40px 20px;
+background:#f9fbff;
+}
+
+.faq-item{
+background:white;
+margin-bottom:10px;
+padding:15px;
+border-radius:10px;
+cursor:pointer;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
+}
+
+.faq-answer{
+display:none;
+margin-top:8px;
+color:#555;
+}
+
+/* CONTACT FORM */
+.contact-form{
+padding:40px 20px;
 text-align:center;
 }
 
-.contact a{
-display:inline-block;
-margin-top:15px;
-padding:10px 25px;
-background:#0088cc;
+.contact-form input,
+.contact-form textarea{
+width:100%;
+max-width:400px;
+padding:10px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.contact-form button{
+padding:10px 20px;
+border:none;
+background:#0a66c2;
 color:white;
-border-radius:30px;
+border-radius:20px;
+cursor:pointer;
+}
+
+/* FLOAT WHATSAPP */
+.whatsapp-float{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:12px 15px;
+border-radius:50%;
+font-size:20px;
 text-decoration:none;
+box-shadow:0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* SCROLL TOP */
+#scrollTop{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#0a66c2;
+color:white;
+padding:8px 12px;
+border-radius:20px;
+cursor:pointer;
+display:none;
+}
+
+/* ABOUT */
+.about{
+background:#111;
+color:white;
+padding:50px 20px;
+text-align:center;
+}
+
+.about h2{
+color:#0a66c2;
 }
 
 /* FOOTER */
@@ -230,100 +263,137 @@ background:black;
 color:#aaa;
 }
 
+.footer a{
+color:#00acee;
+text-decoration:none;
+font-weight:bold;
+}
 </style>
 </head>
 
 <body>
 
 <div class="navbar">
-<div class="logo">Hari Bhai Company</div>
-<div class="nav-links">
-<a href="#services">Services</a>
-<a href="#contact">Contact</a>
+<div class="logo">
+<img src="logo.png">
+</div>
+<div class="nav-buttons">
+<button class="signin">Sign in</button>
+<button class="join">Join now</button>
 </div>
 </div>
 
 <div class="hero">
-<h1>Professional Digital Services</h1>
-<p>Trusted | Secure | Fast Delivery</p>
-<button onclick="document.querySelector('#services').scrollIntoView()">Explore Services</button>
+<h1>Welcome to Hari Bhai Company</h1>
+<p>Trusted Business & Professional Services</p>
 </div>
 
 <div class="trust">
+<img src="trustzone.jpg">
 <h2>100% Trusted Safe Zone</h2>
-<p>Verified | Secure | Professional Service</p>
-
-<div class="telegram-btn">
+<p>Verified | Secure | Fast Service</p>
 <a href="https://t.me/trust_zonw" target="_blank">Join Official Telegram</a>
 </div>
-</div>
 
-<div class="services" id="services">
-
-<h2 class="section-title">Our Services</h2>
-
+<div class="services">
 <div class="service-box">
 <h3>ID Sell – (8 Level ID)</h3>
+<button class="view-btn" onclick="toggleDetails()">View Details</button>
+<div class="details" id="details">
 <p>✔ Trusted Seller</p>
 <p>✔ All Panels Available</p>
 <p>✔ Free Fire Max Service</p>
-<p>✔ Fast Delivery</p>
-
-<button class="view-btn" onclick="toggleDetails(this)">View Details</button>
-
-<div class="details">
-<p>Premium verified accounts available.</p>
-<p>Instant delivery & full support.</p>
-<p>Secure transaction guaranteed.</p>
+<p>✔ Instant Delivery</p>
 </div>
-
 </div>
 
 <div class="service-box">
 <h3>Rank Pushing Service</h3>
 <p>🚀 Coming Soon...</p>
 </div>
-
 </div>
 
 <div class="why">
 <h2>Why Choose Us?</h2>
-<div class="why-box">✔ 100% Secure Transactions</div>
-<div class="why-box">✔ Fast Customer Support</div>
-<div class="why-box">✔ Trusted by Many Clients</div>
-</div>
-
-<div class="stats">
-<div><strong>500+</strong><br>Happy Clients</div>
-<div><strong>24/7</strong><br>Support</div>
-<div><strong>100%</strong><br>Secure</div>
+<p>✔ 100% Secure Transactions</p>
+<p>✔ Fast Delivery</p>
+<p>✔ 24/7 Customer Support</p>
+<p>✔ Trusted By Many Clients</p>
 </div>
 
 <div class="testimonial">
-<h2>Client Review</h2>
+<h2>Client Reviews</h2>
 <div class="testimonial-box">
-<p>"Best trusted service ever! Fast delivery and great support."</p>
+<p>"Best trusted service. Very fast delivery!" ⭐⭐⭐⭐⭐</p>
+</div>
+<div class="testimonial-box">
+<p>"Highly recommended. 100% genuine service." ⭐⭐⭐⭐⭐</p>
 </div>
 </div>
 
-<div class="contact" id="contact">
-<h2>Contact Us Directly</h2>
-<p>Message us on Telegram for instant reply</p>
+<div class="faq">
+<h2 style="text-align:center;color:#0a66c2;">Frequently Asked Questions</h2>
+<div class="faq-item" onclick="toggleFaq(this)">
+What payment methods are accepted?
+<div class="faq-answer">UPI, Bank Transfer and International Transfer accepted.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+How fast is delivery?
+<div class="faq-answer">Delivery usually within minutes after confirmation.</div>
+</div>
+</div>
+
+<div class="contact-form">
+<h2 style="color:#0a66c2;">Quick Contact</h2>
+<input type="text" placeholder="Your Name">
+<input type="email" placeholder="Your Email">
+<textarea placeholder="Your Message"></textarea>
+<br>
+<button>Send Message</button>
+</div>
+
+<div class="about">
+<h2>About Hari Bhai Company</h2>
+<p>We provide trusted gaming and digital services.</p>
+<p>Customer satisfaction and security is our first priority.</p>
+<p>Secure Payments | Fast Response | 24/7 Support</p>
+</div>
+
+<a href="https://wa.me/919999999999" class="whatsapp-float" target="_blank">💬</a>
+<div id="scrollTop" onclick="scrollToTop()">⬆</div>
+
+<div class="footer">
+© 2026 Hari Bhai Company | All Rights Reserved <br><br>
+Direct Telegram: 
 <a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
 </div>
 
-<div class="footer">
-© 2026 Hari Bhai Company | All Rights Reserved
-</div>
-
 <script>
-function toggleDetails(btn){
-let details = btn.nextElementSibling;
-if(details.style.display === "block"){
-details.style.display = "none";
-}else{
-details.style.display = "block";
+function toggleDetails() {
+var box = document.getElementById("details");
+if (box.style.maxHeight){
+box.style.maxHeight = null;
+} else {
+box.style.maxHeight = box.scrollHeight + "px";
 }
+}
+
+function toggleFaq(element){
+let answer = element.querySelector(".faq-answer");
+answer.style.display = answer.style.display === "block" ? "none" : "block";
+}
+
+window.onscroll = function(){
+let btn = document.getElementById("scrollTop");
+if(document.documentElement.scrollTop > 200){
+btn.style.display="block";
+}else{
+btn.style.display="none";
+}
+};
+
+function scrollToTop(){
+window.scrollTo({top:0,behavior:'smooth'});
 }
 </script>
 
