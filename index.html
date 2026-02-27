@@ -8,11 +8,11 @@
 <style>
 body{
 margin:0;
-font-family: 'Segoe UI', Arial, sans-serif;
+font-family:'Segoe UI',Arial;
 background:#f4f7fb;
 }
 
-/* ===== NAVBAR ===== */
+/* NAVBAR */
 .navbar{
 display:flex;
 justify-content:space-between;
@@ -24,148 +24,123 @@ position:sticky;
 top:0;
 }
 
-.logo img{
-height:45px;
-}
+.logo img{height:45px;}
 
-.nav-buttons{
-display:flex;
-gap:12px;
+.nav-buttons{display:flex;gap:10px;}
+
+.signin,.join{
+padding:8px 18px;
+border-radius:25px;
+font-weight:bold;
+cursor:pointer;
 }
 
 .signin{
-padding:8px 20px;
 border:2px solid #0a66c2;
-border-radius:30px;
 background:white;
 color:#0a66c2;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-.signin:hover{
-background:#0a66c2;
-color:white;
 }
 
 .join{
-padding:8px 20px;
 border:none;
-border-radius:30px;
 background:#0a66c2;
 color:white;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
 }
 
-.join:hover{
-background:#004a99;
-}
-
-/* ===== HERO ===== */
+/* HERO */
 .hero{
 text-align:center;
 padding:60px 20px;
-background:linear-gradient(135deg,#0a66c2,#004a99);
+background:linear-gradient(135deg,#0a66c2,#003366);
 color:white;
-border-bottom:5px solid #003366;
 }
 
-.hero img{
-max-width:180px;
-margin-bottom:20px;
-background:white;
-padding:10px;
-border-radius:10px;
-}
-
-.hero h1{
-margin:0;
-font-size:28px;
-}
-
-.hero p{
-margin-top:10px;
-font-size:16px;
-opacity:0.9;
-}
-
-/* ===== TRUST ZONE ===== */
+/* TRUST ZONE */
 .trust{
 text-align:center;
-padding:40px 20px;
+padding:50px 20px;
+background:white;
 }
 
 .trust img{
 max-width:220px;
 border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
+margin-bottom:15px;
 }
 
 .trust h2{
 color:#0a66c2;
+}
+
+/* Hidden Telegram Button */
+.trust-telegram{
 margin-top:20px;
 }
 
-/* ===== SERVICES ===== */
-.services{
-margin:30px;
-padding:30px;
-background:white;
-border-radius:12px;
-box-shadow:0 4px 12px rgba(0,0,0,0.05);
+.trust-telegram a{
+display:inline-block;
+padding:10px 22px;
+background:#0088cc;
+color:white;
+border-radius:30px;
+text-decoration:none;
+font-weight:bold;
+font-size:14px;
+transition:0.3s;
+opacity:0.85;
 }
 
-.services h2{
-text-align:center;
-color:#0a66c2;
-margin-bottom:25px;
+.trust-telegram a:hover{
+opacity:1;
+background:#006699;
+}
+
+/* SERVICES */
+.services{
+padding:30px 20px;
 }
 
 .service-box{
-background:#f9fbff;
+background:white;
 padding:20px;
-border-radius:10px;
 margin-bottom:20px;
-border-left:5px solid #0a66c2;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,0.05);
 }
 
 .service-box h3{
 margin-top:0;
-color:#222;
+color:#0a66c2;
 }
 
-.service-box p{
-margin:5px 0;
-color:#555;
-}
-
-/* ===== CONTACT ===== */
-.contact{
-text-align:center;
-padding:40px 20px;
-background:#0a66c2;
+/* ABOUT */
+.about{
+background:#111;
 color:white;
+padding:40px 20px;
+text-align:center;
 }
 
-.contact a{
-color:#ffd700;
-text-decoration:none;
-font-weight:bold;
+.about h2{
+color:#0a66c2;
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 .footer{
 text-align:center;
 padding:20px;
-background:#111;
-color:#bbb;
-font-size:14px;
+background:black;
+color:#aaa;
+}
+
+.footer a{
+color:#00acee;
+text-decoration:none;
+font-weight:bold;
 }
 </style>
 </head>
+
 <body>
 
 <!-- NAVBAR -->
@@ -173,59 +148,65 @@ font-size:14px;
 <div class="logo">
 <img src="logo.png">
 </div>
-
 <div class="nav-buttons">
 <button class="signin">Sign in</button>
 <button class="join">Join now</button>
 </div>
 </div>
 
-<!-- HERO SECTION -->
+<!-- HERO -->
 <div class="hero">
-<img src="logo.png">
 <h1>Welcome to Hari Bhai Company</h1>
 <p>Trusted Business & Professional Services</p>
 </div>
 
 <!-- TRUST ZONE -->
 <div class="trust">
-<img src="trust.png">
-<h2>100% Trusted Seller Zone</h2>
+<img src="trustzone.jpg">
+<h2>100% Trusted Safe Zone</h2>
 <p>Verified | Secure | Fast Service</p>
+
+<div class="trust-telegram">
+<a href="https://t.me/trus_zone" target="_blank">
+Join Official Telegram
+</a>
+</div>
+
 </div>
 
 <!-- SERVICES -->
 <div class="services">
-<h2>Our Services</h2>
 
 <div class="service-box">
-<h3>Gaming Panel & ID Services</h3>
-<p>✔ Seller ID: 8 Level Rank</p>
-<p>✔ Trusted & Verified Seller</p>
+<h3>ID Sell – Level 7 Seller</h3>
+<p>✔ Trusted Seller</p>
 <p>✔ All Panels Available</p>
-<p>✔ Free Fire Max Services Available</p>
-<p>✔ Instant Response & Fast Delivery</p>
+<p>✔ Free Fire Max Service</p>
+<p>✔ Fast Delivery</p>
 </div>
 
 <div class="service-box">
-<h3>Extra Premium Service</h3>
+<h3>Rank Pushing Service</h3>
 <p>🚀 Coming Soon...</p>
 </div>
 
 </div>
 
-<!-- CONTACT SECTION -->
-<div class="contact">
-<h3>Contact Us</h3>
-<p>📂 Category: Business Services</p>
-<p>📞 Phone: +91 98357 91703</p>
-<p>✉ Email: hacbb2941@gmail.com</p>
-<p>📲 Telegram: <a href="#">@Hari_ji9</a></p>
+<!-- ABOUT -->
+<div class="about">
+<h2>About Hari Bhai Company</h2>
+<p>We provide trusted gaming and digital services.</p>
+<p>Customer satisfaction and security is our first priority.</p>
+<p>100% Trusted | Secure | Fast Support</p>
 </div>
 
 <!-- FOOTER -->
 <div class="footer">
-© 2026 Hari Bhai Company | All Rights Reserved | Designed by HBC
+© 2026 Hari Bhai Company | All Rights Reserved <br><br>
+Contact Direct Telegram: 
+<a href="https://t.me/Hari_ji9" target="_blank">
+@Hari_ji9
+</a>
 </div>
 
 </body>
