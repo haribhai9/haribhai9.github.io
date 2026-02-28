@@ -11,7 +11,7 @@
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
-background:transparent;   /* 👈 Transparent */
+background:transparent;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -33,7 +33,10 @@ animation:popup 0.3s ease;
 .company{
 font-size:16px;
 font-weight:bold;
-color:#0a66c2;
+color:white;
+background:#0a66c2;   /* 👈 Blue background added */
+padding:6px;
+border-radius:6px;
 margin-bottom:5px;
 }
 
@@ -98,15 +101,15 @@ to{transform:scale(1);opacity:1;}
 
 <body>
 
-<div class="container">
+<div class="container" id="authBox">
 
 <div class="company">Hari Bhai Company</div>
 <div class="tagline">Trusted & Professional Digital Services</div>
 
 <h2>Login</h2>
 
-<input type="text" placeholder="Enter Your Username">  <!-- 👈 Changed -->
-<input type="password" placeholder="Enter Your Password">
+<input type="text" id="loginUser" placeholder="Enter Your Username">
+<input type="password" id="loginPass" placeholder="Enter Your Password">
 
 <button onclick="login()">Login</button>
 
@@ -119,21 +122,36 @@ Don't have account?
 
 <script>
 
+/* LOGIN FUNCTION */
 function login(){
+
+let username=document.getElementById("loginUser").value;
+let password=document.getElementById("loginPass").value;
+
+let savedUser=localStorage.getItem("username");
+let savedPass=localStorage.getItem("password");
+
+if(username===savedUser && password===savedPass){
+localStorage.setItem("loggedIn","true");
 alert("Login Successful ✅");
 window.parent.location.href="index.html";
+}else{
+alert("Invalid Username or Password ❌");
 }
 
+}
+
+/* SHOW REGISTER FORM */
 function showRegister(){
-document.querySelector(".container").innerHTML=`
+document.getElementById("authBox").innerHTML=`
 <div class="company">Hari Bhai Company</div>
 <div class="tagline">Trusted & Professional Digital Services</div>
 
 <h2>Register</h2>
-<input type="text" placeholder="Enter Username">
-<input type="email" placeholder="Enter Email">
-<input type="password" placeholder="Create Password">
-<input type="password" placeholder="Confirm Password">
+<input type="text" id="regUser" placeholder="Enter Username">
+<input type="email" id="regEmail" placeholder="Enter Email">
+<input type="password" id="regPass" placeholder="Create Password">
+<input type="password" id="regConfirm" placeholder="Confirm Password">
 <button onclick="register()">Create Account</button>
 
 <div class="switch">
@@ -143,9 +161,31 @@ Already have account?
 `;
 }
 
+/* REGISTER FUNCTION */
 function register(){
+
+let user=document.getElementById("regUser").value;
+let email=document.getElementById("regEmail").value;
+let pass=document.getElementById("regPass").value;
+let confirm=document.getElementById("regConfirm").value;
+
+if(user==="" || email==="" || pass===""){
+alert("All fields required ❌");
+return;
+}
+
+if(pass!==confirm){
+alert("Passwords do not match ❌");
+return;
+}
+
+localStorage.setItem("username",user);
+localStorage.setItem("password",pass);
+localStorage.setItem("loggedIn","true");
+
 alert("Account Created 🎉");
 window.parent.location.href="index.html";
+
 }
 
 </script>
