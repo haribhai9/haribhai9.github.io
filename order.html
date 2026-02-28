@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order - Tiger Seller</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(135deg,#0a66c2,#001f4d);
+color:white;
+}
+
+/* HEADER */
+.header{
+padding:18px;
+text-align:center;
+background:#000c2e;
+position:relative;
+}
+
+.header h2{
+background:linear-gradient(45deg,#00e5ff,#00ff99,#ffea00);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+font-size:22px;
+}
+
+.check-order-btn{
+position:absolute;
+right:15px;
+top:15px;
+background:#0a66c2;
+border:none;
+padding:6px 12px;
+color:white;
+border-radius:15px;
+font-size:12px;
+cursor:pointer;
+}
+
+/* CONTAINER */
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+/* SERVICE BOX */
+.service-box{
+background:white;
+color:black;
+padding:15px;
+margin:12px 0;
+border-radius:10px;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.service-box h3{
+color:#0a66c2;
+margin-bottom:8px;
+}
+
+/* FREE FIRE */
+.freefire{
+background:#111;
+color:white;
+padding:15px;
+border-radius:10px;
+margin-top:25px;
+border:2px solid #00ff99;
+}
+
+/* PAYMENT */
+.payment{
+background:white;
+color:black;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+.qr{
+text-align:center;
+margin-bottom:15px;
+}
+
+.qr-box{
+width:200px;
+height:200px;
+margin:auto;
+background-image:url('tigerqr.png');
+background-size:cover;
+background-position:center;
+border-radius:10px;
+box-shadow:0 0 15px #00ff99;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:8px 0;
+border-radius:5px;
+border:1px solid #ccc;
+}
+
+.submit-btn{
+background:#00c853;
+color:white;
+border:none;
+padding:12px;
+width:100%;
+border-radius:5px;
+font-size:15px;
+cursor:pointer;
+}
+
+/* POPUP */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.popup-content{
+background:white;
+color:black;
+padding:25px;
+border-radius:10px;
+text-align:center;
+width:300px;
+}
+
+/* SMALL SLIDE PANEL */
+.order-panel{
+position:fixed;
+top:60px;
+right:-320px;
+width:300px;
+height:400px;
+background:white;
+color:black;
+box-shadow:-5px 0 10px rgba(0,0,0,0.4);
+transition:0.4s;
+padding:15px;
+border-radius:10px 0 0 10px;
+overflow:auto;
+}
+
+.close-panel{
+background:red;
+color:white;
+border:none;
+padding:4px 8px;
+float:right;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<h2>INSTA VIP BOOSTER BY TIGER SELLER</h2>
+<button class="check-order-btn" onclick="openPanel()">Check Order</button>
+</div>
+
+<div class="container">
+
+<div class="service-box">
+<h3>VIP Followers</h3>
+<p>100 - ₹6 | 300 - ₹17 | 500 - ₹29</p>
+</div>
+
+<div class="service-box">
+<h3>Gold Likes</h3>
+<p>50 - ₹4 | 100 - ₹7 | 200 - ₹14 | 500 - ₹20</p>
+</div>
+
+<div class="service-box">
+<h3>Premium Comments</h3>
+<p>50 - ₹6 | 100 - ₹11 | 200 - ₹22</p>
+</div>
+
+<div class="service-box">
+<h3>Reel Views</h3>
+<p>630 - ₹30 | 1260 - ₹50</p>
+</div>
+
+<div class="freefire">
+<h3>FREE FIRE SERVICES</h3>
+<p>Level 8 ID - ₹15 Only</p>
+<p>Facebook ID & Google ID Both Available (Cheapest)</p>
+</div>
+
+<div class="payment">
+
+<div class="qr">
+<h3>Scan & Pay</h3>
+<div class="qr-box"></div>
+</div>
+
+<form action="https://formsubmit.co/hacbb2941@gmail.com" method="POST" onsubmit="showPopup();saveOrder();">
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_subject" value="New Order - Tiger Seller">
+
+<select name="Service" required>
+<option>VIP Followers</option>
+<option>Gold Likes</option>
+<option>Premium Comments</option>
+<option>Reel Views</option>
+<option>Level 8 ID</option>
+</select>
+
+<input type="text" name="Telegram Username" placeholder="Telegram Username" required>
+<input type="email" name="Email" placeholder="Email Address" required>
+<input type="text" name="WhatsApp" placeholder="WhatsApp Number" required>
+<input type="text" name="UTR Number" placeholder="Enter UTR Number" required>
+<input type="file" name="Screenshot">
+
+<button type="submit" class="submit-btn">Submit Order</button>
+
+</form>
+
+</div>
+</div>
+
+<div class="popup" id="popup">
+<div class="popup-content">
+<h3>Order Submitted ✅</h3>
+<p>Please wait while we process your service.</p>
+<button onclick="closePopup()">OK</button>
+</div>
+</div>
+
+<div class="order-panel" id="orderPanel">
+<button class="close-panel" onclick="closePanel()">X</button>
+<h3>Your Order</h3>
+<div id="orderDetails"></div>
+</div>
+
+<script>
+function saveOrder(){
+let order={
+service:document.querySelector("select").value,
+status:"Pending",
+time:Date.now()
+};
+localStorage.setItem("order",JSON.stringify(order));
+}
+
+function showPopup(){
+document.getElementById("popup").style.display="flex";
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+function openPanel(){
+document.getElementById("orderPanel").style.right="0";
+showOrder();
+}
+
+function closePanel(){
+document.getElementById("orderPanel").style.right="-320px";
+}
+
+function showOrder(){
+let order=JSON.parse(localStorage.getItem("order"));
+if(order){
+if(Date.now() - order.time > 5*60*60*1000){
+order.status="Success - Your Order Received";
+localStorage.setItem("order",JSON.stringify(order));
+}
+document.getElementById("orderDetails").innerHTML=
+"<p><b>Service:</b> "+order.service+"</p>"+
+"<p><b>Status:</b> "+order.status+"</p>";
+}else{
+document.getElementById("orderDetails").innerHTML="No Order Found";
+}
+}
+</script>
+
+</body>
+</html>
