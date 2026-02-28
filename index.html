@@ -27,6 +27,7 @@ z-index:1000;
 }
 
 .logo img{height:45px;}
+
 .nav-buttons{display:flex;gap:10px;}
 
 .signin,.join{
@@ -49,14 +50,12 @@ color:white;
 }
 
 .join{
-border:none;
 background:#0a66c2;
 color:white;
+border:none;
 }
 
-.join:hover{
-background:#003366;
-}
+.join:hover{background:#003366;}
 
 /* HERO */
 .hero{
@@ -120,15 +119,8 @@ text-align:left;
 padding-left:10px;
 }
 
-.owner-details p{
-margin:6px 0;
-font-size:14px;
-}
-
 /* SERVICES */
-.services{
-padding:30px 20px;
-}
+.services{padding:30px 20px;}
 
 .admin-heading{
 text-align:center;
@@ -156,35 +148,26 @@ box-shadow:0 6px 15px rgba(0,0,0,0.06);
 transition:0.3s;
 }
 
-.service-box:hover{
-transform:translateY(-5px);
-}
+.service-box:hover{transform:translateY(-5px);}
 
 .btn-row{
 margin-top:12px;
 display:flex;
-align-items:center;
 gap:10px;
 flex-wrap:wrap;
 }
 
-.buy-btn{
+.buy-btn,.order-btn{
 padding:8px 18px;
-background:#28a745;
-color:white;
 border-radius:25px;
+color:white;
 text-decoration:none;
 font-weight:bold;
+cursor:pointer;
 }
 
-.order-btn{
-padding:8px 18px;
-background:#0a66c2;
-color:white;
-border-radius:25px;
-text-decoration:none;
-font-weight:bold;
-}
+.buy-btn{background:#28a745;}
+.order-btn{background:#0a66c2;}
 
 .flash-img{
 width:90px;
@@ -253,22 +236,48 @@ text-align:center;
 
 /* FOOTER */
 .footer{
-text-align:center;
-padding:20px;
 background:black;
 color:#aaa;
+padding:40px 20px;
+text-align:center;
 }
 
-.footer a{
+.footer-links{
+margin-top:15px;
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+}
+
+.footer-links a{
 color:#0a66c2;
 text-decoration:none;
 }
 
-/* MODAL COMMON */
+/* WhatsApp Floating */
+.whatsapp-float{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+border-radius:50%;
+width:60px;
+height:60px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+text-decoration:none;
+box-shadow:0 4px 10px rgba(0,0,0,0.3);
+z-index:9999;
+}
+
+/* MODAL */
 .modal{
 display:none;
 position:fixed;
-z-index:9999;
 left:0;
 top:0;
 width:100%;
@@ -277,10 +286,12 @@ background:rgba(0,0,0,0.6);
 backdrop-filter:blur(6px);
 justify-content:center;
 align-items:center;
+z-index:9999;
+animation:fadeIn 0.3s ease;
 }
 
 .modal-content{
-background:white;
+background:linear-gradient(135deg,#1e3c72,#2a5298);
 width:90%;
 max-width:420px;
 height:550px;
@@ -294,6 +305,8 @@ animation:zoomIn 0.3s ease;
 width:100%;
 height:100%;
 border:none;
+background:white;
+border-radius:20px;
 }
 
 .close-btn{
@@ -301,15 +314,19 @@ position:absolute;
 top:10px;
 right:15px;
 font-size:22px;
+color:white;
 cursor:pointer;
-font-weight:bold;
-color:#333;
 z-index:10;
 }
 
 @keyframes zoomIn{
-from{transform:scale(0.8);opacity:0;}
+from{transform:scale(0.7);opacity:0;}
 to{transform:scale(1);opacity:1;}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
 }
 </style>
 </head>
@@ -318,9 +335,7 @@ to{transform:scale(1);opacity:1;}
 
 <!-- NAVBAR -->
 <div class="navbar">
-<div class="logo">
-<img src="logo.png">
-</div>
+<div class="logo"><img src="logo.png"></div>
 <div class="nav-buttons">
 <button class="signin" onclick="openLogin()">Sign in</button>
 <button class="join" onclick="openJoin()">Join now</button>
@@ -340,7 +355,9 @@ to{transform:scale(1);opacity:1;}
 <h2>100% Trusted Safe Zone</h2>
 <p>Verified | Secure | Fast Service</p>
 <a href="https://t.me/trus_zone" target="_blank" class="main-btn">Join (Tiger Service)</a>
-<button class="details-btn" onclick="toggleOwnerDetails()">Our Owner Services Details</button>
+
+<button class="details-btn" onclick="secureOwnerDetails()">Our Owner Services Details</button>
+
 <div class="owner-details" id="ownerDetails">
 <p>✔ Trusted Seller</p>
 <p>✔ All Panels Available</p>
@@ -360,7 +377,7 @@ to{transform:scale(1);opacity:1;}
 <div class="btn-row">
 <a href="https://t.me/TIGER0095" target="_blank" class="buy-btn">Buy Now</a>
 <span>/</span>
-<a href="https://t.me/TIGER0095" target="_blank" class="order-btn">Order Now</a>
+<a class="order-btn" onclick="secureOrder('https://t.me/TIGER0095')">Order Now</a>
 </div>
 </div>
 
@@ -371,7 +388,7 @@ to{transform:scale(1);opacity:1;}
 <div class="btn-row">
 <a href="https://t.me/S1sabir" target="_blank" class="buy-btn">Buy Now</a>
 <span>/</span>
-<a href="https://t.me/TIGER0095" target="_blank" class="order-btn">Order Now</a>
+<a class="order-btn" onclick="secureOrder('https://t.me/TIGER0095')">Order Now</a>
 </div>
 </div>
 </div>
@@ -424,10 +441,24 @@ to{transform:scale(1);opacity:1;}
 <!-- FOOTER -->
 <div class="footer">
 © 2026 Hari Bhai Company | All Rights Reserved <br><br>
-Direct Telegram: <a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
+
+Direct Telegram: 
+<a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
+
+<div class="footer-links">
+<a href="about.html">About</a>
+<a href="blog.html">Blog</a>
+<a href="privacy.html">Privacy Policy</a>
+<a href="terms.html">Terms & Conditions</a>
+<a href="support.html">Support</a>
+<a href="contact.html">Contact</a>
+</div>
 </div>
 
-<!-- LOGIN POPUP -->
+<!-- WhatsApp Floating -->
+<a href="https://wa.me/919999999999" target="_blank" class="whatsapp-float">💬</a>
+
+<!-- LOGIN MODAL -->
 <div class="modal" id="loginModal">
 <div class="modal-content">
 <span class="close-btn" onclick="closeLogin()">✖</span>
@@ -435,7 +466,7 @@ Direct Telegram: <a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
 </div>
 </div>
 
-<!-- JOIN POPUP -->
+<!-- JOIN MODAL -->
 <div class="modal" id="joinModal">
 <div class="modal-content">
 <span class="close-btn" onclick="closeJoin()">✖</span>
@@ -444,29 +475,26 @@ Direct Telegram: <a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
 </div>
 
 <script>
-function toggleOwnerDetails(){
+function openLogin(){document.getElementById("loginModal").style.display="flex";}
+function closeLogin(){document.getElementById("loginModal").style.display="none";}
+function openJoin(){document.getElementById("joinModal").style.display="flex";}
+function closeJoin(){document.getElementById("joinModal").style.display="none";}
+
+function secureOwnerDetails(){
+if(localStorage.getItem("loggedIn")!=="true"){
+openLogin();
+return;
+}
 var box=document.getElementById("ownerDetails");
-if(box.style.maxHeight){
-box.style.maxHeight=null;
-}else{
-box.style.maxHeight=box.scrollHeight+"px";
-}
+box.style.maxHeight=box.style.maxHeight?null:box.scrollHeight+"px";
 }
 
-function openLogin(){
-document.getElementById("loginModal").style.display="flex";
+function secureOrder(link){
+if(localStorage.getItem("loggedIn")!=="true"){
+openLogin();
+return;
 }
-
-function closeLogin(){
-document.getElementById("loginModal").style.display="none";
-}
-
-function openJoin(){
-document.getElementById("joinModal").style.display="flex";
-}
-
-function closeJoin(){
-document.getElementById("joinModal").style.display="none";
+window.open(link,"_blank");
 }
 </script>
 
