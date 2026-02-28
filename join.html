@@ -2,102 +2,247 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Join Now</title>
+<title>Hari Bhai Company - Secure Auth</title>
+
 <style>
 body{
 margin:0;
-font-family:Segoe UI;
-background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
-background-size:400% 400%;
-animation:gradient 8s ease infinite;
+font-family:'Segoe UI',sans-serif;
+background:transparent;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
 }
 
-@keyframes gradient{
-0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+.card{
+width:340px;
+background:#fff;
+padding:25px;
+border-radius:16px;
+box-shadow:0 20px 60px rgba(0,0,0,0.4);
+text-align:center;
+animation:popup 0.3s ease;
 }
 
-.card{
-background:white;
-padding:30px;
-border-radius:15px;
-width:320px;
-box-shadow:0 10px 25px rgba(0,0,0,0.3);
-text-align:center;
+.company-box{
+background:linear-gradient(135deg,#0a66c2,#004e92);
+color:white;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+.company-box h1{
+margin:0;
+font-size:18px;
+}
+
+.company-box p{
+margin:3px 0 0;
+font-size:11px;
+opacity:0.9;
+}
+
+h2{
+margin:10px 0 15px;
+color:#0a66c2;
 }
 
 input{
 width:100%;
-padding:10px;
-margin:8px 0;
-border-radius:8px;
+padding:9px;
+margin:7px 0;
+border-radius:6px;
 border:1px solid #ccc;
+font-size:13px;
+box-sizing:border-box;
 }
 
 button{
 width:100%;
 padding:10px;
-background:#28a745;
+margin-top:8px;
+background:#0a66c2;
 color:white;
 border:none;
-border-radius:8px;
+border-radius:6px;
 font-weight:bold;
 cursor:pointer;
 }
 
-.google{
-background:#db4437;
-margin-top:10px;
+button:hover{
+background:#004e92;
 }
 
-.success{
-display:none;
-color:green;
-font-weight:bold;
+.verify-box{
+display:flex;
+align-items:center;
+justify-content:flex-start;
+margin-top:8px;
+font-size:13px;
+}
+
+.verify-box input{
+width:auto;
+margin-right:6px;
+}
+
+.switch{
 margin-top:10px;
+font-size:12px;
+}
+
+.switch span{
+color:#0a66c2;
+cursor:pointer;
+font-weight:bold;
+}
+
+.message{
+margin-top:8px;
+font-size:12px;
+font-weight:bold;
+display:none;
+}
+
+@keyframes popup{
+from{transform:scale(0.8);opacity:0;}
+to{transform:scale(1);opacity:1;}
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
-<h2>Create Account</h2>
+<div class="card" id="card">
 
-<input type="text" id="username" placeholder="Username">
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="pass" placeholder="Create Password">
-<input type="password" id="cpass" placeholder="Confirm Password">
-
-<button onclick="signup()">Continue</button>
-<button class="google">Sign in with Google</button>
-
-<div class="success" id="successMsg">
-Account Created Successfully! Redirecting...
+<div class="company-box">
+<h1>Hari Bhai Company</h1>
+<p>Trusted & Secure Digital Services</p>
 </div>
+
+<h2>Register</h2>
+
+<input type="text" id="rname" placeholder="Enter Username">
+<input type="email" id="remail" placeholder="Enter Email">
+<input type="password" id="rpass" placeholder="Create Password">
+<input type="password" id="rcpass" placeholder="Confirm Password">
+
+<div class="verify-box">
+<input type="checkbox" id="rverify">
+<label for="rverify">I am not a robot</label>
+</div>
+
+<button onclick="register()">Register</button>
+
+<div class="switch">
+Already have account?
+<span onclick="showLogin()">Login</span>
+</div>
+
+<div class="message" id="msg"></div>
+
 </div>
 
 <script>
-function signup(){
-var p=document.getElementById("pass").value;
-var cp=document.getElementById("cpass").value;
 
-if(p!==cp){
-alert("Passwords do not match");
+function showLogin(){
+document.getElementById("card").innerHTML=`
+<div class="company-box">
+<h1>Hari Bhai Company</h1>
+<p>Trusted & Secure Digital Services</p>
+</div>
+
+<h2>Login</h2>
+
+<input type="email" id="email" placeholder="Enter Email">
+<input type="password" id="pass" placeholder="Enter Password">
+
+<div class="verify-box">
+<input type="checkbox" id="lverify">
+<label for="lverify">I am not a robot</label>
+</div>
+
+<button onclick="login()">Login</button>
+
+<div class="switch">
+Don't have account?
+<span onclick="location.reload()">Register</span>
+</div>
+
+<div class="message" id="msg"></div>
+`;
+}
+
+function register(){
+
+let name=document.getElementById("rname").value.trim();
+let email=document.getElementById("remail").value.trim();
+let pass=document.getElementById("rpass").value;
+let cpass=document.getElementById("rcpass").value;
+let verify=document.getElementById("rverify").checked;
+
+if(name===""||email===""||pass===""||cpass===""){
+showMsg("All fields required!","red");
 return;
 }
 
-document.getElementById("successMsg").style.display="block";
-
-setTimeout(function(){
-window.top.location.href="index.html";
-},2000);
+if(pass!==cpass){
+showMsg("Passwords do not match!","red");
+return;
 }
+
+if(!verify){
+showMsg("Please verify you are human!","red");
+return;
+}
+
+if(localStorage.getItem("userEmail")===email){
+showMsg("You are already registered!","orange");
+return;
+}
+
+localStorage.setItem("userEmail",email);
+localStorage.setItem("userPass",pass);
+
+showMsg("Account Created Successfully!","green");
+
+setTimeout(()=>{showLogin();},1500);
+}
+
+function login(){
+
+let email=document.getElementById("email").value.trim();
+let pass=document.getElementById("pass").value;
+let verify=document.getElementById("lverify").checked;
+
+if(!verify){
+showMsg("Please verify you are human!","red");
+return;
+}
+
+if(email===localStorage.getItem("userEmail") &&
+   pass===localStorage.getItem("userPass")){
+
+showMsg("Login Successful! Redirecting...","green");
+
+setTimeout(()=>{
+window.top.location.href="index.html";
+},1500);
+
+}else{
+showMsg("Invalid Email or Password!","red");
+}
+}
+
+function showMsg(text,color){
+let msg=document.getElementById("msg");
+msg.style.display="block";
+msg.style.color=color;
+msg.innerText=text;
+}
+
 </script>
 
 </body>
