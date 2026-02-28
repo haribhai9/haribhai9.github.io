@@ -264,7 +264,7 @@ color:#0a66c2;
 text-decoration:none;
 }
 
-/* MODAL */
+/* MODAL COMMON */
 .modal{
 display:none;
 position:fixed;
@@ -304,6 +304,7 @@ font-size:22px;
 cursor:pointer;
 font-weight:bold;
 color:#333;
+z-index:10;
 }
 
 @keyframes zoomIn{
@@ -321,8 +322,8 @@ to{transform:scale(1);opacity:1;}
 <img src="logo.png">
 </div>
 <div class="nav-buttons">
-<button class="signin" onclick="window.location.href='auth.html'">Sign in</button>
-<button class="join" onclick="openModal()">Join now</button>
+<button class="signin" onclick="openLogin()">Sign in</button>
+<button class="join" onclick="openJoin()">Join now</button>
 </div>
 </div>
 
@@ -338,7 +339,7 @@ to{transform:scale(1);opacity:1;}
 <img src="trustzone.jpg" class="trust-img">
 <h2>100% Trusted Safe Zone</h2>
 <p>Verified | Secure | Fast Service</p>
-<a href="https://t.me/trust_zonw" target="_blank" class="main-btn">Join (Tiger Service)</a>
+<a href="https://t.me/trus_zone" target="_blank" class="main-btn">Join (Tiger Service)</a>
 <button class="details-btn" onclick="toggleOwnerDetails()">Our Owner Services Details</button>
 <div class="owner-details" id="ownerDetails">
 <p>✔ Trusted Seller</p>
@@ -426,29 +427,45 @@ to{transform:scale(1);opacity:1;}
 Direct Telegram: <a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
 </div>
 
+<!-- LOGIN POPUP -->
+<div class="modal" id="loginModal">
+<div class="modal-content">
+<span class="close-btn" onclick="closeLogin()">✖</span>
+<iframe src="auth.html"></iframe>
+</div>
+</div>
+
 <!-- JOIN POPUP -->
 <div class="modal" id="joinModal">
 <div class="modal-content">
-<span class="close-btn" onclick="closeModal()">✖</span>
+<span class="close-btn" onclick="closeJoin()">✖</span>
 <iframe src="join.html"></iframe>
 </div>
 </div>
 
 <script>
 function toggleOwnerDetails(){
-var box = document.getElementById("ownerDetails");
-if (box.style.maxHeight){
-box.style.maxHeight = null;
-} else {
-box.style.maxHeight = box.scrollHeight + "px";
+var box=document.getElementById("ownerDetails");
+if(box.style.maxHeight){
+box.style.maxHeight=null;
+}else{
+box.style.maxHeight=box.scrollHeight+"px";
 }
 }
 
-function openModal(){
+function openLogin(){
+document.getElementById("loginModal").style.display="flex";
+}
+
+function closeLogin(){
+document.getElementById("loginModal").style.display="none";
+}
+
+function openJoin(){
 document.getElementById("joinModal").style.display="flex";
 }
 
-function closeModal(){
+function closeJoin(){
 document.getElementById("joinModal").style.display="none";
 }
 </script>
