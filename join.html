@@ -2,217 +2,101 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account Access</title>
-
-<!-- Google Identity Script -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-
+<title>Join Now</title>
 <style>
 body{
 margin:0;
-font-family:'Segoe UI',Arial;
-height:100vh;
+font-family:Segoe UI;
+background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
+background-size:400% 400%;
+animation:gradient 8s ease infinite;
 display:flex;
 justify-content:center;
 align-items:center;
-background:linear-gradient(-45deg,#0a66c2,#002f6c,#1fa2ff,#12d8fa);
-background-size:400% 400%;
-animation:gradientBG 10s ease infinite;
+height:100vh;
 }
 
-@keyframes gradientBG{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+@keyframes gradient{
+0%{background-position:0% 50%}
+50%{background-position:100% 50%}
+100%{background-position:0% 50%}
 }
 
-.auth-box{
-background:rgba(255,255,255,0.97);
-width:100%;
-max-width:370px;
+.card{
+background:white;
 padding:30px;
-border-radius:20px;
-box-shadow:0 20px 40px rgba(0,0,0,0.3);
+border-radius:15px;
+width:320px;
+box-shadow:0 10px 25px rgba(0,0,0,0.3);
 text-align:center;
-}
-
-h2{
-color:#0a66c2;
-margin-bottom:20px;
 }
 
 input{
 width:100%;
 padding:10px;
-margin-bottom:12px;
-border-radius:10px;
+margin:8px 0;
+border-radius:8px;
 border:1px solid #ccc;
-outline:none;
 }
 
 button{
 width:100%;
 padding:10px;
-border:none;
-border-radius:25px;
-font-weight:bold;
-cursor:pointer;
-margin-top:8px;
-}
-
-.green-btn{
 background:#28a745;
 color:white;
-}
-
-.blue-btn{
-background:#0a66c2;
-color:white;
-}
-
-.google-btn{
-margin-top:15px;
-}
-
-.switch{
-margin-top:15px;
-font-size:14px;
+border:none;
+border-radius:8px;
+font-weight:bold;
 cursor:pointer;
-color:#0a66c2;
 }
 
-.hidden{
+.google{
+background:#db4437;
+margin-top:10px;
+}
+
+.success{
 display:none;
+color:green;
+font-weight:bold;
+margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="auth-box">
-
-<!-- SIGNUP -->
-<div id="signupBox">
+<div class="card">
 <h2>Create Account</h2>
-<input type="text" id="su_username" placeholder="Username">
-<input type="email" id="su_email" placeholder="Email">
-<input type="password" id="su_password" placeholder="Create Password">
-<input type="password" id="su_confirm" placeholder="Confirm Password">
-<button class="green-btn" onclick="signup()">Continue</button>
 
-<div id="googleSignIn" class="google-btn"></div>
+<input type="text" id="username" placeholder="Username">
+<input type="email" id="email" placeholder="Email">
+<input type="password" id="pass" placeholder="Create Password">
+<input type="password" id="cpass" placeholder="Confirm Password">
 
-<div class="switch" onclick="showLogin()">Already have account? Login</div>
+<button onclick="signup()">Continue</button>
+<button class="google">Sign in with Google</button>
+
+<div class="success" id="successMsg">
+Account Created Successfully! Redirecting...
 </div>
-
-<!-- VERIFY -->
-<div id="verifyBox" class="hidden">
-<h2>Email Verification</h2>
-<input type="text" id="verify_code" placeholder="Enter 6-digit Code">
-<button class="blue-btn" onclick="verify()">Verify</button>
-</div>
-
-<!-- LOGIN -->
-<div id="loginBox" class="hidden">
-<h2>Login</h2>
-<input type="text" id="li_username" placeholder="Username">
-<input type="password" id="li_password" placeholder="Password">
-<button class="green-btn" onclick="login()">Login</button>
-<div class="switch" onclick="showSignup()">Create new account</div>
-</div>
-
 </div>
 
 <script>
-let generatedCode = "";
-
-/* ---------- SIGNUP ---------- */
 function signup(){
-let username=su_username.value;
-let email=su_email.value;
-let pass=su_password.value;
-let confirm=su_confirm.value;
+var p=document.getElementById("pass").value;
+var cp=document.getElementById("cpass").value;
 
-if(!username || !email || !pass || !confirm){
-alert("Fill all fields");
-return;
-}
-
-if(pass!==confirm){
+if(p!==cp){
 alert("Passwords do not match");
 return;
 }
 
-generatedCode=Math.floor(100000+Math.random()*900000);
-alert("Demo Verification Code: "+generatedCode);
+document.getElementById("successMsg").style.display="block";
 
-localStorage.setItem("tempUser",JSON.stringify({
-username:username,
-email:email,
-password:pass
-}));
-
-signupBox.classList.add("hidden");
-verifyBox.classList.remove("hidden");
-}
-
-/* ---------- VERIFY ---------- */
-function verify(){
-let entered=verify_code.value;
-
-if(entered==generatedCode){
-let user=JSON.parse(localStorage.getItem("tempUser"));
-localStorage.setItem("userData",JSON.stringify(user));
-alert("Account Verified Successfully 🎉");
-window.location.href="index.html";   // 🔥 AUTO REDIRECT
-}else{
-alert("Wrong Verification Code");
-}
-}
-
-/* ---------- LOGIN ---------- */
-function login(){
-let username=li_username.value;
-let password=li_password.value;
-let user=JSON.parse(localStorage.getItem("userData"));
-
-if(user && username===user.username && password===user.password){
-alert("Login Successful 🚀");
-window.location.href="index.html";  // 🔥 AUTO REDIRECT
-}else{
-alert("Invalid Login Details");
-}
-}
-
-/* ---------- SWITCH ---------- */
-function showLogin(){
-signupBox.classList.add("hidden");
-verifyBox.classList.add("hidden");
-loginBox.classList.remove("hidden");
-}
-
-function showSignup(){
-loginBox.classList.add("hidden");
-signupBox.classList.remove("hidden");
-}
-
-/* ---------- GOOGLE SIGN IN ---------- */
-window.onload=function(){
-google.accounts.id.initialize({
-client_id:"YOUR_GOOGLE_CLIENT_ID",
-callback:handleCredentialResponse
-});
-
-google.accounts.id.renderButton(
-document.getElementById("googleSignIn"),
-{ theme:"outline", size:"large", width:300 }
-);
-};
-
-function handleCredentialResponse(response){
-alert("Google Login Successful 🚀");
-window.location.href="index.html"; // 🔥 Redirect after Google login
+setTimeout(function(){
+window.top.location.href="index.html";
+},2000);
 }
 </script>
 
