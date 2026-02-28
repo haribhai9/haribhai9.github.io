@@ -130,7 +130,6 @@ font-size:14px;
 padding:30px 20px;
 }
 
-/* ANIMATED HEADING */
 .admin-heading{
 text-align:center;
 font-size:28px;
@@ -192,12 +191,14 @@ width:90px;
 margin-bottom:10px;
 }
 
+/* WHY */
 .why{
 padding:40px 20px;
 text-align:center;
 background:#eef3f9;
 }
 
+/* TESTIMONIAL */
 .testimonial{
 padding:40px 20px;
 text-align:center;
@@ -211,16 +212,38 @@ box-shadow:0 6px 15px rgba(0,0,0,0.06);
 margin-bottom:15px;
 }
 
+/* FAQ */
 .faq{
 padding:40px 20px;
 background:#f9fbff;
 }
 
+/* CONTACT */
 .contact-form{
 padding:40px 20px;
 text-align:center;
 }
 
+.contact-form input,
+.contact-form textarea{
+width:90%;
+max-width:400px;
+padding:10px;
+margin:8px 0;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+.contact-form button{
+padding:10px 25px;
+background:#0a66c2;
+color:white;
+border:none;
+border-radius:25px;
+cursor:pointer;
+}
+
+/* ABOUT */
 .about{
 background:#111;
 color:white;
@@ -228,32 +251,88 @@ padding:50px 20px;
 text-align:center;
 }
 
+/* FOOTER */
 .footer{
 text-align:center;
 padding:20px;
 background:black;
 color:#aaa;
 }
+
+.footer a{
+color:#0a66c2;
+text-decoration:none;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+z-index:9999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+backdrop-filter:blur(6px);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+width:90%;
+max-width:420px;
+height:550px;
+border-radius:20px;
+overflow:hidden;
+position:relative;
+animation:zoomIn 0.3s ease;
+}
+
+.modal iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+.close-btn{
+position:absolute;
+top:10px;
+right:15px;
+font-size:22px;
+cursor:pointer;
+font-weight:bold;
+color:#333;
+}
+
+@keyframes zoomIn{
+from{transform:scale(0.8);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
 </style>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
 <div class="navbar">
 <div class="logo">
 <img src="logo.png">
 </div>
 <div class="nav-buttons">
 <button class="signin" onclick="window.location.href='auth.html'">Sign in</button>
-<button class="join" onclick="window.location.href='join.html'">Join now</button>
+<button class="join" onclick="openModal()">Join now</button>
 </div>
 </div>
 
+<!-- HERO -->
 <div class="hero">
 <h1>Welcome to Hari Bhai Company</h1>
 <p>Trusted Business & Professional Services</p>
 </div>
 
+<!-- TRUST -->
 <div class="trust">
 <div class="trust-box">
 <img src="trustzone.jpg" class="trust-img">
@@ -270,14 +349,13 @@ color:#aaa;
 </div>
 </div>
 
+<!-- SERVICES -->
 <div class="services">
-
 <div class="admin-heading">OUR ADMIN SERVICES</div>
 
 <div class="service-box">
 <h3>ID Sell – (8 Level ID)</h3>
 <p>Available Now</p>
-
 <div class="btn-row">
 <a href="https://t.me/TIGER0095" target="_blank" class="buy-btn">Buy Now</a>
 <span>/</span>
@@ -289,16 +367,15 @@ color:#aaa;
 <img src="flash.png" class="flash-img">
 <h3>Rank Pushing Service</h3>
 <p style="font-weight:bold;color:#0a66c2;">FLASH SERVICES</p>
-
 <div class="btn-row">
 <a href="https://t.me/S1sabir" target="_blank" class="buy-btn">Buy Now</a>
 <span>/</span>
 <a href="https://t.me/TIGER0095" target="_blank" class="order-btn">Order Now</a>
 </div>
 </div>
-
 </div>
 
+<!-- WHY -->
 <div class="why">
 <h2>Why Choose Us?</h2>
 <p>✔ 100% Secure Transactions</p>
@@ -307,6 +384,7 @@ color:#aaa;
 <p>✔ Trusted By Many Clients</p>
 </div>
 
+<!-- TESTIMONIAL -->
 <div class="testimonial">
 <h2>Client Reviews</h2>
 <div class="testimonial-box">
@@ -317,21 +395,24 @@ color:#aaa;
 </div>
 </div>
 
+<!-- FAQ -->
 <div class="faq">
 <h2>Frequently Asked Questions</h2>
 <p><strong>What payment methods are accepted?</strong></p>
 <p>UPI, Bank Transfer and International Transfer accepted.</p>
 </div>
 
+<!-- CONTACT -->
 <div class="contact-form">
 <h2>Quick Contact</h2>
 <input type="text" placeholder="Your Name">
 <input type="email" placeholder="Your Email">
 <textarea placeholder="Your Message"></textarea>
-<br><br>
+<br>
 <button>Send Message</button>
 </div>
 
+<!-- ABOUT -->
 <div class="about">
 <h2>About Hari Bhai Company</h2>
 <p>We provide trusted gaming and digital services.</p>
@@ -339,9 +420,18 @@ color:#aaa;
 <p>Secure Payments | Fast Response | 24/7 Support</p>
 </div>
 
+<!-- FOOTER -->
 <div class="footer">
 © 2026 Hari Bhai Company | All Rights Reserved <br><br>
 Direct Telegram: <a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
+</div>
+
+<!-- JOIN POPUP -->
+<div class="modal" id="joinModal">
+<div class="modal-content">
+<span class="close-btn" onclick="closeModal()">✖</span>
+<iframe src="join.html"></iframe>
+</div>
 </div>
 
 <script>
@@ -352,6 +442,14 @@ box.style.maxHeight = null;
 } else {
 box.style.maxHeight = box.scrollHeight + "px";
 }
+}
+
+function openModal(){
+document.getElementById("joinModal").style.display="flex";
+}
+
+function closeModal(){
+document.getElementById("joinModal").style.display="none";
 }
 </script>
 
