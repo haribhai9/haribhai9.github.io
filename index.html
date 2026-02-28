@@ -9,8 +9,16 @@
 body{
 margin:0;
 font-family:'Segoe UI',Arial;
-background:linear-gradient(135deg,#e3f2fd,#f4f7fb);
+background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
+background-size:400% 400%;
+animation:gradientBG 10s ease infinite;
 scroll-behavior:smooth;
+}
+
+@keyframes gradientBG{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 /* NAVBAR */
@@ -36,6 +44,7 @@ border-radius:25px;
 font-weight:bold;
 cursor:pointer;
 transition:0.3s;
+border:none;
 }
 
 .signin{
@@ -52,7 +61,6 @@ color:white;
 .join{
 background:#0a66c2;
 color:white;
-border:none;
 }
 
 .join:hover{background:#003366;}
@@ -74,9 +82,9 @@ justify-content:center;
 
 .trust-box{
 background:white;
-padding:20px;
+padding:25px;
 border-radius:18px;
-box-shadow:0 6px 18px rgba(0,0,0,0.08);
+box-shadow:0 6px 18px rgba(0,0,0,0.1);
 text-align:center;
 max-width:380px;
 width:100%;
@@ -86,6 +94,23 @@ width:100%;
 width:180px;
 border-radius:15px;
 margin-bottom:10px;
+}
+
+/* COLORFUL OWNER TITLE */
+.owner-title{
+font-size:20px;
+font-weight:bold;
+background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);
+background-size:400%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+animation:colorMove 6s linear infinite;
+margin-bottom:10px;
+}
+
+@keyframes colorMove{
+0%{background-position:0%;}
+100%{background-position:400%;}
 }
 
 .main-btn{
@@ -120,7 +145,10 @@ padding-left:10px;
 }
 
 /* SERVICES */
-.services{padding:30px 20px;}
+.services{
+padding:40px 20px;
+background:white;
+}
 
 .admin-heading{
 text-align:center;
@@ -131,24 +159,28 @@ background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff
 background-size:400%;
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-animation:colorMove 5s linear infinite;
-}
-
-@keyframes colorMove{
-0%{background-position:0%}
-100%{background-position:400%}
+animation:colorMove 6s linear infinite;
 }
 
 .service-box{
-background:white;
+background:#f9fbff;
 padding:25px;
 margin-bottom:25px;
 border-radius:12px;
-box-shadow:0 6px 15px rgba(0,0,0,0.06);
+box-shadow:0 6px 15px rgba(0,0,0,0.08);
 transition:0.3s;
 }
 
-.service-box:hover{transform:translateY(-5px);}
+.service-box:hover{
+transform:translateY(-5px);
+}
+
+.tiger-title{
+font-size:18px;
+font-weight:bold;
+color:#ff3d00;
+margin-bottom:8px;
+}
 
 .btn-row{
 margin-top:12px;
@@ -185,13 +217,13 @@ background:#eef3f9;
 .testimonial{
 padding:40px 20px;
 text-align:center;
+background:white;
 }
 
 .testimonial-box{
-background:white;
+background:#f1f1f1;
 padding:20px;
 border-radius:12px;
-box-shadow:0 6px 15px rgba(0,0,0,0.06);
 margin-bottom:15px;
 }
 
@@ -205,6 +237,7 @@ background:#f9fbff;
 .contact-form{
 padding:40px 20px;
 text-align:center;
+background:white;
 }
 
 .contact-form input,
@@ -273,111 +306,44 @@ text-decoration:none;
 box-shadow:0 4px 10px rgba(0,0,0,0.3);
 z-index:9999;
 }
-
-/* MODAL */
-.modal{
-display:none;
-position:fixed;
-left:0;
-top:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-backdrop-filter:blur(6px);
-justify-content:center;
-align-items:center;
-z-index:9999;
-animation:fadeIn 0.3s ease;
-}
-
-.modal-content{
-background:linear-gradient(135deg,#1e3c72,#2a5298);
-width:90%;
-max-width:420px;
-height:550px;
-border-radius:20px;
-overflow:hidden;
-position:relative;
-animation:zoomIn 0.3s ease;
-}
-
-.modal iframe{
-width:100%;
-height:100%;
-border:none;
-background:white;
-border-radius:20px;
-}
-
-.close-btn{
-position:absolute;
-top:10px;
-right:15px;
-font-size:22px;
-color:white;
-cursor:pointer;
-z-index:10;
-}
-
-@keyframes zoomIn{
-from{transform:scale(0.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
-}
 </style>
 </head>
 
 <body>
 
-<!-- NAVBAR -->
 <div class="navbar">
 <div class="logo"><img src="logo.png"></div>
 <div class="nav-buttons">
-<button class="signin" onclick="openLogin()">Sign in</button>
-<button class="join" onclick="openJoin()">Join now</button>
+<button class="signin" onclick="alert('Login Page Connected')">Sign in</button>
+<button class="join" onclick="alert('Join Page Connected')">Join now</button>
 </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
 <h1>Welcome to Hari Bhai Company</h1>
 <p>Trusted Business & Professional Services</p>
 </div>
 
-<!-- TRUST -->
 <div class="trust">
 <div class="trust-box">
 <img src="trustzone.jpg" class="trust-img">
-<h2>100% Trusted Safe Zone</h2>
+<div class="owner-title">OWNER SERVICES</div>
 <p>Verified | Secure | Fast Service</p>
 <a href="https://t.me/trus_zone" target="_blank" class="main-btn">Join (Tiger Service)</a>
-
-<button class="details-btn" onclick="secureOwnerDetails()">Our Owner Services Details</button>
-
-<div class="owner-details" id="ownerDetails">
-<p>✔ Trusted Seller</p>
-<p>✔ All Panels Available</p>
-<p>✔ Free Fire Max Service</p>
-<p>✔ Instant Delivery</p>
-</div>
+<button class="details-btn">Our Owner Services Details</button>
 </div>
 </div>
 
-<!-- SERVICES -->
 <div class="services">
 <div class="admin-heading">OUR ADMIN SERVICES</div>
 
 <div class="service-box">
+<div class="tiger-title">TIGER SERVICE</div>
 <h3>ID Sell – (8 Level ID)</h3>
-<p>Available Now</p>
+<p>Facebook ID & Google ID Both Available</p>
 <div class="btn-row">
 <a href="https://t.me/TIGER0095" target="_blank" class="buy-btn">Buy Now</a>
-<span>/</span>
-<a class="order-btn" onclick="secureOrder('https://t.me/TIGER0095')">Order Now</a>
+<a href="order.html" class="order-btn">Order Now</a>
 </div>
 </div>
 
@@ -387,13 +353,12 @@ to{opacity:1;}
 <p style="font-weight:bold;color:#0a66c2;">FLASH SERVICES</p>
 <div class="btn-row">
 <a href="https://t.me/S1sabir" target="_blank" class="buy-btn">Buy Now</a>
-<span>/</span>
-<a class="order-btn" onclick="secureOrder('https://t.me/TIGER0095')">Order Now</a>
-</div>
+<a href="order.html" class="order-btn">Order Now</a>
 </div>
 </div>
 
-<!-- WHY -->
+</div>
+
 <div class="why">
 <h2>Why Choose Us?</h2>
 <p>✔ 100% Secure Transactions</p>
@@ -402,7 +367,6 @@ to{opacity:1;}
 <p>✔ Trusted By Many Clients</p>
 </div>
 
-<!-- TESTIMONIAL -->
 <div class="testimonial">
 <h2>Client Reviews</h2>
 <div class="testimonial-box">
@@ -413,14 +377,12 @@ to{opacity:1;}
 </div>
 </div>
 
-<!-- FAQ -->
 <div class="faq">
 <h2>Frequently Asked Questions</h2>
 <p><strong>What payment methods are accepted?</strong></p>
 <p>UPI, Bank Transfer and International Transfer accepted.</p>
 </div>
 
-<!-- CONTACT -->
 <div class="contact-form">
 <h2>Quick Contact</h2>
 <input type="text" placeholder="Your Name">
@@ -430,73 +392,40 @@ to{opacity:1;}
 <button>Send Message</button>
 </div>
 
-<!-- ABOUT -->
 <div class="about">
 <h2>About Hari Bhai Company</h2>
-<p>We provide trusted gaming and digital services.</p>
-<p>Customer satisfaction and security is our first priority.</p>
-<p>Secure Payments | Fast Response | 24/7 Support</p>
+<p>
+Hari Bhai Company is a trusted digital service provider delivering high quality gaming and promotional services.
+We focus on fast delivery, secure transactions and 100% customer satisfaction.
+Our goal is to provide affordable and premium level services without any delay.
+</p>
+<br>
+<p>
+✔ Professional Team Support <br>
+✔ 24/7 Customer Assistance <br>
+✔ Verified & Trusted Seller <br>
+✔ Secure Payment System <br>
+✔ Fast Response Time
+</p>
+<br>
+<p>
+We believe in building long term trust with our customers through transparency and reliable service.
+</p>
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
-© 2026 Hari Bhai Company | All Rights Reserved <br><br>
-
-Direct Telegram: 
-<a href="https://t.me/Hari_ji9" target="_blank">@Hari_ji9</a>
-
+© 2026 Hari Bhai Company | All Rights Reserved
 <div class="footer-links">
-<a href="about.html">About</a>
-<a href="blog.html">Blog</a>
-<a href="privacy.html">Privacy Policy</a>
-<a href="terms.html">Terms & Conditions</a>
-<a href="support.html">Support</a>
-<a href="contact.html">Contact</a>
+<a href="#">About</a>
+<a href="#">Blog</a>
+<a href="#">Privacy Policy</a>
+<a href="#">Terms & Conditions</a>
+<a href="#">Support</a>
+<a href="#">Contact</a>
 </div>
 </div>
 
-<!-- WhatsApp Floating -->
-<a href="https://wa.me/919999999999" target="_blank" class="whatsapp-float">💬</a>
-
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal">
-<div class="modal-content">
-<span class="close-btn" onclick="closeLogin()">✖</span>
-<iframe src="auth.html"></iframe>
-</div>
-</div>
-
-<!-- JOIN MODAL -->
-<div class="modal" id="joinModal">
-<div class="modal-content">
-<span class="close-btn" onclick="closeJoin()">✖</span>
-<iframe src="join.html"></iframe>
-</div>
-</div>
-
-<script>
-function openLogin(){document.getElementById("loginModal").style.display="flex";}
-function closeLogin(){document.getElementById("loginModal").style.display="none";}
-function openJoin(){document.getElementById("joinModal").style.display="flex";}
-function closeJoin(){document.getElementById("joinModal").style.display="none";}
-
-function secureOwnerDetails(){
-if(localStorage.getItem("loggedIn")!=="true"){
-openLogin();
-return;
-}
-var box=document.getElementById("ownerDetails");
-box.style.maxHeight=box.style.maxHeight?null:box.scrollHeight+"px";
-}
-
-function secureOrder(link){
-if(localStorage.getItem("loggedIn")!=="true"){
-openLogin();
-return;
-}
-window.open(link,"_blank");
-}
-</script>
+<a href="https://wa.me/6375778389" target="_blank" class="whatsapp-float">💬</a>
 
 </body>
 </html>
