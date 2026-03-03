@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Account</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',Arial;
+background:#0f172a;
+color:white;
+}
+
+/* Header */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:#1e293b;
+font-weight:bold;
+}
+
+.menu-btn{
+font-size:20px;
+cursor:pointer;
+}
+
+/* Sidebar */
+.sidebar{
+position:fixed;
+right:-220px;
+top:0;
+width:220px;
+height:100%;
+background:#1e293b;
+transition:0.3s;
+padding-top:50px;
+box-shadow:-2px 0 10px rgba(0,0,0,0.5);
+}
+
+/* Close Button */
+.close-btn{
+position:absolute;
+top:10px;
+right:15px;
+font-size:18px;
+cursor:pointer;
+}
+
+.sidebar .info{
+padding:12px;
+font-size:13px;
+border-bottom:1px solid #334155;
+}
+
+.sidebar button{
+display:block;
+margin:15px;
+padding:6px 10px;
+border:none;
+border-radius:5px;
+font-size:12px;
+cursor:pointer;
+background:#ef4444;
+color:white;
+}
+
+/* Profile */
+.profile{
+text-align:center;
+margin-top:30px;
+}
+
+.profile img{
+width:110px;
+height:110px;
+border-radius:50%;
+border:3px solid #3b82f6;
+object-fit:cover;
+}
+
+.edit-btn{
+display:inline-block;
+margin-top:8px;
+padding:4px 10px;
+background:#3b82f6;
+border-radius:20px;
+font-size:12px;
+cursor:pointer;
+}
+
+.profile h3{
+margin:10px 0 5px;
+font-size:18px;
+}
+
+.balance{
+background:#22c55e;
+display:inline-block;
+padding:5px 12px;
+border-radius:20px;
+font-size:13px;
+}
+
+/* Card */
+.card{
+background:#1e293b;
+margin:25px 20px;
+padding:15px;
+border-radius:10px;
+}
+
+.card button{
+width:100%;
+padding:8px;
+margin-top:8px;
+background:#3b82f6;
+border:none;
+border-radius:6px;
+color:white;
+font-size:13px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+<div>My Account</div>
+<div class="menu-btn" onclick="openMenu()">⋮</div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+<div class="close-btn" onclick="closeMenu()">✖</div>
+<div class="info"><b>Username:</b> player123</div>
+<button>Logout</button>
+</div>
+
+<!-- Profile Section -->
+<div class="profile">
+<img src="random.png">
+<br>
+<label class="edit-btn">
+Edit Photo
+<input type="file" hidden>
+</label>
+
+<h3>player123</h3>
+<div class="balance">Balance: ₹100</div>
+</div>
+
+<!-- Deposit Section -->
+<div class="card">
+<h3 style="margin-top:0;">Deposit Coins</h3>
+<button onclick="location.href='deposit.html'">Go To Deposit</button>
+</div>
+
+<script>
+function openMenu(){
+document.getElementById("sidebar").style.right="0px";
+}
+
+function closeMenu(){
+document.getElementById("sidebar").style.right="-220px";
+}
+</script>
+
+</body>
+</html>
