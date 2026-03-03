@@ -13,6 +13,7 @@ background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
 background-size:400% 400%;
 animation:gradientBG 10s ease infinite;
 scroll-behavior:smooth;
+padding-bottom:120px;
 }
 
 @keyframes gradientBG{
@@ -96,7 +97,6 @@ border-radius:15px;
 margin-bottom:10px;
 }
 
-/* COLORFUL OWNER TITLE */
 .owner-title{
 font-size:20px;
 font-weight:bold;
@@ -288,10 +288,10 @@ color:#0a66c2;
 text-decoration:none;
 }
 
-/* WhatsApp Floating */
+/* WhatsApp */
 .whatsapp-float{
 position:fixed;
-bottom:20px;
+bottom:130px;
 right:20px;
 background:#25D366;
 color:white;
@@ -306,10 +306,52 @@ text-decoration:none;
 box-shadow:0 4px 10px rgba(0,0,0,0.3);
 z-index:9999;
 }
+
+/* Bottom Action Bar */
+.bottom-action-bar{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:white;
+display:flex;
+justify-content:space-around;
+align-items:center;
+padding:12px 0;
+box-shadow:0 -4px 15px rgba(0,0,0,0.15);
+z-index:9998;
+}
+
+.action-btn{
+text-decoration:none;
+font-weight:bold;
+padding:10px 18px;
+border-radius:30px;
+color:white;
+font-size:14px;
+}
+
+.buy-main{
+background:linear-gradient(45deg,#28a745,#00c851);
+}
+
+.play-main{
+background:linear-gradient(45deg,#ff512f,#dd2476);
+padding:12px 24px;
+font-size:16px;
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
+}
+
+.account-main{
+background:linear-gradient(45deg,#0a66c2,#003366);
+}
+
 </style>
 </head>
 
 <body>
+
+<!-- ===== ORIGINAL FULL CONTENT ===== -->
 
 <div class="navbar">
 <div class="logo"><img src="logo.png"></div>
@@ -329,7 +371,9 @@ z-index:9999;
 <img src="trustzone.jpg" class="trust-img">
 <div class="owner-title">OWNER SERVICES</div>
 <p>Verified | Secure | Fast Service</p>
-<a href="https://t.me/trus_zone" target="_blank" class="main-btn">Join (Tiger Service)</a>
+<a href="https://t.me/+Pfu_sajbJRthM2U1" target="_blank" class="main-btn">
+Join Hari Bhai Services
+</a>
 <button class="details-btn">Our Owner Services Details</button>
 </div>
 </div>
@@ -356,7 +400,6 @@ z-index:9999;
 <a href="order.html" class="order-btn">Order Now</a>
 </div>
 </div>
-
 </div>
 
 <div class="why">
@@ -426,6 +469,12 @@ We believe in building long term trust with our customers through transparency a
 </div>
 
 <a href="https://wa.me/+916375778389" target="_blank" class="whatsapp-float">💬</a>
+
+<div class="bottom-action-bar">
+<a href="index.html" class="action-btn buy-main">🔥 Buy</a>
+<a href="tournament.html" class="action-btn play-main">▶ Play</a>
+<a href="account.html" class="action-btn account-main">👤 Account</a>
+</div>
 
 </body>
 </html>
