@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Service</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',Arial;
+background:#0b0f1a;
+color:white;
+}
+
+/* TOP BAR */
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:12px 15px;
+background:#0f1422;
+}
+
+.pannels-text{
+color:#00e5ff;
+font-weight:bold;
+font-size:18px;
+}
+
+.history-btn{
+background:linear-gradient(45deg,#00c6ff,#0072ff);
+border:none;
+padding:6px 14px;
+border-radius:18px;
+color:white;
+cursor:pointer;
+font-weight:bold;
+font-size:13px;
+}
+
+/* CARD */
+.card{
+width:92%;
+max-width:400px;
+margin:20px auto;
+background:#0f1629;
+border-radius:15px;
+padding:15px;
+box-shadow:0 0 20px rgba(0,255,255,0.15);
+}
+
+.thumb{
+width:100%;
+aspect-ratio:16/9;
+object-fit:cover;
+border-radius:10px;
+margin-bottom:12px;
+}
+
+.title{
+text-align:center;
+font-size:20px;
+font-weight:bold;
+margin-bottom:12px;
+}
+
+.feature{
+background:#101d30;
+padding:10px;
+border-radius:10px;
+margin-bottom:8px;
+font-size:14px;
+}
+
+.purchase{
+margin-top:12px;
+padding:10px;
+text-align:center;
+border-radius:25px;
+background:linear-gradient(45deg,#7b61ff,#a4508b);
+font-weight:bold;
+cursor:pointer;
+font-size:14px;
+}
+
+/* PRICE LIST */
+.price-list{
+max-height:0;
+overflow:hidden;
+transition:0.4s;
+margin-top:10px;
+}
+
+.plan{
+background:#111c2f;
+padding:12px;
+border-radius:12px;
+margin-bottom:10px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.buy-btn{
+background:linear-gradient(45deg,#ff512f,#dd2476);
+border:none;
+padding:6px 14px;
+border-radius:15px;
+color:white;
+cursor:pointer;
+}
+
+/* SIDE PANEL */
+.side-panel{
+position:fixed;
+top:0;
+right:-260px;
+width:240px;
+height:100%;
+background:#111827;
+transition:0.3s;
+padding:15px;
+box-shadow:-5px 0 20px rgba(0,0,0,0.6);
+z-index:2000;
+}
+
+.side-panel.active{
+right:0;
+}
+
+.close-btn{
+text-align:right;
+cursor:pointer;
+font-size:16px;
+margin-bottom:8px;
+}
+
+.side-btn{
+width:100%;
+padding:8px;
+margin:8px 0;
+border:none;
+border-radius:15px;
+font-weight:bold;
+cursor:pointer;
+font-size:13px;
+}
+
+.key-btn{
+background:linear-gradient(45deg,#ff512f,#dd2476);
+color:white;
+}
+
+.deposit-btn{
+background:#ff2e2e;
+color:white;
+}
+
+.key-details{
+max-height:0;
+overflow:hidden;
+transition:0.4s;
+background:#1f2937;
+border-radius:8px;
+padding:0 10px;
+font-size:12px;
+}
+
+.status-pending{color:orange;font-weight:bold;}
+.status-success{color:lime;font-weight:bold;}
+.small{font-size:11px;color:#aaa;}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+<div class="pannels-text">Pannels</div>
+<button class="history-btn" onclick="openPanel()">All History</button>
+</div>
+
+<div class="card">
+
+<img src="logo.png" class="thumb">
+
+<div class="title">DRIP CLIENT</div>
+
+<div class="feature">⚡ Hari Bhai</div>
+<div class="feature">⚡ Hari Bhai</div>
+<div class="feature">⚡ Hari Bhai</div>
+
+<div class="purchase" onclick="togglePrice()">PURCHASE KEY</div>
+
+<!-- PRICE LIST -->
+<div class="price-list" id="priceList">
+
+<div class="plan">
+<span>1 Day - ₹90</span>
+<button class="buy-btn" onclick="buyPlan()">BUY</button>
+</div>
+
+<div class="plan">
+<span>7 Days - ₹350</span>
+<button class="buy-btn" onclick="buyPlan()">BUY</button>
+</div>
+
+<div class="plan">
+<span>30 Days - ₹900</span>
+<button class="buy-btn" onclick="buyPlan()">BUY</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- SIDE PANEL -->
+<div class="side-panel" id="panel">
+<div class="close-btn" onclick="closePanel()">✖</div>
+
+<button class="side-btn key-btn" onclick="toggleKey()">Your Key</button>
+<button class="side-btn deposit-btn">Deposit</button>
+
+<div class="key-details" id="keyDetails"></div>
+
+</div>
+
+<script>
+
+function togglePrice(){
+let box=document.getElementById("priceList");
+box.style.maxHeight = box.style.maxHeight ? null : box.scrollHeight+"px";
+}
+
+function buyPlan(){
+let key="HB-"+Math.random().toString(36).substr(2,8).toUpperCase();
+let data={key:key,status:"pending",time:Date.now()};
+localStorage.setItem("userKey",JSON.stringify(data));
+alert("Purchase Successful! Status Pending 1 Hour.");
+}
+
+function openPanel(){
+document.getElementById("panel").classList.add("active");
+loadKey();
+}
+
+function closePanel(){
+document.getElementById("panel").classList.remove("active");
+}
+
+function toggleKey(){
+let box=document.getElementById("keyDetails");
+box.style.maxHeight = box.style.maxHeight ? null : box.scrollHeight+"px";
+}
+
+function loadKey(){
+let box=document.getElementById("keyDetails");
+let saved=localStorage.getItem("userKey");
+
+if(!saved){
+box.innerHTML="No key purchased.";
+return;
+}
+
+let data=JSON.parse(saved);
+let now=Date.now();
+let oneHour=3600000;
+
+if(data.status==="pending" && now-data.time>=oneHour){
+data.status="success";
+localStorage.setItem("userKey",JSON.stringify(data));
+}
+
+if(data.status==="pending"){
+box.innerHTML=`
+<p>Status: <span class="status-pending">PENDING</span></p>
+<p class="small">Key will show after approval.</p>
+`;
+}else{
+box.innerHTML=`
+<p><b>Your Key:</b><br>${data.key}</p>
+<p>Status: <span class="status-success">SUCCESS</span></p>
+`;
+}
+}
+
+setInterval(loadKey,10000);
+
+</script>
+
+</body>
+</html>
