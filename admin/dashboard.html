@@ -22,12 +22,21 @@ padding:20px;
 border-radius:10px;
 box-shadow:0 2px 5px rgba(0,0,0,0.2);
 }
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
 button{
 padding:10px;
-background:red;
+background:#243b55;
 color:white;
 border:none;
 cursor:pointer;
+}
+.logout{
+background:red;
+margin-top:10px;
 }
 </style>
 </head>
@@ -38,12 +47,25 @@ cursor:pointer;
 </div>
 
 <div class="card">
-<h3>Welcome Admin 👑</h3>
-<p>Yaha se tournament control kar sakte ho.</p>
-<button onclick="logout()">Logout</button>
+<h3>Create Room 🎮</h3>
+<input type="text" id="roomid" placeholder="Enter Room ID">
+<input type="text" id="roompass" placeholder="Enter Room Password">
+<button onclick="saveRoom()">Save Room</button>
+<button class="logout" onclick="logout()">Logout</button>
+<p id="msg"></p>
 </div>
 
 <script>
+function saveRoom(){
+var id = document.getElementById("roomid").value;
+var pass = document.getElementById("roompass").value;
+
+localStorage.setItem("roomID", id);
+localStorage.setItem("roomPASS", pass);
+
+document.getElementById("msg").innerText = "Room Saved Successfully ✅";
+}
+
 function logout(){
 window.location.href = "index.html";
 }
