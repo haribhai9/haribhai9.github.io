@@ -216,8 +216,16 @@ const roomSnap = await getDoc(roomRef);
 
 if(!userSnap.exists() || !roomSnap.exists()) return;
 
-let balance = userSnap.data().balance;
+let userData = userSnap.data();
+let balance = userData.balance;
 let slot = roomSnap.data().slots || 0;
+
+// 🚫 Already Joined Check
+if(userData.joinedRoom){
+alert("You already joined a match ❌");
+showRoom(userData.joinedRoom);
+return;
+}
 
 if(balance < fee){
 alert("Insufficient Balance ❌");
@@ -229,9 +237,10 @@ alert("Slot Full ❌");
 return;
 }
 
-// Deduct Balance
+// Deduct Balance + Save Joined Room
 await updateDoc(userRef,{
-balance: balance - fee
+balance: balance - fee,
+joinedRoom: room
 });
 
 // Increase Slot
@@ -239,14 +248,12 @@ await updateDoc(roomRef,{
 slots: increment(1)
 });
 
-// Show Room Details
 showRoom(room);
-
 alert("Match Joined Successfully ✅");
 
 };
 
-// ================= ROOM LIVE =================
+============== ROOM LIVE =================
 
 window.showRoom = function(room){
 
