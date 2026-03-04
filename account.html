@@ -13,7 +13,6 @@ background:#0f172a;
 color:white;
 }
 
-/* Header */
 .header{
 display:flex;
 justify-content:space-between;
@@ -28,7 +27,6 @@ font-size:20px;
 cursor:pointer;
 }
 
-/* Sidebar */
 .sidebar{
 position:fixed;
 right:-220px;
@@ -41,7 +39,6 @@ padding-top:50px;
 box-shadow:-2px 0 10px rgba(0,0,0,0.5);
 }
 
-/* Close Button */
 .close-btn{
 position:absolute;
 top:10px;
@@ -68,7 +65,6 @@ background:#ef4444;
 color:white;
 }
 
-/* Profile */
 .profile{
 text-align:center;
 margin-top:30px;
@@ -80,16 +76,6 @@ height:110px;
 border-radius:50%;
 border:3px solid #3b82f6;
 object-fit:cover;
-}
-
-.edit-btn{
-display:inline-block;
-margin-top:8px;
-padding:4px 10px;
-background:#3b82f6;
-border-radius:20px;
-font-size:12px;
-cursor:pointer;
 }
 
 .profile h3{
@@ -105,7 +91,6 @@ border-radius:20px;
 font-size:13px;
 }
 
-/* Card */
 .card{
 background:#1e293b;
 margin:25px 20px;
@@ -134,37 +119,86 @@ cursor:pointer;
 <div class="menu-btn" onclick="openMenu()">⋮</div>
 </div>
 
-<!-- Sidebar -->
 <div class="sidebar" id="sidebar">
 <div class="close-btn" onclick="closeMenu()">✖</div>
-<div class="info"><b>Username:</b> player123</div>
-<button>Logout</button>
+<div class="info"><b>Username:</b> <span id="sideUsername">Loading...</span></div>
+<button onclick="logout()">Logout</button>
 </div>
 
-<!-- Profile Section -->
 <div class="profile">
 <img src="random.png">
-<br>
-<label class="edit-btn">
-Edit Photo
-<input type="file" hidden>
-</label>
-
-<h3>player123</h3>
-<div class="balance">Balance: ₹100</div>
+<h3 id="username">Loading...</h3>
+<div class="balance">Balance: ₹<span id="balance">0</span></div>
 </div>
 
-<!-- Deposit Section -->
 <div class="card">
 <h3 style="margin-top:0;">Deposit Coins</h3>
 <button onclick="location.href='deposit.html'">Go To Deposit</button>
 </div>
 
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import { 
+getFirestore, 
+doc, 
+onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth, (user) => {
+
+if(user){
+
+const docRef = doc(db,"users",user.uid);
+
+// REAL TIME LISTENER 🔥
+onSnapshot(docRef, (docSnap)=>{
+
+if(docSnap.exists()){
+
+const data = docSnap.data();
+
+document.getElementById("username").innerText = data.username;
+document.getElementById("sideUsername").innerText = data.username;
+document.getElementById("balance").innerText = data.balance;
+
+}
+
+});
+
+}else{
+window.location.href="auth.html";
+}
+
+});
+
+window.logout = function(){
+signOut(auth).then(()=>{
+window.location.href="auth.html";
+});
+}
+
+</script>
+
 <script>
 function openMenu(){
 document.getElementById("sidebar").style.right="0px";
 }
-
 function closeMenu(){
 document.getElementById("sidebar").style.right="-220px";
 }
