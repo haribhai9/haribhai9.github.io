@@ -29,27 +29,21 @@ border:none;
 border-radius:6px;
 }
 button{
-margin-top:10px;
-padding:8px 12px;
+margin-top:8px;
+padding:6px 10px;
 border:none;
 border-radius:6px;
 cursor:pointer;
 font-weight:bold;
 }
-.save-btn{background:#22c55e;color:white;}
-.reset-btn{background:#ef4444;color:white;}
-.stats{
+.green{background:#22c55e;color:white;}
+.red{background:#ef4444;color:white;}
+.blue{background:#3b82f6;color:white;}
+.user-box{
 background:#111827;
 padding:10px;
 border-radius:10px;
-margin-bottom:20px;
-}
-.history-box{
-max-height:300px;
-overflow:auto;
-background:#111827;
-padding:10px;
-border-radius:10px;
+margin-bottom:10px;
 }
 hr{border:1px solid #334155;}
 </style>
@@ -59,116 +53,252 @@ hr{border:1px solid #334155;}
 
 <h1>🔥 Admin Dashboard</h1>
 
-<div class="stats">
-<p id="totalMatches"></p>
-<p id="totalEntry"></p>
-</div>
-
+<!-- ROOM CONTROL -->
 <div class="card">
-<h3>Room 1 Control</h3>
-<label>Room ID</label>
+<h3>📦 Room Control</h3>
+
+<label>Room 1 ID</label>
 <input type="text" id="roomID_room1">
-<label>Password</label>
+<label>Room 1 Pass</label>
 <input type="text" id="roomPASS_room1">
-<button class="save-btn" onclick="saveRoom('room1')">Save Room</button>
-<button class="reset-btn" onclick="resetRoom('room1')">Reset Slot</button>
-</div>
+<button class="green" onclick="saveRoom('room1')">Save Room 1</button>
 
-<div class="card">
-<h3>Room 2 Control</h3>
-<label>Room ID</label>
+<hr>
+
+<label>Room 2 ID</label>
 <input type="text" id="roomID_room2">
-<label>Password</label>
+<label>Room 2 Pass</label>
 <input type="text" id="roomPASS_room2">
-<button class="save-btn" onclick="saveRoom('room2')">Save Room</button>
-<button class="reset-btn" onclick="resetRoom('room2')">Reset Slot</button>
+<button class="green" onclick="saveRoom('room2')">Save Room 2</button>
 </div>
 
+<!-- MATCH TIME -->
 <div class="card">
-<h3>📜 Match History</h3>
-<div class="history-box" id="history"></div>
+<h3>⏰ Match Timing</h3>
+<label>Match Time</label>
+<input type="text" id="matchTime">
+<button class="green" onclick="updateMatchTime()">Update Time</button>
 </div>
 
-<!-- Firebase Script -->
+<!-- USERS -->
+<div class="card">
+<h3>👥 All Users</h3>
+<div id="users"></div>
+</div>
+
+<!-- DEPOSITS -->
+<div class="card">
+<h3>💰 Deposit Requests</h3>
+<div id="deposits"></div>
+</div>
+
+<!-- WITHDRAWALS -->
+<div class="card">
+<h3>💸 Withdrawal Requests</h3>
+<div id="withdrawals"></div>
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+getFirestore,
+collection,
+doc,
+onSnapshot,
+updateDoc,
+setDoc,
+deleteDoc,
+getDoc,
+increment
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-  authDomain: "ff-tournament-915ed.firebaseapp.com",
-  projectId: "ff-tournament-915ed",
-  storageBucket: "ff-tournament-915ed.appspot.com",
-  messagingSenderId: "399175252292",
-  appId: "1:399175252292:web:7698f",
-  measurementId: "G-M1TV1F64C4"
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-console.log("🔥 Firebase Connected");
+console.log("🔥 Admin Connected");
 
-// Load saved room data
-["room1","room2"].forEach(function(id){
-document.getElementById("roomID_"+id).value = localStorage.getItem("roomID_"+id) || "";
-document.getElementById("roomPASS_"+id).value = localStorage.getItem("roomPASS_"+id) || "";
-});
 
-// Save Room
+// ================= ROOM SAVE =================
 window.saveRoom = async function(id){
-
 let roomID=document.getElementById("roomID_"+id).value;
 let roomPASS=document.getElementById("roomPASS_"+id).value;
 
-localStorage.setItem("roomID_"+id,roomID);
-localStorage.setItem("roomPASS_"+id,roomPASS);
-
-// 🔥 Save to Firestore
 await setDoc(doc(db,"rooms",id),{
-roomID:roomID,
-roomPASS:roomPASS
+roomID,
+roomPASS
 });
 
-alert("Room Details Saved & Synced ✅");
+alert("Room Saved ✅");
 }
 
-// Reset Slot
-window.resetRoom = function(id){
 
-localStorage.setItem("slots_"+id,0);
-localStorage.removeItem("joined_"+id);
+// ================= MATCH TIME =================
+window.updateMatchTime = async function(){
+let time=document.getElementById("matchTime").value;
 
-alert(id+" Slot Reset Done ✅");
-location.reload();
+await setDoc(doc(db,"settings","match"),{
+time
+});
+
+alert("Match Time Updated ✅");
 }
 
-// Match History
-let history=JSON.parse(localStorage.getItem("matchHistory"))||[];
-let box=document.getElementById("history");
-let totalEntry=0;
+onSnapshot(doc(db,"settings","match"),(snap)=>{
+if(snap.exists()){
+document.getElementById("matchTime").value=snap.data().time;
+}
+});
 
-if(history.length===0){
-box.innerHTML="No Matches Yet";
-}else{
-history.reverse().forEach(function(h){
-totalEntry+=h.entry;
-box.innerHTML+=`
-<p>
-Match: ${h.match}<br>
-Entry: ₹${h.entry}<br>
-Date: ${h.date}
-</p>
+
+// ================= USERS =================
+const usersDiv=document.getElementById("users");
+
+onSnapshot(collection(db,"users"),(snapshot)=>{
+
+usersDiv.innerHTML="";
+
+snapshot.forEach((docSnap)=>{
+
+const data=docSnap.data();
+const uid=docSnap.id;
+
+usersDiv.innerHTML+=`
+<div class="user-box">
+<b>${data.username}</b><br>
+Balance: ₹${data.balance}<br>
+Status: ${data.blocked ? "🚫 Blocked" : "✅ Active"}<br>
+
+<input type="number" placeholder="Enter Amount" id="amt_${uid}">
+
+<button class="green" onclick="addBalance('${uid}')">Add</button>
+<button class="red" onclick="cutBalance('${uid}')">Cut</button>
+<button class="blue" onclick="toggleBlock('${uid}',${data.blocked})">
+${data.blocked ? "Unblock" : "Block"}
+</button>
+</div>
 <hr>
 `;
 });
+});
+
+window.addBalance = async function(uid){
+let amt=parseInt(document.getElementById("amt_"+uid).value);
+if(!amt)return alert("Enter Amount");
+
+await updateDoc(doc(db,"users",uid),{
+balance: increment(amt)
+});
 }
 
-document.getElementById("totalMatches").innerText="Total Matches: "+history.length;
-document.getElementById("totalEntry").innerText="Total Entry Collected: ₹"+totalEntry;
+window.cutBalance = async function(uid){
+let amt=parseInt(document.getElementById("amt_"+uid).value);
+if(!amt)return alert("Enter Amount");
+
+await updateDoc(doc(db,"users",uid),{
+balance: increment(-amt)
+});
+}
+
+window.toggleBlock = async function(uid,status){
+await updateDoc(doc(db,"users",uid),{
+blocked: !status
+});
+}
+
+
+// ================= DEPOSITS =================
+const depositDiv=document.getElementById("deposits");
+
+onSnapshot(collection(db,"deposits"),(snapshot)=>{
+
+depositDiv.innerHTML="";
+
+snapshot.forEach((docSnap)=>{
+
+const d=docSnap.data();
+const id=docSnap.id;
+
+depositDiv.innerHTML+=`
+<div class="user-box">
+Username: ${d.username}<br>
+Amount: ₹${d.amount}<br>
+UTR: ${d.utr}<br>
+
+<button class="green" onclick="approveDeposit('${id}','${d.uid}',${d.amount}')">Approve</button>
+<button class="red" onclick="rejectDeposit('${id}')">Reject</button>
+</div>
+<hr>
+`;
+});
+});
+
+window.approveDeposit = async function(depId,uid,amount){
+await updateDoc(doc(db,"users",uid),{
+balance: increment(amount)
+});
+await deleteDoc(doc(db,"deposits",depId));
+alert("Deposit Approved ✅");
+}
+
+window.rejectDeposit = async function(depId){
+await deleteDoc(doc(db,"deposits",depId));
+}
+
+
+// ================= WITHDRAWALS (LOCKED SYSTEM) =================
+const withdrawDiv=document.getElementById("withdrawals");
+
+onSnapshot(collection(db,"withdrawals"),(snapshot)=>{
+
+withdrawDiv.innerHTML="";
+
+snapshot.forEach((docSnap)=>{
+
+const w=docSnap.data();
+const id=docSnap.id;
+
+if(w.status==="pending"){
+
+withdrawDiv.innerHTML+=`
+<div class="user-box">
+Username: ${w.username || w.uid}<br>
+Amount: ₹${w.amount}<br>
+Method: ${w.method}<br>
+Details: ${w.details}<br>
+
+<button class="green" onclick="approveWithdraw('${id}')">Approve</button>
+<button class="red" onclick="rejectWithdraw('${id}','${w.uid}',${w.amount})">Reject</button>
+</div>
+<hr>
+`;
+}
+});
+});
+
+window.approveWithdraw = async function(wid){
+await updateDoc(doc(db,"withdrawals",wid),{
+status:"approved"
+});
+alert("Withdrawal Approved ✅");
+}
+
+window.rejectWithdraw = async function(wid,uid,amount){
+await updateDoc(doc(db,"users",uid),{
+balance: increment(amount)
+});
+await updateDoc(doc(db,"withdrawals",wid),{
+status:"rejected"
+});
+alert("Rejected & Balance Returned ❌");
+}
 
 </script>
-
 </body>
 </html>
