@@ -357,9 +357,9 @@ background:linear-gradient(45deg,#0a66c2,#003366);
 <div class="navbar">
 <div class="logo"><img src="logo.png"></div>
 <div class="nav-buttons">
-<button class="signin" onclick="window.location.href='auth.html'">Sign in</button>
+<button class="signin" onclick="signInClick()">Sign in</button>
 
-<button class="join" onclick="window.location.href='auth.html'">Join now</button>
+<button class="join" onclick="joinClick()">Join now</button>
 </div>
 </div>
 
@@ -483,6 +483,99 @@ We believe in building long term trust with our customers through transparency a
 <a href="play.html" class="action-btn play-main">▶ Play</a>
 <a href="account.html" class="action-btn account-main">👤 Account</a>
 </div>
+<!-- POPUP -->
+<div id="popup" class="popup">
+  <div class="popup-box">
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
+</div>
+
+<style>
+.popup{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+animation:fadeIn 0.3s ease;
+z-index:99999;
+}
+.popup-box{
+background:white;
+color:black;
+padding:20px;
+border-radius:12px;
+text-align:center;
+width:80%;
+max-width:300px;
+animation:slideUp 0.3s ease;
+}
+.popup-box button{
+margin-top:15px;
+padding:8px 20px;
+border:none;
+background:#0a66c2;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
+@keyframes slideUp{
+from{transform:translateY(40px);opacity:0}
+to{transform:translateY(0);opacity:1}
+}
+</style>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+let currentUser = null;
+
+onAuthStateChanged(auth,(user)=>{
+currentUser = user;
+});
+
+window.signInClick = function(){
+if(currentUser){
+showPopup("You are already Signed In ✅");
+}else{
+window.location.href="auth.html";
+}
+}
+
+window.joinClick = function(){
+if(currentUser){
+showPopup("You are already Registered ✅");
+}else{
+window.location.href="auth.html";
+}
+}
+
+function showPopup(msg){
+document.getElementById("popupText").innerText = msg;
+document.getElementById("popup").style.display="flex";
+}
+
+window.closePopup = function(){
+document.getElementById("popup").style.display="none";
+}
+</script>
 
 </body>
 </html>
