@@ -6,8 +6,6 @@
 <title>Login - Hari Bhai Company</title>
 
 <style>
-
-/* Transparent Background */
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
@@ -18,9 +16,8 @@ align-items:center;
 height:100vh;
 }
 
-/* Popup Box */
 .container{
-width:280px;
+width:300px;
 background:#ffffff;
 border-radius:14px;
 padding:20px;
@@ -29,12 +26,11 @@ text-align:center;
 animation:popup 0.3s ease;
 }
 
-/* Company Name */
 .company{
 font-size:16px;
 font-weight:bold;
 color:white;
-background:#0a66c2;   /* 👈 Blue background added */
+background:#0a66c2;
 padding:6px;
 border-radius:6px;
 margin-bottom:5px;
@@ -46,7 +42,6 @@ color:gray;
 margin-bottom:15px;
 }
 
-/* Form */
 h2{
 margin:10px 0;
 color:#0a66c2;
@@ -90,12 +85,10 @@ cursor:pointer;
 font-weight:bold;
 }
 
-/* Animation */
 @keyframes popup{
 from{transform:scale(0.7);opacity:0;}
 to{transform:scale(1);opacity:1;}
 }
-
 </style>
 </head>
 
@@ -108,8 +101,8 @@ to{transform:scale(1);opacity:1;}
 
 <h2>Login</h2>
 
-<input type="text" id="loginUser" placeholder="Enter Your Username">
-<input type="password" id="loginPass" placeholder="Enter Your Password">
+<input type="email" id="email" placeholder="Enter Email">
+<input type="password" id="pass" placeholder="Enter Password">
 
 <button onclick="login()">Login</button>
 
@@ -120,38 +113,62 @@ Don't have account?
 
 </div>
 
-<script>
 
-/* LOGIN FUNCTION */
-function login(){
+<script type="module">
 
-let username=document.getElementById("loginUser").value;
-let password=document.getElementById("loginPass").value;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { 
+getAuth, 
+createUserWithEmailAndPassword, 
+signInWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-let savedUser=localStorage.getItem("username");
-let savedPass=localStorage.getItem("password");
+import { 
+getFirestore, 
+doc, 
+setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-if(username===savedUser && password===savedPass){
-localStorage.setItem("loggedIn","true");
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+function generateUsername(){
+return "HB" + Math.floor(100000 + Math.random() * 900000);
+}
+
+window.login = async function(){
+
+let email=document.getElementById("email").value;
+let pass=document.getElementById("pass").value;
+
+try{
+await signInWithEmailAndPassword(auth,email,pass);
 alert("Login Successful ✅");
-window.parent.location.href="index.html";
-}else{
-alert("Invalid Username or Password ❌");
+window.location.href="index.html";
+}catch(error){
+alert("Invalid Email or Password ❌");
 }
 
 }
 
-/* SHOW REGISTER FORM */
-function showRegister(){
+window.showRegister = function(){
+
 document.getElementById("authBox").innerHTML=`
 <div class="company">Hari Bhai Company</div>
 <div class="tagline">Trusted & Professional Digital Services</div>
 
 <h2>Register</h2>
-<input type="text" id="regUser" placeholder="Enter Username">
-<input type="email" id="regEmail" placeholder="Enter Email">
-<input type="password" id="regPass" placeholder="Create Password">
-<input type="password" id="regConfirm" placeholder="Confirm Password">
+
+<input type="email" id="remail" placeholder="Enter Email">
+<input type="password" id="rpass" placeholder="Create Password">
+
 <button onclick="register()">Create Account</button>
 
 <div class="switch">
@@ -159,32 +176,34 @@ Already have account?
 <span onclick="location.reload()">Login</span>
 </div>
 `;
+
 }
 
-/* REGISTER FUNCTION */
-function register(){
+window.register = async function(){
 
-let user=document.getElementById("regUser").value;
-let email=document.getElementById("regEmail").value;
-let pass=document.getElementById("regPass").value;
-let confirm=document.getElementById("regConfirm").value;
+let email=document.getElementById("remail").value;
+let pass=document.getElementById("rpass").value;
 
-if(user==="" || email==="" || pass===""){
-alert("All fields required ❌");
-return;
+try{
+
+const userCred = await createUserWithEmailAndPassword(auth,email,pass);
+const user = userCred.user;
+
+let randomUsername = generateUsername();
+
+await setDoc(doc(db,"users",user.uid),{
+username: randomUsername,
+email: email,
+balance: 0,
+blocked: false
+});
+
+alert("Account Created ✅ Username: " + randomUsername);
+window.location.href="index.html";
+
+}catch(error){
+alert(error.message);
 }
-
-if(pass!==confirm){
-alert("Passwords do not match ❌");
-return;
-}
-
-localStorage.setItem("username",user);
-localStorage.setItem("password",pass);
-localStorage.setItem("loggedIn","true");
-
-alert("Account Created 🎉");
-window.parent.location.href="index.html";
 
 }
 
