@@ -25,7 +25,9 @@ margin-top:40px;
 }
 
 img{
-width:200px;
+width:100%;
+max-width:300px;
+border-radius:10px;
 margin-bottom:15px;
 }
 
@@ -66,14 +68,14 @@ font-size:14px;
 
 <h2>Scan & Deposit</h2>
 
-<img src="random.png">
+<img src="hariscanner.png" alt="Scanner QR">
 
 <div class="info">
 <p>Username: <b id="username">Loading...</b></p>
 <p>Current Balance: ₹ <b id="balance">0</b></p>
 </div>
 
-<input type="text" id="amount" placeholder="Enter Amount">
+<input type="number" id="amount" placeholder="Enter Amount">
 <input type="text" id="utr" placeholder="Enter UTR Number">
 
 <button onclick="submitDeposit()">Submit Deposit</button>
@@ -136,12 +138,19 @@ window.location.href="auth.html";
 
 // SUBMIT DEPOSIT
 window.submitDeposit = async function(){
-
-let amount = document.getElementById("enter amount").value.trim();
+if(!currentUserData){
+return;
+}
+let amount = document.getElementById("amount").value.trim();
 let utr = document.getElementById("utr").value.trim();
 let msg = document.getElementById("msg");
 
 if(amount==="" || utr===""){
+if(Number(amount) < 100){
+msg.innerText="Minimum deposit ₹100";
+msg.style.color="red";
+return;
+}
 msg.innerText="All fields required!";
 msg.style.color="red";
 return;
