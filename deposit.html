@@ -19,6 +19,9 @@ margin:20px;
 background:#1e293b;
 padding:20px;
 border-radius:10px;
+max-width:400px;
+margin:auto;
+margin-top:40px;
 }
 
 img{
@@ -37,7 +40,7 @@ border:none;
 button{
 width:100%;
 padding:10px;
-margin-top:10px;
+margin-top:15px;
 border:none;
 border-radius:6px;
 background:#22c55e;
@@ -45,22 +48,129 @@ color:white;
 font-weight:bold;
 cursor:pointer;
 }
+
+button:hover{
+opacity:0.9;
+}
+
+.info{
+margin-top:10px;
+font-size:14px;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
+
 <h2>Scan & Deposit</h2>
+
 <img src="random.png">
 
-<p>Enter UTR Number</p>
-<input type="text" placeholder="Enter UTR">
-<input type="text" placeholder="Enter Username">
+<div class="info">
+<p>Username: <b id="username">Loading...</b></p>
+<p>Current Balance: ₹ <b id="balance">0</b></p>
+</div>
 
-<button onclick="alert('Deposit Request Sent To Admin')">Submit</button>
+<input type="text" id="amount" placeholder="Enter Amount">
+<input type="text" id="utr" placeholder="Enter UTR Number">
+
+<button onclick="submitDeposit()">Submit Deposit</button>
+
+<p id="msg"></p>
 
 </div>
+
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import { 
+getFirestore, 
+doc, 
+getDoc, 
+addDoc, 
+collection 
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUserData = null;
+
+// CHECK LOGIN
+onAuthStateChanged(auth, async (user) => {
+
+if(user){
+
+const docRef = doc(db,"users",user.uid);
+const snap = await getDoc(docRef);
+
+if(snap.exists()){
+
+currentUserData = snap.data();
+
+document.getElementById("username").innerText = currentUserData.username;
+document.getElementById("balance").innerText = currentUserData.balance;
+
+}
+
+}else{
+window.location.href="auth.html";
+}
+
+});
+
+
+// SUBMIT DEPOSIT
+window.submitDeposit = async function(){
+
+let amount = document.getElementById("enter amount").value.trim();
+let utr = document.getElementById("utr").value.trim();
+let msg = document.getElementById("msg");
+
+if(amount==="" || utr===""){
+msg.innerText="All fields required!";
+msg.style.color="red";
+return;
+}
+
+try{
+
+await addDoc(collection(db,"payments"),{
+username: currentUserData.username,
+amount: amount,
+utr: utr,
+status: "pending",
+time: new Date()
+});
+
+msg.innerText="Deposit Request Accepted Please Wait For approve ✅";
+msg.style.color="lightgreen";
+
+document.getElementById("amount").value="";
+document.getElementById("utr").value="";
+
+}catch(error){
+msg.innerText="Error submitting request";
+msg.style.color="red";
+}
+
+}
+
+</script>
 
 </body>
 </html>
