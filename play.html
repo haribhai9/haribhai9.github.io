@@ -260,14 +260,18 @@ window.showRoom = function(room){
 const box = document.getElementById(room);
 box.style.display = "block";
 
-onSnapshot(doc(db,"rooms",room),(snap)=>{
-
+// Auto show joined room after refresh
+onSnapshot(doc(db,"users",user.uid),(snap)=>{
 if(snap.exists()){
-box.innerHTML =
-"<b>Room ID:</b> "+(snap.data().roomID || "Waiting...")+
-"<br><b>Password:</b> "+(snap.data().roomPASS || "Waiting...");
+
+document.getElementById("balance").innerText = snap.data().balance;
+
+if(snap.data().joinedRoom){
+showRoom(snap.data().joinedRoom);
+document.getElementById("btn_"+snap.data().joinedRoom).disabled = true;
 }
 
+}
 });
 
 };
