@@ -23,7 +23,7 @@ background:#1e293b;
 
 .balance{
 background:#22c55e;
-padding:6px 12px;
+padding:6px 14px;
 border-radius:20px;
 font-weight:bold;
 }
@@ -61,10 +61,6 @@ text-decoration:none;
 border-bottom:1px solid #334155;
 }
 
-.sidebar a:hover{
-background:#334155;
-}
-
 .overlay{
 position:fixed;
 top:0;
@@ -79,9 +75,9 @@ z-index:999;
 .tournament{
 background:#1e293b;
 margin:20px;
-border-radius:10px;
+border-radius:12px;
 overflow:hidden;
-box-shadow:0 0 10px rgba(0,0,0,0.5);
+box-shadow:0 0 15px rgba(0,0,0,0.6);
 }
 
 .tournament img{
@@ -94,26 +90,55 @@ object-fit:cover;
 padding:15px;
 }
 
+.slot{
+font-weight:bold;
+margin-top:5px;
+}
+
 .btn{
-display:block;
 width:100%;
-padding:10px;
-margin-top:10px;
-background:#3b82f6;
+padding:12px;
+margin-top:12px;
+background:linear-gradient(45deg,#3b82f6,#06b6d4);
 border:none;
 color:white;
 font-weight:bold;
-border-radius:6px;
+border-radius:8px;
 cursor:pointer;
+transition:0.3s;
+}
+
+.btn:disabled{
+background:gray;
+cursor:not-allowed;
 }
 
 .room-box{
 margin-top:10px;
 background:#0ea5e9;
-padding:8px;
+padding:10px;
 border-radius:6px;
 display:none;
 }
+
+.toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+padding:14px 25px;
+border-radius:10px;
+font-weight:bold;
+color:white;
+z-index:2000;
+animation:pop 0.4s ease;
+}
+
+@keyframes pop{
+0%{transform:translateX(-50%) scale(0.5);}
+100%{transform:translateX(-50%) scale(1);}
+}
+
 </style>
 </head>
 
@@ -137,9 +162,12 @@ display:none;
 <img src="random.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
+<p>Mode: CS Game</p>
+<p>Type: 1 vs 1</p>
 <p>Entry: ₹20</p>
 <p>Win: ₹35</p>
-<button class="btn" onclick="joinRoom('room1',20)">Join Now</button>
+<p class="slot" id="slot_room1"></p>
+<button class="btn" id="btn_room1" onclick="joinMatch('room1',20)">Join Now</button>
 <div class="room-box" id="room1"></div>
 </div>
 </div>
@@ -149,69 +177,154 @@ display:none;
 <img src="random.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
+<p>Mode: CS Game</p>
+<p>Type: 1 vs 1</p>
 <p>Entry: ₹10</p>
 <p>Win: ₹20</p>
-<button class="btn" onclick="joinRoom('room2',10)">Join Now</button>
+<p class="slot" id="slot_room2"></p>
+<button class="btn" id="btn_room2" onclick="joinMatch('room2',10)">Join Now</button>
 <div class="room-box" id="room2"></div>
 </div>
 </div>
 
 <script>
 
-let balance = 100;
+let balance = localStorage.getItem("userBalance") 
+? parseInt(localStorage.getItem("userBalance")) 
+: 100;
 
-if(localStorage.getItem("userBalance")){
-balance = parseInt(localStorage.getItem("userBalance"));
-}else{
 localStorage.setItem("userBalance", balance);
-}
+
+let maxSlot = 2;
 
 updateBalance();
+restoreAll();
 
 function updateBalance(){
-document.querySelector(".balance").innerText = "Balance: ₹" + balance;
+document.querySelector(".balance").innerText="Balance: ₹"+balance;
 }
 
 function openMenu(){
-document.getElementById("sidebar").style.right="0px";
-document.getElementById("overlay").style.display="block";
+sidebar.style.right="0px";
+overlay.style.display="block";
 }
 
 function closeMenu(){
-document.getElementById("sidebar").style.right="-250px";
-document.getElementById("overlay").style.display="none";
+sidebar.style.right="-250px";
+overlay.style.display="none";
 }
 
-function joinRoom(id, fee){
+function joinMatch(id,fee){
 
-if(balance < fee){
-alert("Insufficient Balance ❌");
+let slotKey="slots_"+id;
+let current=parseInt(localStorage.getItem(slotKey))||0;
+
+if(localStorage.getItem("joined_"+id)){
+showToast("Already Joined ⚠","#f59e0b");
 return;
 }
 
-balance -= fee;
-localStorage.setItem("userBalance", balance);
-updateBalance();
-
-let roomID = localStorage.getItem("roomID");
-let roomPASS = localStorage.getItem("roomPASS");
-
-let box = document.getElementById(id);
-box.style.display = "block";
-
-if(roomID){
-box.innerHTML = `
-<b>Room ID:</b> ${roomID} <br>
-<b>Password:</b> ${roomPASS}
-`;
-}else{
-box.innerHTML = "Room ID: Waiting for Admin...";
+if(current>=maxSlot){
+showToast("Slot Full ❌","#ef4444");
+return;
 }
 
-alert("Joined Successfully ✅");
+if(balance<fee){
+showToast("Insufficient Balance ❌","#ef4444");
+return;
+}
+
+balance-=fee;
+localStorage.setItem("userBalance",balance);
+updateBalance();
+
+current++;
+localStorage.setItem(slotKey,current);
+localStorage.setItem("joined_"+id,true);
+
+// Save match history
+let history=JSON.parse(localStorage.getItem("matchHistory"))||[];
+history.push({match:id,entry:fee,date:new Date().toLocaleString()});
+localStorage.setItem("matchHistory",JSON.stringify(history));
+
+updateSlot(id);
+showRoom(id);
+showToast("Match Joined Successfully ✅","#22c55e");
+
+}
+
+function updateSlot(id){
+
+let slotKey="slots_"+id;
+let current=parseInt(localStorage.getItem(slotKey))||0;
+let slotText=document.getElementById("slot_"+id);
+let btn=document.getElementById("btn_"+id);
+
+if(current>=maxSlot){
+slotText.innerHTML="Slot: FULL ❌";
+slotText.style.color="red";
+btn.disabled=true;
+}else{
+slotText.innerHTML="Slot: "+current+" / "+maxSlot;
+slotText.style.color="#22c55e";
+}
+
+}
+
+
+function restoreAll(){
+["room1","room2"].forEach(function(id){
+updateSlot(id);
+if(localStorage.getItem("joined_"+id)){
+showRoom(id);
+}
+});
+}
+
+function showToast(msg,color){
+let toast=document.createElement("div");
+toast.className="toast";
+toast.innerText=msg;
+toast.style.background=color;
+document.body.appendChild(toast);
+setTimeout(()=>{toast.remove();},2000);
 }
 
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+const firebaseConfig = {
+  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain: "ff-tournament-915ed.firebaseapp.com",
+  projectId: "ff-tournament-915ed",
+  storageBucket: "ff-tournament-915ed.firebasestorage.app",
+  messagingSenderId: "399175252292",
+  appId: "1:399175252292:web:7698fe72328668fd0eff11"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.showRoom = function(id){
+
+  const box = document.getElementById(id);
+  box.style.display = "block";
+
+  const roomRef = doc(db, "rooms", id);
+
+  onSnapshot(roomRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      box.innerHTML = "<b>Room ID:</b> " + data.roomID +
+                      "<br><b>Password:</b> " + data.roomPASS;
+    } else {
+      box.innerHTML = "Room ID: Waiting for Admin...";
+    }
+  });
+
+};
+</script>
 </body>
 </html>
