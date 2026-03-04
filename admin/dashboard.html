@@ -62,7 +62,7 @@ hr{border:1px solid #334155;}
 <label>Room 1 Pass</label>
 <input type="text" id="roomPASS_room1">
 <button class="green" onclick="saveRoom('room1')">Save Room 1</button>
-
+<button class="red" onclick="resetRoom('room1')">Reset Room 1</button>
 <hr>
 
 <label>Room 2 ID</label>
@@ -70,6 +70,7 @@ hr{border:1px solid #334155;}
 <label>Room 2 Pass</label>
 <input type="text" id="roomPASS_room2">
 <button class="green" onclick="saveRoom('room2')">Save Room 2</button>
+<button class="red" onclick="resetRoom('room2')">Reset Room 2</button>
 </div>
 
 <!-- MATCH TIME -->
@@ -110,6 +111,7 @@ updateDoc,
 setDoc,
 deleteDoc,
 getDoc,
+getDocs,
 increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -132,7 +134,8 @@ let roomPASS=document.getElementById("roomPASS_"+id).value;
 
 await setDoc(doc(db,"rooms",id),{
 roomID,
-roomPASS
+roomPASS,
+slots:0
 });
 
 alert("Room Saved ✅");
@@ -173,6 +176,8 @@ usersDiv.innerHTML+=`
 <div class="user-box">
 <b>${data.username}</b><br>
 Balance: ₹${data.balance}<br>
+Joined Room: ${data.joinedRoom ? data.joinedRoom : "Not Joined"}<br>
+Game Name: ${data.gameName ? data.gameName : "Not Entered"}<br>
 Status: ${data.blocked ? "🚫 Blocked" : "✅ Active"}<br>
 
 <input type="number" placeholder="Enter Amount" id="amt_${uid}">
@@ -231,7 +236,7 @@ Username: ${d.username}<br>
 Amount: ₹${d.amount}<br>
 UTR: ${d.utr}<br>
 
-<button class="green" onclick="approveDeposit('${id}','${d.uid}',${d.amount}')">Approve</button>
+<button class="green" onclick="approveDeposit('${id}','${d.uid}',${d.amount})">Approve</button>
 <button class="red" onclick="rejectDeposit('${id}')">Reject</button>
 </div>
 <hr>
@@ -298,7 +303,38 @@ status:"rejected"
 });
 alert("Rejected & Balance Returned ❌");
 }
+window.resetRoom = async function(roomId){
 
+if(!confirm("Are you sure? This will reset everything!")) return;
+
+// 1️⃣ Reset Room Data
+await setDoc(doc(db,"rooms",roomId),{
+roomID:"",
+roomPASS:"",
+slots:0
+});
+
+// 2️⃣ Reset All Users Joined In This Room
+const usersSnap = await getDocs(collection(db,"users"));
+
+for(const userDoc of usersSnap.docs){
+
+const data = userDoc.data();
+
+if(data.joinedRoom === roomId){
+
+await updateDoc(doc(db,"users",userDoc.id),{
+joinedRoom: "",
+gameName: ""
+});
+
+}
+
+}
+
+alert("Room Reset Successfully ✅");
+
+}
 </script>
 </body>
 </html>
