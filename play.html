@@ -28,50 +28,6 @@ border-radius:20px;
 font-weight:bold;
 }
 
-.menu-btn{
-font-size:22px;
-cursor:pointer;
-}
-
-.sidebar{
-position:fixed;
-right:-250px;
-top:0;
-width:250px;
-height:100%;
-background:#1e293b;
-transition:0.3s;
-padding-top:60px;
-z-index:1000;
-}
-
-.close-btn{
-position:absolute;
-top:15px;
-left:15px;
-font-size:20px;
-cursor:pointer;
-}
-
-.sidebar a{
-display:block;
-color:white;
-padding:15px;
-text-decoration:none;
-border-bottom:1px solid #334155;
-}
-
-.overlay{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.5);
-display:none;
-z-index:999;
-}
-
 .tournament{
 background:#1e293b;
 margin:20px;
@@ -95,6 +51,12 @@ font-weight:bold;
 margin-top:5px;
 }
 
+.time{
+color:#facc15;
+font-weight:bold;
+margin-top:5px;
+}
+
 .btn{
 width:100%;
 padding:12px;
@@ -105,7 +67,6 @@ color:white;
 font-weight:bold;
 border-radius:8px;
 cursor:pointer;
-transition:0.3s;
 }
 
 .btn:disabled{
@@ -120,211 +81,191 @@ padding:10px;
 border-radius:6px;
 display:none;
 }
-
-.toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-padding:14px 25px;
-border-radius:10px;
-font-weight:bold;
-color:white;
-z-index:2000;
-animation:pop 0.4s ease;
-}
-
-@keyframes pop{
-0%{transform:translateX(-50%) scale(0.5);}
-100%{transform:translateX(-50%) scale(1);}
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
-
 <div class="header">
-<div class="balance">Balance: ₹100</div>
-<div class="menu-btn" onclick="openMenu()">⋮</div>
+<div class="balance">Balance: ₹<span id="balance">0</span></div>
 </div>
 
-<div class="sidebar" id="sidebar">
-<div class="close-btn" onclick="closeMenu()">✖</div>
-<a href="deposit.html">Deposit</a>
-<a href="index.html">Go To Home</a>
-</div>
-
-<!-- Tournament 1 -->
+<!-- ROOM 1 -->
 <div class="tournament">
 <img src="random.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
-<p>Mode: CS Game</p>
-<p>Type: 1 vs 1</p>
 <p>Entry: ₹20</p>
 <p>Win: ₹35</p>
-<p class="slot" id="slot_room1"></p>
+<p class="time">Match Time: <span id="time_room1">Loading...</span></p>
+<p class="slot" id="slot_room1">Loading...</p>
 <button class="btn" id="btn_room1" onclick="joinMatch('room1',20)">Join Now</button>
 <div class="room-box" id="room1"></div>
 </div>
 </div>
 
-<!-- Tournament 2 -->
+<!-- ROOM 2 -->
 <div class="tournament">
 <img src="random.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
-<p>Mode: CS Game</p>
-<p>Type: 1 vs 1</p>
 <p>Entry: ₹10</p>
 <p>Win: ₹20</p>
-<p class="slot" id="slot_room2"></p>
+<p class="time">Match Time: <span id="time_room2">Loading...</span></p>
+<p class="slot" id="slot_room2">Loading...</p>
 <button class="btn" id="btn_room2" onclick="joinMatch('room2',10)">Join Now</button>
 <div class="room-box" id="room2"></div>
 </div>
 </div>
 
-<script>
-
-let balance = localStorage.getItem("userBalance") 
-? parseInt(localStorage.getItem("userBalance")) 
-: 100;
-
-localStorage.setItem("userBalance", balance);
-
-let maxSlot = 2;
-
-updateBalance();
-restoreAll();
-
-function updateBalance(){
-document.querySelector(".balance").innerText="Balance: ₹"+balance;
-}
-
-function openMenu(){
-sidebar.style.right="0px";
-overlay.style.display="block";
-}
-
-function closeMenu(){
-sidebar.style.right="-250px";
-overlay.style.display="none";
-}
-
-function joinMatch(id,fee){
-
-let slotKey="slots_"+id;
-let current=parseInt(localStorage.getItem(slotKey))||0;
-
-if(localStorage.getItem("joined_"+id)){
-showToast("Already Joined ⚠","#f59e0b");
-return;
-}
-
-if(current>=maxSlot){
-showToast("Slot Full ❌","#ef4444");
-return;
-}
-
-if(balance<fee){
-showToast("Insufficient Balance ❌","#ef4444");
-return;
-}
-
-balance-=fee;
-localStorage.setItem("userBalance",balance);
-updateBalance();
-
-current++;
-localStorage.setItem(slotKey,current);
-localStorage.setItem("joined_"+id,true);
-
-// Save match history
-let history=JSON.parse(localStorage.getItem("matchHistory"))||[];
-history.push({match:id,entry:fee,date:new Date().toLocaleString()});
-localStorage.setItem("matchHistory",JSON.stringify(history));
-
-updateSlot(id);
-showRoom(id);
-showToast("Match Joined Successfully ✅","#22c55e");
-
-}
-
-function updateSlot(id){
-
-let slotKey="slots_"+id;
-let current=parseInt(localStorage.getItem(slotKey))||0;
-let slotText=document.getElementById("slot_"+id);
-let btn=document.getElementById("btn_"+id);
-
-if(current>=maxSlot){
-slotText.innerHTML="Slot: FULL ❌";
-slotText.style.color="red";
-btn.disabled=true;
-}else{
-slotText.innerHTML="Slot: "+current+" / "+maxSlot;
-slotText.style.color="#22c55e";
-}
-
-}
-
-
-function restoreAll(){
-["room1","room2"].forEach(function(id){
-updateSlot(id);
-if(localStorage.getItem("joined_"+id)){
-showRoom(id);
-}
-});
-}
-
-function showToast(msg,color){
-let toast=document.createElement("div");
-toast.className="toast";
-toast.innerText=msg;
-toast.style.background=color;
-document.body.appendChild(toast);
-setTimeout(()=>{toast.remove();},2000);
-}
-
-</script>
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+getFirestore,
+doc,
+onSnapshot,
+updateDoc,
+getDoc,
+increment
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-  authDomain: "ff-tournament-915ed.firebaseapp.com",
-  projectId: "ff-tournament-915ed",
-  storageBucket: "ff-tournament-915ed.firebasestorage.app",
-  messagingSenderId: "399175252292",
-  appId: "1:399175252292:web:7698fe72328668fd0eff11"
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-window.showRoom = function(id){
+let currentUser;
+const maxSlot = 2;
 
-  const box = document.getElementById(id);
-  box.style.display = "block";
+// ================= AUTH CHECK =================
 
-  const roomRef = doc(db, "rooms", id);
+onAuthStateChanged(auth, (user)=>{
 
-  onSnapshot(roomRef, (docSnap) => {
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      box.innerHTML = "<b>Room ID:</b> " + data.roomID +
-                      "<br><b>Password:</b> " + data.roomPASS;
-    } else {
-      box.innerHTML = "Room ID: Waiting for Admin...";
-    }
-  });
+if(!user){
+window.location.href="auth.html";
+return;
+}
+
+currentUser = user;
+
+// Live Balance
+onSnapshot(doc(db,"users",user.uid),(snap)=>{
+if(snap.exists()){
+document.getElementById("balance").innerText = snap.data().balance;
+}
+});
+
+});
+
+// ================= MATCH TIME LIVE =================
+
+onSnapshot(doc(db,"settings","match"),(snap)=>{
+if(snap.exists()){
+document.getElementById("time_room1").innerText = snap.data().time;
+document.getElementById("time_room2").innerText = snap.data().time;
+}
+});
+
+// ================= SLOT LIVE =================
+
+["room1","room2"].forEach((room)=>{
+
+onSnapshot(doc(db,"rooms",room),(snap)=>{
+
+let slotText = document.getElementById("slot_"+room);
+let btn = document.getElementById("btn_"+room);
+
+if(snap.exists()){
+
+let slot = snap.data().slots || 0;
+
+if(slot >= maxSlot){
+slotText.innerHTML = "Slot: FULL ❌";
+slotText.style.color = "red";
+btn.disabled = true;
+}else{
+slotText.innerHTML = "Slot: "+slot+" / "+maxSlot;
+slotText.style.color = "#22c55e";
+btn.disabled = false;
+}
+
+}else{
+slotText.innerHTML = "Waiting for Admin...";
+}
+
+});
+
+});
+
+// ================= JOIN MATCH =================
+
+window.joinMatch = async function(room,fee){
+
+const userRef = doc(db,"users",currentUser.uid);
+const roomRef = doc(db,"rooms",room);
+
+const userSnap = await getDoc(userRef);
+const roomSnap = await getDoc(roomRef);
+
+if(!userSnap.exists() || !roomSnap.exists()) return;
+
+let balance = userSnap.data().balance;
+let slot = roomSnap.data().slots || 0;
+
+if(balance < fee){
+alert("Insufficient Balance ❌");
+return;
+}
+
+if(slot >= maxSlot){
+alert("Slot Full ❌");
+return;
+}
+
+// Deduct Balance
+await updateDoc(userRef,{
+balance: balance - fee
+});
+
+// Increase Slot
+await updateDoc(roomRef,{
+slots: increment(1)
+});
+
+// Show Room Details
+showRoom(room);
+
+alert("Match Joined Successfully ✅");
 
 };
+
+// ================= ROOM LIVE =================
+
+window.showRoom = function(room){
+
+const box = document.getElementById(room);
+box.style.display = "block";
+
+onSnapshot(doc(db,"rooms",room),(snap)=>{
+
+if(snap.exists()){
+box.innerHTML =
+"<b>Room ID:</b> "+(snap.data().roomID || "Waiting...")+
+"<br><b>Password:</b> "+(snap.data().roomPASS || "Waiting...");
+}
+
+});
+
+};
+
 </script>
+
 </body>
 </html>
