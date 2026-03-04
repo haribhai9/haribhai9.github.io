@@ -124,7 +124,6 @@ to{transform:scale(1);opacity:1;}
 
 <h2>Register</h2>
 
-<input type="text" id="rname" placeholder="Enter Username">
 <input type="email" id="remail" placeholder="Enter Email">
 <input type="password" id="rpass" placeholder="Create Password">
 <input type="password" id="rcpass" placeholder="Confirm Password">
@@ -138,52 +137,45 @@ to{transform:scale(1);opacity:1;}
 
 <div class="switch">
 Already have account?
-<span onclick="showLogin()">Login</span>
+<span onclick="goLogin()">Login</span>
 </div>
 
 <div class="message" id="msg"></div>
 
 </div>
 
-<script>
 
-function showLogin(){
-document.getElementById("card").innerHTML=`
-<div class="company-box">
-<h1>Hari Bhai Company</h1>
-<p>Trusted & Secure Digital Services</p>
-</div>
+<script type="module">
 
-<h2>Login</h2>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-<input type="email" id="email" placeholder="Enter Email">
-<input type="password" id="pass" placeholder="Enter Password">
+import { getFirestore, doc, setDoc } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<div class="verify-box">
-<input type="checkbox" id="lverify">
-<label for="lverify">I am not a robot</label>
-</div>
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
 
-<button onclick="login()">Login</button>
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-<div class="switch">
-Don't have account?
-<span onclick="location.reload()">Register</span>
-</div>
-
-<div class="message" id="msg"></div>
-`;
+function generateUsername(){
+return "HB" + Math.floor(100000 + Math.random() * 900000);
 }
 
-function register(){
+window.register = async function(){
 
-let name=document.getElementById("rname").value.trim();
 let email=document.getElementById("remail").value.trim();
 let pass=document.getElementById("rpass").value;
 let cpass=document.getElementById("rcpass").value;
 let verify=document.getElementById("rverify").checked;
 
-if(name===""||email===""||pass===""||cpass===""){
+if(email===""||pass===""||cpass===""){
 showMsg("All fields required!","red");
 return;
 }
@@ -198,42 +190,34 @@ showMsg("Please verify you are human!","red");
 return;
 }
 
-if(localStorage.getItem("userEmail")===email){
-showMsg("You are already registered!","orange");
-return;
-}
+try{
 
-localStorage.setItem("userEmail",email);
-localStorage.setItem("userPass",pass);
+const userCred = await createUserWithEmailAndPassword(auth,email,pass);
+const user = userCred.user;
 
-showMsg("Account Created Successfully!","green");
+let randomUsername = generateUsername();
 
-setTimeout(()=>{showLogin();},1500);
-}
+await setDoc(doc(db,"users",user.uid),{
+username: randomUsername,
+email: email,
+balance: 0,
+blocked: false
+});
 
-function login(){
-
-let email=document.getElementById("email").value.trim();
-let pass=document.getElementById("pass").value;
-let verify=document.getElementById("lverify").checked;
-
-if(!verify){
-showMsg("Please verify you are human!","red");
-return;
-}
-
-if(email===localStorage.getItem("userEmail") &&
-   pass===localStorage.getItem("userPass")){
-
-showMsg("Login Successful! Redirecting...","green");
+showMsg("Account Created ✅ Username: "+randomUsername,"green");
 
 setTimeout(()=>{
-window.top.location.href="index.html";
+window.location.href="auth.html";
 },1500);
 
-}else{
-showMsg("Invalid Email or Password!","red");
+}catch(error){
+showMsg(error.message,"red");
 }
+
+}
+
+window.goLogin=function(){
+window.location.href="auth.html";
 }
 
 function showMsg(text,color){
