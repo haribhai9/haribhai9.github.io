@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdrawal History</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',Arial;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+overflow-x:hidden;
+}
+
+.container{
+max-width:500px;
+margin:30px auto;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 20px rgba(0,0,0,0.4);
+animation:fadeIn 0.6s ease-in-out;
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+}
+
+.card{
+background:rgba(17,24,39,0.9);
+padding:12px;
+margin-bottom:12px;
+border-radius:10px;
+transition:0.3s;
+animation:slideUp 0.5s ease forwards;
+}
+
+.card:hover{
+transform:scale(1.03);
+box-shadow:0 0 15px rgba(255,255,255,0.2);
+}
+
+.pending{
+color:orange;
+font-weight:bold;
+animation:pulseOrange 1.5s infinite;
+}
+
+.approved{
+color:#00ff88;
+font-weight:bold;
+animation:pulseGreen 1.2s infinite;
+}
+
+.rejected{
+color:#ff3b3b;
+font-weight:bold;
+animation:shake 0.5s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+@keyframes slideUp{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes pulseGreen{
+0%{text-shadow:0 0 5px #00ff88;}
+50%{text-shadow:0 0 15px #00ff88;}
+100%{text-shadow:0 0 5px #00ff88;}
+}
+
+@keyframes pulseOrange{
+0%{text-shadow:0 0 5px orange;}
+50%{text-shadow:0 0 15px orange;}
+100%{text-shadow:0 0 5px orange;}
+}
+
+@keyframes shake{
+0%{transform:translateX(0);}
+25%{transform:translateX(-5px);}
+50%{transform:translateX(5px);}
+75%{transform:translateX(-5px);}
+100%{transform:translateX(0);}
+}
+
+button{
+margin-top:15px;
+padding:10px;
+width:100%;
+border:none;
+border-radius:8px;
+background:linear-gradient(45deg,#3b82f6,#06b6d4);
+color:white;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+button:hover{
+transform:scale(1.05);
+box-shadow:0 0 15px #3b82f6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2>Withdrawal History</h2>
+<div id="historyData">Loading...</div>
+<button onclick="window.location.href='dashboard.html'">Back</button>
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+getFirestore,
+collection,
+query,
+where,
+orderBy,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+window.location.href="auth.html";
+return;
+}
+
+const q = query(
+collection(db,"withdrawals"),
+where("uid","==",user.uid),
+orderBy("time","desc")   // Latest First
+);
+
+onSnapshot(q,(snapshot)=>{
+
+let html="";
+
+snapshot.forEach((docSnap)=>{
+
+const w = docSnap.data();
+let statusClass = w.status || "pending";
+
+let date = "";
+if(w.time){
+const t = w.time.toDate();
+date = t.toLocaleString();
+}
+
+html += `
+<div class="card">
+Amount: ₹${w.amount} <br>
+Method: ${w.method} <br>
+Date: ${date} <br>
+Status: <span class="${statusClass}">${w.status}</span>
+</div>
+`;
+
+});
+
+document.getElementById("historyData").innerHTML =
+html || "No Withdrawal History";
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
