@@ -142,10 +142,17 @@ Go To Deposit
 style="background:#22c55e; margin-top:10px;">
 Go To Withdrawal
 </button>
+<button onclick="location.href='deposithistory.html'" 
+style="background:#f59e0b; margin-top:10px;">
+Deposit History
+</button>
+
+<button onclick="location.href='withdrawalhistory.html'" 
+style="background:#ef4444; margin-top:10px;">
+Withdrawal History
+</button>
 
 </div>
-
-
 
 <script type="module">
 
@@ -156,9 +163,11 @@ from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { 
 getFirestore, 
 doc, 
-onSnapshot 
+onSnapshot,
+collection,
+query,
+where
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
 const firebaseConfig = {
 apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
 authDomain: "ff-tournament-915ed.firebaseapp.com",
@@ -168,11 +177,11 @@ projectId: "ff-tournament-915ed",
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+let currentUserId = null;
 onAuthStateChanged(auth, (user) => {
 
 if(user){
-
+currentUserId = user.uid;
 const docRef = doc(db,"users",user.uid);
 
 // REAL TIME LISTENER 🔥
@@ -201,7 +210,68 @@ signOut(auth).then(()=>{
 window.location.href="auth.html";
 });
 }
+window.showDepositHistory = function(){
 
+document.getElementById("historyCard").style.display="block";
+document.getElementById("historyTitle").innerText="Deposit History";
+
+const q = query(
+collection(db,"deposits"),
+where("uid","==",currentUserId)
+);
+
+onSnapshot(q,(snapshot)=>{
+
+let html="";
+
+snapshot.forEach((docSnap)=>{
+const d=docSnap.data();
+
+html+=`
+<div style="background:#111827;padding:8px;margin-bottom:8px;border-radius:6px;">
+Amount: ₹${d.amount}<br>
+UTR: ${d.utr}<br>
+Status: ${d.status ? d.status : "Pending"}
+</div>
+`;
+});
+
+document.getElementById("historyData").innerHTML=html || "No Deposit History";
+
+});
+
+}
+window.showWithdrawHistory = function(){
+
+document.getElementById("historyCard").style.display="block";
+document.getElementById("historyTitle").innerText="Withdrawal History";
+
+const q = query(
+collection(db,"withdrawals"),
+where("uid","==",currentUserId)
+);
+
+onSnapshot(q,(snapshot)=>{
+
+let html="";
+
+snapshot.forEach((docSnap)=>{
+const w=docSnap.data();
+
+html+=`
+<div style="background:#111827;padding:8px;margin-bottom:8px;border-radius:6px;">
+Amount: ₹${w.amount}<br>
+Method: ${w.method}<br>
+Status: ${w.status}
+</div>
+`;
+});
+
+document.getElementById("historyData").innerHTML=html || "No Withdrawal History";
+
+});
+
+}
 </script>
 
 <script>
