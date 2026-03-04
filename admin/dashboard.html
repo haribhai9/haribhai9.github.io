@@ -232,9 +232,10 @@ const id=docSnap.id;
 
 depositDiv.innerHTML+=`
 <div class="user-box">
-Username: ${d.username}<br>
+Username: ${d.username || d.uid}<br>
 Amount: ₹${d.amount}<br>
 UTR: ${d.utr}<br>
+Status: ${d.status || "pending"}<br>
 
 <button class="green" onclick="approveDeposit('${id}','${d.uid}',${d.amount})">Approve</button>
 <button class="red" onclick="rejectDeposit('${id}')">Reject</button>
@@ -245,15 +246,33 @@ UTR: ${d.utr}<br>
 });
 
 window.approveDeposit = async function(depId,uid,amount){
+
+const depRef = doc(db,"deposits",depId);
+const depSnap = await getDoc(depRef);
+
+if(depSnap.data().status !== "pending"){
+alert("Already Processed ❌");
+return;
+}
+
 await updateDoc(doc(db,"users",uid),{
 balance: increment(amount)
 });
-await deleteDoc(doc(db,"deposits",depId));
+
+await updateDoc(depRef,{
+status:"approved"
+});
+
 alert("Deposit Approved ✅");
 }
 
 window.rejectDeposit = async function(depId){
-await deleteDoc(doc(db,"deposits",depId));
+
+await updateDoc(doc(db,"deposits",depId),{
+status:"rejected"
+});
+
+alert("Deposit Rejected ❌");
 }
 
 
@@ -288,21 +307,43 @@ Details: ${w.details}<br>
 });
 
 window.approveWithdraw = async function(wid){
-await updateDoc(doc(db,"withdrawals",wid),{
+
+const wRef = doc(db,"withdrawals",wid);
+const wSnap = await getDoc(wRef);
+
+if(wSnap.data().status !== "pending"){
+alert("Already Processed ❌");
+return;
+}
+
+await updateDoc(wRef,{
 status:"approved"
 });
+
 alert("Withdrawal Approved ✅");
 }
 
 window.rejectWithdraw = async function(wid,uid,amount){
+
+const wRef = doc(db,"withdrawals",wid);
+const wSnap = await getDoc(wRef);
+
+if(wSnap.data().status !== "pending"){
+alert("Already Processed ❌");
+return;
+}
+
 await updateDoc(doc(db,"users",uid),{
 balance: increment(amount)
 });
-await updateDoc(doc(db,"withdrawals",wid),{
+
+await updateDoc(wRef,{
 status:"rejected"
 });
+
 alert("Rejected & Balance Returned ❌");
 }
+
 window.resetRoom = async function(roomId){
 
 if(!confirm("Are you sure? This will reset everything!")) return;
