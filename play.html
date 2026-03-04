@@ -12,6 +12,62 @@ font-family:'Segoe UI',Arial;
 background:#0f172a;
 color:white;
 }
+/* POPUP STYLE */
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup-content{
+background:linear-gradient(45deg,#3b82f6,#06b6d4);
+padding:25px;
+border-radius:15px;
+width:85%;
+max-width:320px;
+text-align:center;
+animation: popScale 0.3s ease;
+}
+
+.popup-content input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+}
+
+.popup-content button{
+width:100%;
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup-content .cancel{
+background:#ef4444;
+color:white;
+}
+
+@keyframes popScale{
+from{transform:scale(0.6);}
+to{transform:scale(1);}
+}
+
+@keyframes fadeIn{
+from{opacity:0;}
+to{opacity:1;}
+}
 
 .header{
 display:flex;
@@ -92,7 +148,7 @@ display:none;
 
 <!-- ROOM 1 -->
 <div class="tournament">
-<img src="two.png">
+<img src="random.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <p>Entry: ₹20</p>
@@ -106,7 +162,7 @@ display:none;
 
 <!-- ROOM 2 -->
 <div class="tournament">
-<img src="one.png">
+<img src="random.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <p>Entry: ₹10</p>
@@ -213,10 +269,26 @@ slotText.style.color = "#22c55e";
 
 /* ================= JOIN MATCH ================= */
 
-window.joinMatch = async function(room,fee){
+let selectedRoom = null;
+let selectedFee = 0;
+
+window.joinMatch = function(room,fee){
+selectedRoom = room;
+selectedFee = fee;
+
+document.getElementById("gameNameInput").value = "";
+document.getElementById("joinPopup").style.display = "flex";
+};window.confirmJoin = async function(){
+
+const gameName = document.getElementById("gameNameInput").value.trim();
+
+if(gameName === ""){
+alert("Please enter game name ❌");
+return;
+}
 
 const userRef = doc(db,"users",currentUser.uid);
-const roomRef = doc(db,"rooms",room);
+const roomRef = doc(db,"rooms",selectedRoom);
 
 const userSnap = await getDoc(userRef);
 const roomSnap = await getDoc(roomRef);
@@ -227,14 +299,13 @@ let userData = userSnap.data();
 let balance = userData.balance;
 let slot = roomSnap.data().slots || 0;
 
-// Already joined check
 if(userData.joinedRoom){
 alert("You already joined a match ❌");
-showRoom(userData.joinedRoom);
+closePopup();
 return;
 }
 
-if(balance < fee){
+if(balance < selectedFee){
 alert("Insufficient Balance ❌");
 return;
 }
@@ -244,20 +315,23 @@ alert("Slot Full ❌");
 return;
 }
 
-// Deduct balance + mark joined
 await updateDoc(userRef,{
-balance: balance - fee,
-joinedRoom: room
+balance: balance - selectedFee,
+joinedRoom: selectedRoom,
+gameName: gameName
 });
 
-// Increase slot
 await updateDoc(roomRef,{
 slots: increment(1)
 });
 
-showRoom(room);
+closePopup();
+showRoom(selectedRoom);
 alert("Match Joined Successfully ✅");
+};
 
+window.closePopup = function(){
+document.getElementById("joinPopup").style.display = "none";
 };
 
 /* ================= SHOW ROOM ================= */
@@ -280,6 +354,14 @@ box.innerHTML =
 }
 
 </script>
-
+<!-- JOIN POPUP -->
+<div id="joinPopup" class="popup">
+  <div class="popup-content">
+    <h3>Enter Game Name</h3>
+    <input type="text" id="gameNameInput" placeholder="Enter Your Game Name">
+    <button onclick="confirmJoin()">Confirm Join</button>
+    <button class="cancel" onclick="closePopup()">Cancel</button>
+  </div>
+</div>
 </body>
 </html>
