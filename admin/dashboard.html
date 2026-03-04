@@ -13,12 +13,7 @@ background:#0f172a;
 color:white;
 padding:20px;
 }
-
-h1{
-text-align:center;
-margin-bottom:20px;
-}
-
+h1{text-align:center;margin-bottom:20px;}
 .card{
 background:#1e293b;
 padding:15px;
@@ -26,7 +21,6 @@ border-radius:12px;
 margin-bottom:20px;
 box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
-
 input{
 width:100%;
 padding:8px;
@@ -34,7 +28,6 @@ margin-top:8px;
 border:none;
 border-radius:6px;
 }
-
 button{
 margin-top:10px;
 padding:8px 12px;
@@ -43,24 +36,14 @@ border-radius:6px;
 cursor:pointer;
 font-weight:bold;
 }
-
-.save-btn{
-background:#22c55e;
-color:white;
-}
-
-.reset-btn{
-background:#ef4444;
-color:white;
-}
-
+.save-btn{background:#22c55e;color:white;}
+.reset-btn{background:#ef4444;color:white;}
 .stats{
 background:#111827;
 padding:10px;
 border-radius:10px;
 margin-bottom:20px;
 }
-
 .history-box{
 max-height:300px;
 overflow:auto;
@@ -68,10 +51,7 @@ background:#111827;
 padding:10px;
 border-radius:10px;
 }
-
-hr{
-border:1px solid #334155;
-}
+hr{border:1px solid #334155;}
 </style>
 </head>
 
@@ -84,41 +64,51 @@ border:1px solid #334155;
 <p id="totalEntry"></p>
 </div>
 
-<!-- Room 1 Control -->
 <div class="card">
 <h3>Room 1 Control</h3>
-
 <label>Room ID</label>
 <input type="text" id="roomID_room1">
-
 <label>Password</label>
 <input type="text" id="roomPASS_room1">
-
 <button class="save-btn" onclick="saveRoom('room1')">Save Room</button>
 <button class="reset-btn" onclick="resetRoom('room1')">Reset Slot</button>
 </div>
 
-<!-- Room 2 Control -->
 <div class="card">
 <h3>Room 2 Control</h3>
-
 <label>Room ID</label>
 <input type="text" id="roomID_room2">
-
 <label>Password</label>
 <input type="text" id="roomPASS_room2">
-
 <button class="save-btn" onclick="saveRoom('room2')">Save Room</button>
 <button class="reset-btn" onclick="resetRoom('room2')">Reset Slot</button>
 </div>
 
-<!-- Match History -->
 <div class="card">
 <h3>📜 Match History</h3>
 <div class="history-box" id="history"></div>
 </div>
 
-<script>
+<!-- Firebase Script -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain: "ff-tournament-915ed.firebaseapp.com",
+  projectId: "ff-tournament-915ed",
+  storageBucket: "ff-tournament-915ed.appspot.com",
+  messagingSenderId: "399175252292",
+  appId: "1:399175252292:web:7698f",
+  measurementId: "G-M1TV1F64C4"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+console.log("🔥 Firebase Connected");
 
 // Load saved room data
 ["room1","room2"].forEach(function(id){
@@ -126,8 +116,8 @@ document.getElementById("roomID_"+id).value = localStorage.getItem("roomID_"+id)
 document.getElementById("roomPASS_"+id).value = localStorage.getItem("roomPASS_"+id) || "";
 });
 
-// Save Room Info
-function saveRoom(id){
+// Save Room
+window.saveRoom = async function(id){
 
 let roomID=document.getElementById("roomID_"+id).value;
 let roomPASS=document.getElementById("roomPASS_"+id).value;
@@ -135,35 +125,35 @@ let roomPASS=document.getElementById("roomPASS_"+id).value;
 localStorage.setItem("roomID_"+id,roomID);
 localStorage.setItem("roomPASS_"+id,roomPASS);
 
-alert("Room Details Saved ✅");
+// 🔥 Save to Firestore
+await setDoc(doc(db,"rooms",id),{
+roomID:roomID,
+roomPASS:roomPASS
+});
 
+alert("Room Details Saved & Synced ✅");
 }
 
 // Reset Slot
-function resetRoom(id){
+window.resetRoom = function(id){
 
 localStorage.setItem("slots_"+id,0);
 localStorage.removeItem("joined_"+id);
 
 alert(id+" Slot Reset Done ✅");
-
 location.reload();
 }
 
-// Load Match History
+// Match History
 let history=JSON.parse(localStorage.getItem("matchHistory"))||[];
 let box=document.getElementById("history");
-
 let totalEntry=0;
 
 if(history.length===0){
 box.innerHTML="No Matches Yet";
 }else{
-
 history.reverse().forEach(function(h){
-
 totalEntry+=h.entry;
-
 box.innerHTML+=`
 <p>
 Match: ${h.match}<br>
@@ -172,9 +162,7 @@ Date: ${h.date}
 </p>
 <hr>
 `;
-
 });
-
 }
 
 document.getElementById("totalMatches").innerText="Total Matches: "+history.length;
