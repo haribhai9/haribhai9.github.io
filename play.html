@@ -144,9 +144,9 @@ const db = getFirestore(app);
 let currentUser;
 const maxSlot = 2;
 
-// ================= AUTH CHECK =================
+/* ================= AUTH ================= */
 
-onAuthStateChanged(auth, (user)=>{
+onAuthStateChanged(auth,(user)=>{
 
 if(!user){
 window.location.href="auth.html";
@@ -155,16 +155,25 @@ return;
 
 currentUser = user;
 
-// Live Balance
-onSnapshot(doc(db,"users",user.uid),(snap)=>{
-if(snap.exists()){
-document.getElementById("balance").innerText = snap.data().balance;
+const userRef = doc(db,"users",user.uid);
+
+onSnapshot(userRef,(snap)=>{
+if(!snap.exists()) return;
+
+let data = snap.data();
+document.getElementById("balance").innerText = data.balance || 0;
+
+// Auto show joined room after refresh
+if(data.joinedRoom){
+showRoom(data.joinedRoom);
+document.getElementById("btn_"+data.joinedRoom).disabled = true;
 }
-});
 
 });
 
-// ================= MATCH TIME LIVE =================
+});
+
+/* ================= MATCH TIME ================= */
 
 onSnapshot(doc(db,"settings","match"),(snap)=>{
 if(snap.exists()){
@@ -173,7 +182,7 @@ document.getElementById("time_room2").innerText = snap.data().time;
 }
 });
 
-// ================= SLOT LIVE =================
+/* ================= SLOT LIVE ================= */
 
 ["room1","room2"].forEach((room)=>{
 
@@ -182,7 +191,10 @@ onSnapshot(doc(db,"rooms",room),(snap)=>{
 let slotText = document.getElementById("slot_"+room);
 let btn = document.getElementById("btn_"+room);
 
-if(snap.exists()){
+if(!snap.exists()){
+slotText.innerHTML = "Waiting for Admin...";
+return;
+}
 
 let slot = snap.data().slots || 0;
 
@@ -193,18 +205,13 @@ btn.disabled = true;
 }else{
 slotText.innerHTML = "Slot: "+slot+" / "+maxSlot;
 slotText.style.color = "#22c55e";
-btn.disabled = false;
-}
-
-}else{
-slotText.innerHTML = "Waiting for Admin...";
 }
 
 });
 
 });
 
-// ================= JOIN MATCH =================
+/* ================= JOIN MATCH ================= */
 
 window.joinMatch = async function(room,fee){
 
@@ -220,7 +227,7 @@ let userData = userSnap.data();
 let balance = userData.balance;
 let slot = roomSnap.data().slots || 0;
 
-// 🚫 Already Joined Check
+// Already joined check
 if(userData.joinedRoom){
 alert("You already joined a match ❌");
 showRoom(userData.joinedRoom);
@@ -237,13 +244,13 @@ alert("Slot Full ❌");
 return;
 }
 
-// Deduct Balance + Save Joined Room
+// Deduct balance + mark joined
 await updateDoc(userRef,{
 balance: balance - fee,
 joinedRoom: room
 });
 
-// Increase Slot
+// Increase slot
 await updateDoc(roomRef,{
 slots: increment(1)
 });
@@ -253,28 +260,24 @@ alert("Match Joined Successfully ✅");
 
 };
 
-============== ROOM LIVE =================
+/* ================= SHOW ROOM ================= */
 
-window.showRoom = function(room){
+function showRoom(room){
 
 const box = document.getElementById(room);
 box.style.display = "block";
 
-// Auto show joined room after refresh
-onSnapshot(doc(db,"users",user.uid),(snap)=>{
+onSnapshot(doc(db,"rooms",room),(snap)=>{
+
 if(snap.exists()){
-
-document.getElementById("balance").innerText = snap.data().balance;
-
-if(snap.data().joinedRoom){
-showRoom(snap.data().joinedRoom);
-document.getElementById("btn_"+snap.data().joinedRoom).disabled = true;
+box.innerHTML =
+"<b>Room ID:</b> "+(snap.data().roomID || "Waiting...")+
+"<br><b>Password:</b> "+(snap.data().roomPASS || "Waiting...");
 }
 
-}
 });
 
-};
+}
 
 </script>
 
