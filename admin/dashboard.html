@@ -1,70 +1,185 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Admin Dashboard</title>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
 <style>
 body{
 margin:0;
-font-family:Arial;
-background:#f4f4f4;
-}
-.header{
-background:#243b55;
+font-family:'Segoe UI',Arial;
+background:#0f172a;
 color:white;
-padding:15px;
-text-align:center;
-}
-.card{
-background:white;
-margin:20px;
 padding:20px;
-border-radius:10px;
-box-shadow:0 2px 5px rgba(0,0,0,0.2);
 }
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.card{
+background:#1e293b;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
 input{
 width:100%;
-padding:10px;
-margin:10px 0;
-}
-button{
-padding:10px;
-background:#243b55;
-color:white;
+padding:8px;
+margin-top:8px;
 border:none;
-cursor:pointer;
+border-radius:6px;
 }
-.logout{
-background:red;
+
+button{
 margin-top:10px;
+padding:8px 12px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.save-btn{
+background:#22c55e;
+color:white;
+}
+
+.reset-btn{
+background:#ef4444;
+color:white;
+}
+
+.stats{
+background:#111827;
+padding:10px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.history-box{
+max-height:300px;
+overflow:auto;
+background:#111827;
+padding:10px;
+border-radius:10px;
+}
+
+hr{
+border:1px solid #334155;
 }
 </style>
 </head>
+
 <body>
 
-<div class="header">
-<h2>Admin Dashboard</h2>
+<h1>🔥 Admin Dashboard</h1>
+
+<div class="stats">
+<p id="totalMatches"></p>
+<p id="totalEntry"></p>
 </div>
 
+<!-- Room 1 Control -->
 <div class="card">
-<h3>Create Room 🎮</h3>
-<input type="text" id="roomid" placeholder="Enter Room ID">
-<input type="text" id="roompass" placeholder="Enter Room Password">
-<button onclick="saveRoom()">Save Room</button>
-<button class="logout" onclick="logout()">Logout</button>
-<p id="msg"></p>
+<h3>Room 1 Control</h3>
+
+<label>Room ID</label>
+<input type="text" id="roomID_room1">
+
+<label>Password</label>
+<input type="text" id="roomPASS_room1">
+
+<button class="save-btn" onclick="saveRoom('room1')">Save Room</button>
+<button class="reset-btn" onclick="resetRoom('room1')">Reset Slot</button>
+</div>
+
+<!-- Room 2 Control -->
+<div class="card">
+<h3>Room 2 Control</h3>
+
+<label>Room ID</label>
+<input type="text" id="roomID_room2">
+
+<label>Password</label>
+<input type="text" id="roomPASS_room2">
+
+<button class="save-btn" onclick="saveRoom('room2')">Save Room</button>
+<button class="reset-btn" onclick="resetRoom('room2')">Reset Slot</button>
+</div>
+
+<!-- Match History -->
+<div class="card">
+<h3>📜 Match History</h3>
+<div class="history-box" id="history"></div>
 </div>
 
 <script>
-function saveRoom(){
-var id = document.getElementById("roomid").value;
-var pass = document.getElementById("roompass").value;
 
-localStorage.setItem("roomID", id);
-localStorage.setItem("roomPASS", pass);
+// Load saved room data
+["room1","room2"].forEach(function(id){
+document.getElementById("roomID_"+id).value = localStorage.getItem("roomID_"+id) || "";
+document.getElementById("roomPASS_"+id).value = localStorage.getItem("roomPASS_"+id) || "";
+});
 
-document.getElementById("msg").innerText = "Room Saved Successfully ✅";
+// Save Room Info
+function saveRoom(id){
+
+let roomID=document.getElementById("roomID_"+id).value;
+let roomPASS=document.getElementById("roomPASS_"+id).value;
+
+localStorage.setItem("roomID_"+id,roomID);
+localStorage.setItem("roomPASS_"+id,roomPASS);
+
+alert("Room Details Saved ✅");
+
 }
+
+// Reset Slot
+function resetRoom(id){
+
+localStorage.setItem("slots_"+id,0);
+localStorage.removeItem("joined_"+id);
+
+alert(id+" Slot Reset Done ✅");
+
+location.reload();
+}
+
+// Load Match History
+let history=JSON.parse(localStorage.getItem("matchHistory"))||[];
+let box=document.getElementById("history");
+
+let totalEntry=0;
+
+if(history.length===0){
+box.innerHTML="No Matches Yet";
+}else{
+
+history.reverse().forEach(function(h){
+
+totalEntry+=h.entry;
+
+box.innerHTML+=`
+<p>
+Match: ${h.match}<br>
+Entry: ₹${h.entry}<br>
+Date: ${h.date}
+</p>
+<hr>
+`;
+
+});
+
+}
+
+document.getElementById("totalMatches").innerText="Total Matches: "+history.length;
+document.getElementById("totalEntry").innerText="Total Entry Collected: ₹"+totalEntry;
+
 </script>
 
 </body>
