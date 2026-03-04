@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdraw</title>
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',Arial;
+background:#0f172a;
+color:white;
+}
+
+.container{
+margin:20px;
+background:#1e293b;
+padding:20px;
+border-radius:10px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:12px;
+border:none;
+border-radius:6px;
+background:#22c55e;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
+.balance{
+margin-bottom:10px;
+font-weight:bold;
+}
+
+.request-box{
+margin-top:15px;
+background:#0ea5e9;
+padding:10px;
+border-radius:6px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Withdraw Money</h2>
+
+<div class="balance">
+Available Balance: ₹<span id="balance">0</span>
+</div>
+
+<input type="number" id="amount" placeholder="Enter Amount (Min ₹100)">
+
+<select id="method">
+<option value="upi">UPI</option>
+<option value="bank">Bank Account</option>
+</select>
+
+<input type="text" id="details" placeholder="Enter UPI ID or Bank Details">
+
+<button onclick="requestWithdraw()">Request Withdrawal</button>
+
+<div id="statusBox"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+getFirestore,
+doc,
+getDoc,
+updateDoc,
+onSnapshot,
+addDoc,
+collection,
+serverTimestamp,
+increment
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser;
+
+onAuthStateChanged(auth,(user)=>{
+
+if(!user){
+window.location.href="auth.html";
+return;
+}
+
+currentUser = user;
+
+// Live balance
+onSnapshot(doc(db,"users",user.uid),(snap)=>{
+if(snap.exists()){
+document.getElementById("balance").innerText = snap.data().balance;
+}
+});
+
+});
+
+window.requestWithdraw = async function(){
+
+let amount = Number(document.getElementById("amount").value);
+let method = document.getElementById("method").value;
+let details = document.getElementById("details").value;
+
+if(amount < 100){
+alert("Minimum withdrawal ₹100");
+return;
+}
+
+if(!details){
+alert("Enter payment details");
+return;
+}
+
+const userRef = doc(db,"users",currentUser.uid);
+const userSnap = await getDoc(userRef);
+
+let balance = userSnap.data().balance;
+
+if(amount > balance){
+alert("Insufficient balance");
+return;
+}
+
+// 🔥 Balance immediately deduct
+await updateDoc(userRef,{
+balance: increment(-amount)
+});
+
+// Save withdrawal request
+await addDoc(collection(db,"withdrawals"),{
+uid: currentUser.uid,
+amount: amount,
+method: method,
+details: details,
+status: "pending",
+createdAt: serverTimestamp()
+});
+
+alert("Withdrawal Request Sent & Balance Locked ✅");
+
+document.getElementById("amount").value="";
+document.getElementById("details").value="";
+
+};
+
+</script>
+</body>
+</html>
