@@ -3,17 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Hari Bhai Company</title>
+<title>Hari Bhai Company - Secure Login</title>
 
 <style>
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
-background:transparent;
+background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
+background-size:400% 400%;
+animation:bgmove 8s ease infinite;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
+}
+
+@keyframes bgmove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
 }
 
 .container{
@@ -101,8 +109,8 @@ to{transform:scale(1);opacity:1;}
 
 <h2>Login</h2>
 
-<input type="email" id="email" placeholder="Enter Email">
-<input type="password" id="pass" placeholder="Enter Password">
+<input type="email" id="email" placeholder="Enter Email" required>
+<input type="password" id="pass" placeholder="Enter Password" required>
 
 <button onclick="login()">Login</button>
 
@@ -148,10 +156,19 @@ window.login = async function(){
 let email=document.getElementById("email").value;
 let pass=document.getElementById("pass").value;
 
+if(!email || !pass){
+alert("Please fill all fields ❌");
+return;
+}
+
 try{
 await signInWithEmailAndPassword(auth,email,pass);
 alert("Login Successful ✅");
+
+setTimeout(()=>{
 window.location.href="index.html";
+},1000);
+
 }catch(error){
 alert("Invalid Email or Password ❌");
 }
@@ -166,8 +183,8 @@ document.getElementById("authBox").innerHTML=`
 
 <h2>Register</h2>
 
-<input type="email" id="remail" placeholder="Enter Email">
-<input type="password" id="rpass" placeholder="Create Password">
+<input type="email" id="remail" placeholder="Enter Email" required>
+<input type="password" id="rpass" placeholder="Create Password" required>
 
 <button onclick="register()">Create Account</button>
 
@@ -184,6 +201,11 @@ window.register = async function(){
 let email=document.getElementById("remail").value;
 let pass=document.getElementById("rpass").value;
 
+if(!email || !pass){
+alert("Please fill all fields ❌");
+return;
+}
+
 try{
 
 const userCred = await createUserWithEmailAndPassword(auth,email,pass);
@@ -195,11 +217,15 @@ await setDoc(doc(db,"users",user.uid),{
 username: randomUsername,
 email: email,
 balance: 0,
-blocked: false
+blocked: false,
+createdAt: new Date()
 });
 
 alert("Account Created ✅ Username: " + randomUsername);
+
+setTimeout(()=>{
 window.location.href="index.html";
+},1000);
 
 }catch(error){
 alert(error.message);
