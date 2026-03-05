@@ -153,15 +153,15 @@ msg.style.color="red";
 return;
 }
 
-if(Number(amount) < 50){
-msg.innerText="Minimum deposit ₹50";
+if(Number(amount) < 0){
+msg.innerText="Minimum deposit ₹0";
 msg.style.color="red";
 return;
 }
 
 try{
 
-await addDoc(collection(db,"payments"),{
+await addDoc(collection(db,"deposits"),{
 uid: auth.currentUser.uid,
 username: currentUserData.username,
 amount: Number(amount),
