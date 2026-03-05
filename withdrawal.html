@@ -64,7 +64,7 @@ border-radius:6px;
 Available Balance: ₹<span id="balance">0</span>
 </div>
 
-<input type="number" id="amount" placeholder="Enter Amount (Min ₹100)">
+<input type="number" id="amount" placeholder="Enter Amount (Min ₹50)">
 
 <select id="method">
 <option value="upi">UPI</option>
@@ -131,8 +131,8 @@ let amount = Number(document.getElementById("amount").value);
 let method = document.getElementById("method").value;
 let details = document.getElementById("details").value;
 
-if(amount < 100){
-alert("Minimum withdrawal ₹100");
+if(amount < 50){
+alert("Minimum withdrawal ₹50");
 return;
 }
 
