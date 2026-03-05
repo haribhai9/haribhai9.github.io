@@ -134,7 +134,9 @@ setDoc,
 deleteDoc,
 getDoc,
 getDocs,
-increment
+increment,
+query,
+where
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -252,7 +254,12 @@ blocked: !status
 // ================= DEPOSITS =================
 const depositDiv=document.getElementById("deposits");
 
-onSnapshot(collection(db,"deposits"),(snapshot)=>{
+const depositQuery = query(
+collection(db,"deposits"),
+where("status","==","pending")
+);
+
+onSnapshot(depositQuery,(snapshot)=>{
 
 depositDiv.innerHTML="";
 
@@ -266,7 +273,7 @@ depositDiv.innerHTML+=`
 Username: ${d.username || d.uid}<br>
 Amount: ₹${d.amount}<br>
 UTR: ${d.utr}<br>
-Status: ${d.status || "pending"}<br>
+Status: ${d.status}<br>
 
 <button class="green" onclick="approveDeposit('${id}','${d.uid}',${d.amount})">Approve</button>
 <button class="red" onclick="rejectDeposit('${id}')">Reject</button>
@@ -274,6 +281,7 @@ Status: ${d.status || "pending"}<br>
 <hr>
 `;
 });
+
 });
 
 window.approveDeposit = async function(depId,uid,amount){
@@ -310,8 +318,16 @@ alert("Deposit Rejected ❌");
 // ================= WITHDRAWALS (LOCKED SYSTEM) =================
 const withdrawDiv=document.getElementById("withdrawals");
 
-onSnapshot(collection(db,"withdrawals"),(snapshot)=>{
+const withdrawQuery = query(
+collection(db,"withdrawals"),
+where("status","==","pending")
+);
 
+onSnapshot(withdrawQuery,(snapshot)=>{
+if(snapshot.empty){
+withdrawDiv.innerHTML="No Pending Withdrawals";
+return;
+}
 withdrawDiv.innerHTML="";
 
 snapshot.forEach((docSnap)=>{
