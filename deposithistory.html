@@ -152,7 +152,7 @@ return;
 }
 
 const q = query(
-collection(db,"deposits"),
+collection(db,"payments"),
 where("uid","==",user.uid),
 orderBy("time","desc")   // Latest First
 );
@@ -168,7 +168,7 @@ let statusClass = d.status || "pending";
 
 let date = "";
 if(d.time){
-const t = d.time.toDate();
+const t = new Date(d.time);
 date = t.toLocaleString();
 }
 
