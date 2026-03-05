@@ -138,20 +138,23 @@ window.location.href="auth.html";
 
 // SUBMIT DEPOSIT
 window.submitDeposit = async function(){
+
 if(!currentUserData){
 return;
 }
+
 let amount = document.getElementById("amount").value.trim();
 let utr = document.getElementById("utr").value.trim();
 let msg = document.getElementById("msg");
 
 if(amount==="" || utr===""){
-if(Number(amount) < 100){
-msg.innerText="Minimum deposit ₹100";
+msg.innerText="All fields required!";
 msg.style.color="red";
 return;
 }
-msg.innerText="All fields required!";
+
+if(Number(amount) < 50){
+msg.innerText="Minimum deposit ₹50";
 msg.style.color="red";
 return;
 }
@@ -159,26 +162,28 @@ return;
 try{
 
 await addDoc(collection(db,"payments"),{
+uid: auth.currentUser.uid,
 username: currentUserData.username,
-amount: amount,
+amount: Number(amount),
 utr: utr,
 status: "pending",
-time: new Date()
+time: Date.now()
 });
 
-msg.innerText="Deposit Request Accepted Please Wait For approve ✅";
+msg.innerText="Deposit Request Sent ✅";
 msg.style.color="lightgreen";
 
 document.getElementById("amount").value="";
 document.getElementById("utr").value="";
 
 }catch(error){
+
 msg.innerText="Error submitting request";
 msg.style.color="red";
-}
 
 }
 
+}
 </script>
 
 </body>
