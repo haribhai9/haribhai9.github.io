@@ -153,8 +153,7 @@ return;
 
 const q = query(
 collection(db,"deposits"),
-where("uid","==",user.uid),
-orderBy("time","desc")   // Latest First
+where("uid","==",user.uid)
 );
 
 onSnapshot(q,(snapshot)=>{
