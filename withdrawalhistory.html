@@ -117,7 +117,7 @@ box-shadow:0 0 15px #3b82f6;
 <div class="container">
 <h2>Withdrawal History</h2>
 <div id="historyData">Loading...</div>
-<button onclick="window.location.href='dashboard.html'">Back</button>
+<button onclick="history.back()">Back</button>
 </div>
 
 <script type="module">
@@ -154,7 +154,7 @@ return;
 const q = query(
 collection(db,"withdrawals"),
 where("uid","==",user.uid),
-orderBy("time","desc")   // Latest First
+orderBy("createdAt","desc")   // Latest First
 );
 
 onSnapshot(q,(snapshot)=>{
@@ -167,8 +167,8 @@ const w = docSnap.data();
 let statusClass = w.status || "pending";
 
 let date = "";
-if(w.time){
-const t = w.time.toDate();
+if(w.createdAt){
+const t = w.createdAt.toDate();
 date = t.toLocaleString();
 }
 
