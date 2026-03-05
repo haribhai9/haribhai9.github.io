@@ -76,9 +76,19 @@ hr{border:1px solid #334155;}
 <!-- MATCH TIME -->
 <div class="card">
 <h3>⏰ Match Timing</h3>
-<label>Match Time</label>
-<input type="text" id="matchTime">
-<button class="green" onclick="updateMatchTime()">Update Time</button>
+
+<label>Match 1 Time</label>
+<input type="text" id="matchTime1">
+
+<button class="green" onclick="updateMatchTime('match1')">Update</button>
+
+<hr>
+
+<label>Match 2 Time</label>
+<input type="text" id="matchTime2">
+
+<button class="green" onclick="updateMatchTime('match2')">Update</button>
+
 </div>
 
 <!-- USERS -->
@@ -129,33 +139,42 @@ console.log("🔥 Admin Connected");
 
 // ================= ROOM SAVE =================
 window.saveRoom = async function(id){
+
 let roomID=document.getElementById("roomID_"+id).value;
 let roomPASS=document.getElementById("roomPASS_"+id).value;
 
 await setDoc(doc(db,"rooms",id),{
-roomID,
-roomPASS,
-slots:0
-});
+roomID: roomID,
+roomPASS: roomPASS,
+slots: 0
+},{merge:true});
 
-alert("Room Saved ✅");
+alert(id+" Saved ✅");
 }
 
 
 // ================= MATCH TIME =================
-window.updateMatchTime = async function(){
-let time=document.getElementById("matchTime").value;
+window.updateMatchTime = async function(match){
 
-await setDoc(doc(db,"settings","match"),{
-time
+let time = document.getElementById("matchTime"+(match==="match1" ? "1":"2")).value;
+
+await setDoc(doc(db,"settings",match),{
+time:time
 });
 
-alert("Match Time Updated ✅");
+alert("Time Updated ✅");
 }
 
-onSnapshot(doc(db,"settings","match"),(snap)=>{
+// realtime load
+onSnapshot(doc(db,"settings","match1"),(snap)=>{
 if(snap.exists()){
-document.getElementById("matchTime").value=snap.data().time;
+document.getElementById("matchTime1").value=snap.data().time;
+}
+});
+
+onSnapshot(doc(db,"settings","match2"),(snap)=>{
+if(snap.exists()){
+document.getElementById("matchTime2").value=snap.data().time;
 }
 });
 
