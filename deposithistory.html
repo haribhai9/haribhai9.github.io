@@ -117,7 +117,7 @@ box-shadow:0 0 15px #3b82f6;
 <div class="container">
 <h2>Deposit History</h2>
 <div id="historyData">Loading...</div>
-<button onclick="window.location.href='dashboard.html'">Back</button>
+<button onclick="history.back()">Back</button>
 </div>
 
 <script type="module">
@@ -152,7 +152,7 @@ return;
 }
 
 const q = query(
-collection(db,"payments"),
+collection(db,"deposits"),
 where("uid","==",user.uid),
 orderBy("time","desc")   // Latest First
 );
