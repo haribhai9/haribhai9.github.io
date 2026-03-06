@@ -141,18 +141,68 @@ display:none;
 </head>
 
 <body>
+<!-- RULES PANEL -->
 
+<div id="rulesPanel" style="
+position:fixed;
+top:0;
+right:-100%;
+width:80%;
+height:100%;
+background:#1e293b;
+padding:20px;
+transition:0.4s;
+z-index:999;
+overflow:auto;
+">
+
+<button onclick="closeRules()" style="
+background:red;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:6px;
+float:right;">❌</button>
+
+<h3>CUSTOM MATCH RULE</h3>
+
+<p>
+1) HACKER NOT ALLOWED IF HACKER FOUND THEN HE OR SHE WILL BE BAN PERMANENTLY AND DETECT ALL MONEY ( HACKER ARE STRICTLY PROHIBITED 🚫
+</p>
+
+<p>
+2) Room id pass jab provide kara dia jaye tab 10 min me custom me ajana varna winner bana dia jayega opposite player ko.
+</p>
+
+<p>
+3) grenade not allowed and follow general custom rule.
+</p>
+
+<p>Thanks follow carefully all rules 🥰</p>
+
+</div>
 <div class="header">
 <div class="balance">Balance: ₹<span id="balance">0</span></div>
+
+<button onclick="openRules()" style="
+background:#facc15;
+border:none;
+padding:6px 12px;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;">
+Rules
+</button>
+
 </div>
 
 <!-- ROOM 1 -->
 <div class="tournament">
-<img src="one.png">
+<img src="new.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <p>Entry: ₹20</p>
-<p>Win: ₹35</p>
+<p>Win: ₹30</p>
 <p class="time">Match Time: <span id="time_room1">Waiting...</span></p>
 <p class="slot" id="slot_room1">Loading...</p>
 <button class="btn" id="btn_room1" onclick="joinMatch('room1',20)">Join Now</button>
@@ -162,7 +212,7 @@ display:none;
 
 <!-- ROOM 2 -->
 <div class="tournament">
-<img src="two.png">
+<img src="newi.png">
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <p>Entry: ₹10</p>
@@ -171,6 +221,34 @@ display:none;
 <p class="slot" id="slot_room2">Loading...</p>
 <button class="btn" id="btn_room2" onclick="joinMatch('room2',10)">Join Now</button>
 <div class="room-box" id="room2"></div>
+</div>
+</div>
+
+<!-- ROOM 3 -->
+<div class="tournament">
+<img src="newii.png">
+<div class="t-info">
+<h3>Free Fire Tournament</h3>
+<p>Entry: ₹30</p>
+<p>Win: ₹50</p>
+<p class="time">Match Time: <span id="time_room3">Waiting...</span></p>
+<p class="slot" id="slot_room3">Loading...</p>
+<button class="btn" id="btn_room3" onclick="joinMatch('room3',30)">Join Now</button>
+<div class="room-box" id="room3"></div>
+</div>
+</div>
+
+<!-- ROOM 4 -->
+<div class="tournament">
+<img src="newiii.png">
+<div class="t-info">
+<h3>Free Fire Tournament</h3>
+<p>Entry: ₹50</p>
+<p>Win: ₹85</p>
+<p class="time">Match Time: <span id="time_room4">Waiting...</span></p>
+<p class="slot" id="slot_room4">Loading...</p>
+<button class="btn" id="btn_room4" onclick="joinMatch('room4',50)">Join Now</button>
+<div class="room-box" id="room4"></div>
 </div>
 </div>
 
@@ -244,10 +322,23 @@ if(snap.exists()){
 document.getElementById("time_room2").innerText = snap.data().time;
 }
 });
+// Match 3 Time
+onSnapshot(doc(db,"settings","match3"),(snap)=>{
+if(snap.exists()){
+document.getElementById("time_room3").innerText = snap.data().time;
+}
+});
+
+// Match 4 Time
+onSnapshot(doc(db,"settings","match4"),(snap)=>{
+if(snap.exists()){
+document.getElementById("time_room4").innerText = snap.data().time;
+}
+});
 
 /* ================= SLOT LIVE ================= */
 
-["room1","room2"].forEach((room)=>{
+["room1","room2","room3","room4"].forEach((room)=>{
 
 onSnapshot(doc(db,"rooms",room),(snap)=>{
 
@@ -268,6 +359,7 @@ btn.disabled = true;
 }else{
 slotText.innerHTML = "Slot: "+slot+" / "+maxSlot;
 slotText.style.color = "#22c55e";
+btn.disabled = false;
 }
 
 });
@@ -359,7 +451,13 @@ box.innerHTML =
 });
 
 }
+window.openRules = function(){
+document.getElementById("rulesPanel").style.right="0";
+}
 
+window.closeRules = function(){
+document.getElementById("rulesPanel").style.right="-100%";
+}
 </script>
 <!-- JOIN POPUP -->
 <div id="joinPopup" class="popup">
