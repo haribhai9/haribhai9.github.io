@@ -83,6 +83,23 @@ throw new Error("Access Blocked");
 <input type="text" id="roomPASS_room2">
 <button class="green" onclick="saveRoom('room2')">Save Room 2</button>
 <button class="red" onclick="resetRoom('room2')">Reset Room 2</button>
+<hr>
+
+<label>Room 3 ID</label>
+<input type="text" id="roomID_room3">
+<label>Room 3 Pass</label>
+<input type="text" id="roomPASS_room3">
+<button class="green" onclick="saveRoom('room3')">Save Room 3</button>
+<button class="red" onclick="resetRoom('room3')">Reset Room 3</button>
+
+<hr>
+
+<label>Room 4 ID</label>
+<input type="text" id="roomID_room4">
+<label>Room 4 Pass</label>
+<input type="text" id="roomPASS_room4">
+<button class="green" onclick="saveRoom('room4')">Save Room 4</button>
+<button class="red" onclick="resetRoom('room4')">Reset Room 4</button>
 </div>
 
 <!-- MATCH TIME -->
@@ -100,7 +117,17 @@ throw new Error("Access Blocked");
 <input type="text" id="matchTime2">
 
 <button class="green" onclick="updateMatchTime('match2')">Update</button>
+<hr>
 
+<label>Match 3 Time</label>
+<input type="text" id="matchTime3">
+<button class="green" onclick="updateMatchTime('match3')">Update</button>
+
+<hr>
+
+<label>Match 4 Time</label>
+<input type="text" id="matchTime4">
+<button class="green" onclick="updateMatchTime('match4')">Update</button>
 </div>
 
 <!-- USERS -->
@@ -192,6 +219,17 @@ document.getElementById("matchTime2").value=snap.data().time;
 }
 });
 
+onSnapshot(doc(db,"settings","match3"),(snap)=>{
+if(snap.exists()){
+document.getElementById("matchTime3").value=snap.data().time;
+}
+});
+
+onSnapshot(doc(db,"settings","match4"),(snap)=>{
+if(snap.exists()){
+document.getElementById("matchTime4").value=snap.data().time;
+}
+});
 
 // ================= USERS =================
 const usersDiv=document.getElementById("users");
