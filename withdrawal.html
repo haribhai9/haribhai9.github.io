@@ -144,6 +144,8 @@ return;
 const userRef = doc(db,"users",currentUser.uid);
 const userSnap = await getDoc(userRef);
 
+let username = userSnap.data().username;
+
 let balance = userSnap.data().winningBalance || 0;
 
 if(amount > balance){
@@ -159,13 +161,13 @@ winningBalance: increment(-amount)
 // Save withdrawal request
 await addDoc(collection(db,"withdrawals"),{
 uid: currentUser.uid,
+username: username,
 amount: amount,
 method: method,
 details: details,
 status: "pending",
 createdAt: serverTimestamp()
 });
-
 alert("Withdrawal Request Sent & Balance Locked ✅");
 
 document.getElementById("amount").value="";
@@ -175,4 +177,4 @@ document.getElementById("details").value="";
 
 </script>
 </body>
-</html>
+</html> 
