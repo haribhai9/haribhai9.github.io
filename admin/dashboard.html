@@ -197,14 +197,16 @@ alert(id+" Saved ✅");
 // ================= MATCH TIME =================
 window.updateMatchTime = async function(match){
 
-let time = document.getElementById("matchTime"+(match==="match1" ? "1":"2")).value;
+let number = match.replace("match",""); 
+let time = document.getElementById("matchTime"+number).value;
 
 await setDoc(doc(db,"settings",match),{
 time:time
 });
 
-alert("Time Updated ✅");
+alert(match+" Time Updated ✅");
 }
+
 
 // realtime load
 onSnapshot(doc(db,"settings","match1"),(snap)=>{
