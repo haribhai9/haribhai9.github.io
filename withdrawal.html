@@ -64,14 +64,14 @@ border-radius:6px;
 Available Balance: ₹<span id="balance">0</span>
 </div>
 
-<input type="number" id="amount" placeholder="Enter Amount (Min ₹50)">
+<input type="number" id="amount" placeholder="Enter Amount (Min ₹10)">
 
 <select id="method">
 <option value="upi">UPI</option>
 <option value="bank">Bank Account</option>
 </select>
 
-<input type="text" id="details" placeholder="Enter UPI ID or Bank Details">
+<input type="text" id="details" placeholder="Enter UPI ID or Bank Number and Ifsc Number">
 
 <button onclick="requestWithdraw()">Request Withdrawal</button>
 
@@ -119,7 +119,7 @@ currentUser = user;
 // Live balance
 onSnapshot(doc(db,"users",user.uid),(snap)=>{
 if(snap.exists()){
-document.getElementById("balance").innerText = snap.data().balance;
+document.getElementById("balance").innerText = snap.data().winningBalance || 0;
 }
 });
 
@@ -131,8 +131,8 @@ let amount = Number(document.getElementById("amount").value);
 let method = document.getElementById("method").value;
 let details = document.getElementById("details").value;
 
-if(amount < 50){
-alert("Minimum withdrawal ₹50");
+if(amount < 10){
+alert("Minimum withdrawal ₹10");
 return;
 }
 
@@ -144,7 +144,7 @@ return;
 const userRef = doc(db,"users",currentUser.uid);
 const userSnap = await getDoc(userRef);
 
-let balance = userSnap.data().balance;
+let balance = userSnap.data().winningBalance || 0;
 
 if(amount > balance){
 alert("Insufficient balance");
@@ -153,7 +153,8 @@ return;
 
 // 🔥 Balance immediately deduct
 await updateDoc(userRef,{
-balance: increment(-amount)
+await updateDoc(userRef,{
+winningBalance: increment(-amount)
 });
 
 // Save withdrawal request
