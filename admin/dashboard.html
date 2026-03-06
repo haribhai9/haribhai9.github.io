@@ -424,7 +424,7 @@ return;
 }
 
 await updateDoc(doc(db,"users",uid),{
-balance: increment(amount)
+winningBalance: increment(amount)
 });
 
 await updateDoc(wRef,{
