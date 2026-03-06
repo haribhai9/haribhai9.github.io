@@ -267,12 +267,15 @@ ${data.blocked ? "Unblock" : "Block"}
 });
 
 window.addBalance = async function(uid){
+
 let amt=parseInt(document.getElementById("amt_"+uid).value);
 if(!amt)return alert("Enter Amount");
 
 await updateDoc(doc(db,"users",uid),{
-balance: increment(amt)
+balance: increment(amt),
+winningBalance: increment(amt)
 });
+
 }
 
 window.cutBalance = async function(uid){
