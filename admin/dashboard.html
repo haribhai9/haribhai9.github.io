@@ -272,7 +272,6 @@ let amt=parseInt(document.getElementById("amt_"+uid).value);
 if(!amt)return alert("Enter Amount");
 
 await updateDoc(doc(db,"users",uid),{
-balance: increment(amt),
 winningBalance: increment(amt)
 });
 
