@@ -186,8 +186,7 @@ let roomPASS=document.getElementById("roomPASS_"+id).value;
 
 await setDoc(doc(db,"rooms",id),{
 roomID: roomID,
-roomPASS: roomPASS,
-slots: 0
+roomPASS: roomPASS
 },{merge:true});
 
 alert(id+" Saved ✅");
