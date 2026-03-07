@@ -295,7 +295,10 @@ onSnapshot(userRef,(snap)=>{
 if(!snap.exists()) return;
 
 let data = snap.data();
-document.getElementById("balance").innerText = data.balance || 0;
+let deposit = data.balance || 0;
+let winning = data.winningBalance || 0;
+
+document.getElementById("balance").innerText = deposit + winning;
 
 // Auto show joined room after refresh
 if(data.joinedRoom){
@@ -395,7 +398,10 @@ const roomSnap = await getDoc(roomRef);
 if(!userSnap.exists() || !roomSnap.exists()) return;
 
 let userData = userSnap.data();
-let balance = userData.balance;
+let deposit = userData.balance || 0;
+let winning = userData.winningBalance || 0;
+
+let total = deposit + winning;
 let slot = roomSnap.data().slots || 0;
 
 if(userData.joinedRoom){
@@ -404,7 +410,7 @@ closePopup();
 return;
 }
 
-if(balance < selectedFee){
+if(total < selectedFee){
 alert("Insufficient Balance ❌");
 return;
 }
@@ -414,8 +420,26 @@ alert("Slot Full ❌");
 return;
 }
 
+let newDeposit = deposit;
+let newWinning = winning;
+
+// 🔥 Deduct logic
+if(winning >= selectedFee){
+
+newWinning = winning - selectedFee;
+
+}else{
+
+let remaining = selectedFee - winning;
+
+newWinning = 0;
+newDeposit = Math.max(0, deposit - remaining);
+
+}
+
 await updateDoc(userRef,{
-balance: balance - selectedFee,
+balance: newDeposit,
+winningBalance: newWinning,
 joinedRoom: selectedRoom,
 gameName: gameName
 });
@@ -423,6 +447,8 @@ gameName: gameName
 await updateDoc(roomRef,{
 slots: increment(1)
 });
+
+document.getElementById("btn_"+selectedRoom).disabled = true;
 
 closePopup();
 showRoom(selectedRoom);
