@@ -76,6 +76,7 @@ height:110px;
 border-radius:50%;
 border:3px solid #3b82f6;
 object-fit:cover;
+cursor:pointer;
 }
 
 .profile h3{
@@ -83,13 +84,23 @@ margin:10px 0 5px;
 font-size:18px;
 }
 
-.balance{
-background:#22c55e;
-display:inline-block;
-padding:5px 12px;
-border-radius:20px;
-font-size:13px;
+.wallets{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-top:10px;
 }
+
+.wallet{
+padding:6px 10px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.win{background:#22c55e;}
+.dep{background:#3b82f6;}
+.total{background:#f59e0b;}
 
 .card{
 background:#1e293b;
@@ -126,9 +137,24 @@ cursor:pointer;
 </div>
 
 <div class="profile">
-<img src="random.png">
+<img src="https://i.imgur.com/6VBx3io.png" id="profilePic" onclick="openGallery()">
+
+<input type="file" id="fileInput" accept="image/*" style="display:none">
 <h3 id="username">Loading...</h3>
-<div class="balance">Balance: ₹<span id="balance">0</span></div>
+<div class="wallets">
+
+<div class="wallet win">
+Winning ₹<span id="winning">0</span>
+</div>
+
+<div class="wallet dep">
+Deposit ₹<span id="deposit">0</span>
+</div>
+
+<div class="wallet total">
+Total ₹<span id="balance">0</span>
+</div>
+
 </div>
 
 <div class="card">
@@ -198,6 +224,8 @@ let winningBal = data.winningBalance || 0;
 
 let total = depositBal + winningBal;
 
+document.getElementById("deposit").innerText = depositBal;
+document.getElementById("winning").innerText = winningBal;
 document.getElementById("balance").innerText = total;
 
 }
@@ -283,9 +311,52 @@ document.getElementById("historyData").innerHTML=html || "No Withdrawal History"
 function openMenu(){
 document.getElementById("sidebar").style.right="0px";
 }
+
 function closeMenu(){
 document.getElementById("sidebar").style.right="-220px";
 }
+
+function openGallery(){
+document.getElementById("fileInput").click();
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+document.getElementById("fileInput").addEventListener("change",function(){
+
+const file = this.files[0];
+
+if(!file) return;
+
+if(file.size > 2000000){
+alert("Image size must be under 2MB");
+return;
+}
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+document.getElementById("profilePic").src = e.target.result;
+
+// save image
+localStorage.setItem("profileImage",e.target.result);
+
+}
+
+reader.readAsDataURL(file);
+
+});
+
+// reload image after refresh
+const savedImage = localStorage.getItem("profileImage");
+
+if(savedImage){
+document.getElementById("profilePic").src = savedImage;
+}
+
+});
+
 </script>
 
 </body>
