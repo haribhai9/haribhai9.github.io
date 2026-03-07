@@ -248,7 +248,8 @@ const uid=docSnap.id;
 usersDiv.innerHTML+=`
 <div class="user-box">
 <b>${data.username}</b><br>
-Balance: ₹${data.balance}<br>
+Deposit: ₹${data.balance || 0}<br>
+Winning: ₹${data.winningBalance || 0}<br>
 Joined Room: ${data.joinedRoom ? data.joinedRoom : "Not Joined"}<br>
 Game Name: ${data.gameName ? data.gameName : "Not Entered"}<br>
 Status: ${data.blocked ? "🚫 Blocked" : "✅ Active"}<br>
@@ -268,12 +269,20 @@ ${data.blocked ? "Unblock" : "Block"}
 
 window.addBalance = async function(uid){
 
-let amt=parseInt(document.getElementById("amt_"+uid).value);
-if(!amt)return alert("Enter Amount");
+let amt = parseInt(document.getElementById("amt_"+uid).value);
+if(!amt) return alert("Enter Amount");
 
-await updateDoc(doc(db,"users",uid),{
-winningBalance: increment(amt)
+// user data first fetch
+const userRef = doc(db,"users",uid);
+const userSnap = await getDoc(userRef);
+
+let currentWinning = userSnap.data().winningBalance || 0;
+
+await updateDoc(userRef,{
+winningBalance: currentWinning + amt
 });
+
+alert("Winning Balance Added ✅");
 
 }
 
