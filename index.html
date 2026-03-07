@@ -91,39 +91,62 @@ opacity:0.9;
 }
 
 .battle-banner{
+position:relative;
 text-align:center;
 margin-top:20px;
-}
-
-.battle-banner{
 width:100%;
-margin-top:20px;
 }
 
 .battle-banner img{
 width:100%;
-height:auto;
-object-fit:cover;
+max-height:420px;
+object-fit:contain;
 border-radius:12px;
 box-shadow:0 6px 18px rgba(0,0,0,0.4);
+background:black;
 }
 .battle-heading{
 text-align:center;
-font-size:22px;
-font-weight:bold;
+font-size:36px;
+font-weight:900;
 margin-top:15px;
 margin-bottom:10px;
-background:linear-gradient(90deg,red,yellow,green,cyan,blue);
-background-size:400%;
+letter-spacing:3px;
+
+/* Colorful Gradient */
+background:linear-gradient(90deg,
+#ff0000,
+#ff7300,
+#ffea00,
+#00ffea,
+#00ff00,
+#0099ff,
+#ff00c8);
+
+background-size:500%;
+
+/* Text Gradient */
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
-animation:battleColor 6s linear infinite;
+
+/* Animation */
+animation:rainbowMove 6s linear infinite;
+
+/* Glow Effect */
+text-shadow:
+0 0 10px rgba(255,255,255,0.5),
+0 0 20px rgba(255,0,0,0.5),
+0 0 30px rgba(0,255,255,0.5);
+
+/* Slight 3D */
+transform:perspective(500px) rotateX(8deg);
 }
 
-@keyframes battleColor{
+@keyframes rainbowMove{
 0%{background-position:0%;}
-100%{background-position:400%;}
+100%{background-position:500%;}
 }
+
 .play-now-btn{
 display:block;
 width:200px;
@@ -382,7 +405,39 @@ text-decoration:none;
 box-shadow:0 4px 10px rgba(0,0,0,0.3);
 z-index:9999;
 }
+/* BIG TOURNAMENT TEXT */
+.banner-text{
+position:absolute;
+top:20px;
+left:50%;
+transform:translateX(-50%);
+font-size:34px;
+font-weight:900;
+font-family:Impact, Arial Black, sans-serif;
+text-transform:uppercase;
+letter-spacing:2px;
+text-align:center;
+padding:8px 20px;
+border-radius:10px;
 
+background:linear-gradient(90deg,#ff0000,#ff7300,#ffea00,#00ffea,#ff00c8);
+background-size:400%;
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+animation:fireText 4s linear infinite;
+
+text-shadow:
+0 0 10px red,
+0 0 20px orange,
+0 0 30px yellow;
+}
+
+@keyframes fireText{
+0%{background-position:0%;}
+100%{background-position:400%;}
+}
 /* Bottom Action Bar */
 .bottom-action-bar{
 position:fixed;
@@ -442,10 +497,12 @@ background:linear-gradient(45deg,#0a66c2,#003366);
 <h1>Welcome to Hari Bhai Company</h1>
 <p>Trusted Business & Professional Services</p>
 
-<h2 class="battle-heading">BATTLEGROUND PAID TOURNAMENT</h2>
+<h2 class="battle-heading">FREE FIRE PAID TOURNAMENT</h2>
 
 <div class="battle-banner">
-<img src="battle.gif">
+
+<img id="battleMedia" src="tournament.jpg">
+
 </div>
 <a href="play.html" class="play-now-btn">▶ PLAY NOW</a>
 </div>
@@ -657,6 +714,25 @@ document.getElementById("popup").style.display="flex";
 window.closePopup = function(){
 document.getElementById("popup").style.display="none";
 }
+window.addEventListener("load", function(){
+
+const media = document.getElementById("battleMedia");
+
+const photo = "tournament.jpg";
+const gif = "battle.gif";
+
+let showPhoto = true;
+
+setInterval(()=>{
+if(showPhoto){
+media.src = gif;
+}else{
+media.src = photo;
+}
+showPhoto = !showPhoto;
+},3000);
+
+});
 </script>
 
 </body>
