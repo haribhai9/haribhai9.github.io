@@ -41,13 +41,13 @@ Don't have account? <span onclick="window.location.href='join.html'">Register</s
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Firebase config
+// Firebase config (same as your project)
 const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain: "ff-tournament-915ed.firebaseapp.com",
+  projectId: "ff-tournament-915ed",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -57,7 +57,7 @@ const provider = new GoogleAuthProvider();
 
 // Email + Password login
 window.login = async function(){
-  const email = document.getElementById('email').value.trim();
+  const email = document.getElementById('email').value.trim().toLowerCase(); // lowercase to avoid caps mismatch
   const pass = document.getElementById('pass').value.trim();
   if(!email || !pass){ alert("Please fill all fields ❌"); return; }
 
@@ -76,11 +76,10 @@ window.googleLogin = async function(){
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Make sure user is in Firestore
+    // Ensure Google user exists in Firestore
     const userRef = doc(db,"users",user.uid);
     const docSnap = await getDoc(userRef);
     if(!docSnap.exists()){
-      // New Google user
       await setDoc(userRef,{
         username: "HB" + Math.floor(100000 + Math.random()*900000),
         email: user.email,
