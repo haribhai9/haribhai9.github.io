@@ -9,11 +9,11 @@
 body{
 margin:0;
 font-family:'Segoe UI',Arial;
-background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
+background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);
 background-size:400% 400%;
 animation:gradientBG 10s ease infinite;
 scroll-behavior:smooth;
-padding-bottom:120px;
+padding-bottom:80px;
 }
 
 @keyframes gradientBG{
@@ -28,8 +28,8 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:15px 25px;
-background:white;
-box-shadow:0 4px 10px rgba(0,0,0,0.05);
+background:#0f172a;
+box-shadow:0 4px 20px rgba(0,0,0,0.6);
 position:sticky;
 top:0;
 z-index:1000;
@@ -69,10 +69,21 @@ color:white;
 /* HERO */
 .hero{
 text-align:center;
-padding:40px 20px 20px;
-background:linear-gradient(135deg,#0a66c2,#002f6c);
+padding:60px 15px 40px;
 color:white;
+background:linear-gradient(145deg,#1f2633,#121720);
+
+width:100%;
+max-width:100%;
+box-sizing:border-box;
+
+margin:0;
+border-radius:0;
+
+position:relative;
+overflow:hidden;
 }
+
 .hero h1{
 font-size:32px;
 margin-bottom:10px;
@@ -84,6 +95,17 @@ font-size:16px;
 opacity:0.9;
 }
 
+.hero::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle at 20% 30%,rgba(255,255,255,0.08),transparent),
+radial-gradient(circle at 80% 70%,rgba(255,255,255,0.05),transparent);
+pointer-events:none;
+}
 @keyframes floatText{
 0%{transform:translateY(0px);}
 50%{transform:translateY(-6px);}
@@ -245,8 +267,10 @@ padding-left:10px;
 
 /* SERVICES */
 .services{
-padding:40px 20px;
-background:white;
+padding:50px 20px;
+text-align:center;
+color:white;
+background:transparent;
 }
 
 .admin-heading{
@@ -262,16 +286,19 @@ animation:colorMove 6s linear infinite;
 }
 
 .service-box{
-background:#f9fbff;
+background:linear-gradient(145deg,#1f2633,#121720);
 padding:25px;
 margin-bottom:25px;
-border-radius:12px;
-box-shadow:0 6px 15px rgba(0,0,0,0.08);
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
+color:white;
 transition:0.3s;
 }
 
 .service-box:hover{
-transform:translateY(-5px);
+transform:translateY(-6px) scale(1.01);
+box-shadow:0 10px 30px rgba(0,0,0,0.7);
 }
 
 .tiger-title{
@@ -307,36 +334,61 @@ margin-bottom:10px;
 
 /* WHY */
 .why{
-padding:40px 20px;
-text-align:center;
-background:#eef3f9;
+background:linear-gradient(145deg,#1f2633,#121720);
+padding:25px;
+margin-bottom:25px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
+color:white;
+transition:0.3s;
 }
 
 /* TESTIMONIAL */
 .testimonial{
-padding:40px 20px;
-text-align:center;
-background:white;
+background:linear-gradient(145deg,#1f2633,#121720);
+padding:25px;
+margin-bottom:25px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
+color:white;
+transition:0.3s;
 }
 
 .testimonial-box{
-background:#f1f1f1;
+background:#242a33;
+color:white;
 padding:20px;
 border-radius:12px;
 margin-bottom:15px;
 }
-
-/* FAQ */
 .faq{
-padding:40px 20px;
-background:#f9fbff;
+background:linear-gradient(145deg,#1f2633,#121720);
+padding:25px;
+margin-bottom:25px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
+color:white;
+text-align:center;
 }
 
+.faq p{
+max-width:600px;
+margin:10px auto;
+line-height:1.6;
+}
 /* CONTACT */
 .contact-form{
-padding:40px 20px;
-text-align:center;
-background:white;
+background:linear-gradient(145deg,#1f2633,#121720);
+padding:25px;
+margin-bottom:25px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
+color:white;
+transition:0.3s;
 }
 
 .contact-form input,
@@ -444,12 +496,13 @@ position:fixed;
 bottom:0;
 left:0;
 width:100%;
-background:white;
+background:#0f172a;
 display:flex;
 justify-content:space-around;
 align-items:center;
 padding:12px 0;
-box-shadow:0 -4px 15px rgba(0,0,0,0.15);
+box-shadow:0 -4px 20px rgba(0,0,0,0.6);
+border-top:1px solid rgba(255,255,255,0.05);
 z-index:9998;
 }
 
@@ -477,11 +530,15 @@ box-shadow:0 4px 12px rgba(0,0,0,0.3);
 background:linear-gradient(45deg,#0a66c2,#003366);
 }
 .ff-highlights{
-padding:50px 20px;
-background:white;
-text-align:center;
+background:linear-gradient(145deg,#1f2633,#121720);
+padding:25px;
+margin-bottom:25px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
+color:white;
+transition:0.3s;
 }
-
 .ff-title{
 font-size:30px;
 font-weight:900;
@@ -500,13 +557,13 @@ padding-bottom:10px;
 
 .ff-card{
 min-width:230px;
-background:#f8faff;
+background:linear-gradient(145deg,#1f2633,#121720);
+color:white;
 border-radius:15px;
-box-shadow:0 6px 15px rgba(0,0,0,0.15);
+box-shadow:0 8px 25px rgba(0,0,0,0.6);
 overflow:hidden;
 transition:0.3s;
 }
-
 .ff-card:hover{
 transform:translateY(-6px);
 }
@@ -528,7 +585,7 @@ font-size:16px;
 
 .ff-text p{
 font-size:13px;
-color:#555;
+color:#bbb;
 }
 </style>
 </head>
@@ -659,11 +716,11 @@ We believe in building long term trust with our customers through transparency a
 © 2026 Hari Bhai Company | All Rights Reserved
 <div class="footer-links">
 <a href="about.html"class="action-btn about-main">About</a>
-<a href="blog.html">Blog</a>
-<a href="privacy.html">Privacy Policy</a>
-<a href="terms.html">Terms & Conditions</a>
-<a href="support.html">Support</a>
-<a href="contact.html">Contact</a>
+<a href="blog.html"class="action-btn blog-main">Blog</a>
+<a href="privacy.html"class="action-btn privacy-main">Privacy</a>
+<a href="terms.html"class="action-btn terms-main">Tems And Condition</a>
+<a href="support.html"class="action-btn support-main">Support</a>
+<a href="contact.html"class="action-btn contact-main">Contact</a>
 </div>
 </div>
 
