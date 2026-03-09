@@ -2,7 +2,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Hari Bhai Company - Secure Auth</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hari Bhai Company - Register</title>
 <style>
 body{
 margin:0;
@@ -97,11 +98,8 @@ to{transform:scale(1);opacity:1;}
 
 <h2>Register</h2>
 
-<!-- Phone Number -->
-<input type="tel" id="phone" placeholder="Enter Phone Number">
-
-<!-- reCAPTCHA -->
-<div id="recaptcha-container"></div>
+<!-- Email -->
+<input type="email" id="email" placeholder="Enter Email">
 
 <!-- Send OTP -->
 <button onclick="sendOTP()">Send OTP</button>
@@ -132,8 +130,7 @@ Already have account? <span onclick="goLogin()">Login</span>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber, updatePassword } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, GoogleAuthProvider, signInWithPopup, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase config
@@ -152,63 +149,67 @@ function generateUsername(){
   return "HB" + Math.floor(100000 + Math.random()*900000);
 }
 
-// Setup reCAPTCHA
-window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
-  'size':'normal',
-  'callback':()=>{ console.log("reCAPTCHA solved"); }
-}, auth);
+// Message helper
+function showMsg(text,color){
+  const msg = document.getElementById('msg');
+  msg.style.display="block";
+  msg.style.color=color;
+  msg.innerText = text;
+}
 
-let currentUser = null;
+let currentEmail = null;
 
-// Send OTP
-window.sendOTP = function(){
-  const phone = document.getElementById('phone').value;
-  if(!phone){ showMsg("Enter phone number!","red"); return; }
+// Action code settings for OTP link
+const actionCodeSettings = {
+  url: window.location.href,
+  handleCodeInApp: true
+}
 
-  signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
-    .then(confirmationResult => {
-      window.confirmationResult = confirmationResult;
-      showMsg("OTP sent ✅ Check your phone","green");
-    })
-    .catch(error => showMsg(error.message,"red"));
+// Send OTP to email
+window.sendOTP = async function(){
+  let email = document.getElementById('email').value.trim();
+  if(!email){ showMsg("Enter Email!","red"); return; }
+  currentEmail = email;
+
+  try{
+    await sendSignInLinkToEmail(auth,email,actionCodeSettings);
+    window.localStorage.setItem('emailForSignIn',email);
+    showMsg("OTP sent ✅ Check your email","green");
+  }catch(error){ showMsg(error.message,"red"); }
 }
 
 // Verify OTP
-window.verifyOTP = function(){
-  const code = document.getElementById('otp').value;
+window.verifyOTP = async function(){
+  const code = document.getElementById('otp').value.trim();
   if(!code){ showMsg("Enter OTP!","red"); return; }
+  let email = window.localStorage.getItem('emailForSignIn') || currentEmail;
+  if(!email){ showMsg("Email not found!","red"); return; }
 
-  window.confirmationResult.confirm(code)
-    .then(async result => {
-      currentUser = result.user; // save current user
-      showMsg("OTP verified! ✅ Set your password below","green");
-      document.getElementById('password-section').style.display = 'block'; // show password input
-    })
-    .catch(error => showMsg(error.message,"red"));
+  try{
+    const result = await signInWithEmailLink(auth,email,window.location.href);
+    currentUser = result.user;
+    showMsg("OTP verified! ✅ Set your password below","green");
+    document.getElementById('password-section').style.display = 'block';
+  }catch(error){ showMsg(error.message,"red"); }
 }
 
 // Set password after OTP
 window.setPassword = async function(){
-  const pass = document.getElementById('password').value;
+  const pass = document.getElementById('password').value.trim();
   if(!pass){ showMsg("Enter a password!","red"); return; }
-  if(!currentUser){ showMsg("Something went wrong!","red"); return; }
 
   try{
-    // Update password in Firebase Auth
-    await updatePassword(currentUser, pass);
-
-    // Save user in Firestore
+    await updatePassword(auth.currentUser, pass); // set password
     const randomUsername = generateUsername();
-    await setDoc(doc(db,"users",currentUser.uid),{
+    await setDoc(doc(db,"users",auth.currentUser.uid),{
       username: randomUsername,
-      phone: currentUser.phoneNumber,
+      email: auth.currentUser.email,
       balance:0,
       blocked:false,
       createdAt:new Date()
     }, { merge:true });
 
-    showMsg("Account created ✅ Username: "+randomUsername,"green");
-
+    showMsg("Registration Successful ✅ Username: "+randomUsername,"green");
     setTimeout(()=>{ window.location.href="auth.html"; },1000);
   }catch(error){ showMsg(error.message,"red"); }
 }
@@ -219,7 +220,6 @@ window.googleLogin = async function(){
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
     const randomUsername = generateUsername();
-
     await setDoc(doc(db,"users",user.uid),{
       username: randomUsername,
       email: user.email,
@@ -233,17 +233,8 @@ window.googleLogin = async function(){
   }catch(error){ showMsg(error.message,"red"); }
 }
 
-// Helper
-function showMsg(text,color){
-  const msg = document.getElementById('msg');
-  msg.style.display="block";
-  msg.style.color=color;
-  msg.innerText = text;
-}
-
 // Go to login page
 window.goLogin = function(){ window.location.href="auth.html"; }
-
 </script>
 </body>
 </html>
