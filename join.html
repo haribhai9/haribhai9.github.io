@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hari Bhai Company - Register</title>
 <style>
-body{margin:0;font-family:'Segoe UI',sans-serif;background:transparent;display:flex;justify-content:center;align-items:center;height:100vh;}
+body{margin:0;font-family:'Segoe UI',sans-serif;background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);background-size:400% 400%;animation:bgmove 8s ease infinite;display:flex;justify-content:center;align-items:center;height:100vh;}
+@keyframes bgmove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 .card{width:340px;background:#fff;padding:25px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;animation:popup 0.3s ease;}
 .company-box{background:linear-gradient(135deg,#0a66c2,#004e92);color:white;padding:12px;border-radius:10px;margin-bottom:15px;}
 .company-box h1{margin:0;font-size:18px;}
@@ -16,33 +17,32 @@ button{width:100%;padding:10px;margin-top:8px;background:#0a66c2;color:white;bor
 button:hover{background:#004e92;}
 .switch{margin-top:10px;font-size:12px;}
 .switch span{color:#0a66c2;cursor:pointer;font-weight:bold;}
-.message{margin-top:8px;font-size:12px;font-weight:bold;display:none;}
-@keyframes popup{from{transform:scale(0.8);opacity:0;}to{transform:scale(1);opacity:1);}
 </style>
 </head>
 <body>
+
 <div class="card">
 <div class="company-box">
 <h1>Hari Bhai Company</h1>
 <p>Trusted & Secure Digital Services</p>
 </div>
-<h2>Register</h2>
+
+<h2>Register / Signup</h2>
+
 <input type="email" id="email" placeholder="Enter Email">
-<button onclick="sendOTP()">Send OTP</button>
-<input type="text" id="otp" placeholder="Enter OTP">
-<button onclick="verifyOTP()">Verify OTP</button>
-<div id="password-section" style="display:none;">
-<input type="password" id="password" placeholder="Create Password">
-<button onclick="setPassword()">Set Password</button>
-</div>
+<input type="password" id="pass" placeholder="Enter Password">
+<button onclick="signup()">Register</button>
+
 <button onclick="googleLogin()" style="background:#db4437; color:white; margin-top:8px;">Login / Register with Google</button>
-<div class="switch">Already have account? <span onclick="goLogin()">Login</span></div>
-<div class="message" id="msg"></div>
+
+<div class="switch">
+Already have account? <span onclick="goLogin()">Login</span>
+</div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, GoogleAuthProvider, signInWithPopup, updatePassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -56,77 +56,53 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-function generateUsername(){ return "HB"+Math.floor(100000 + Math.random()*900000); }
-function showMsg(text,color){ const msg=document.getElementById('msg'); msg.style.display="block"; msg.style.color=color; msg.innerText=text; }
+function generateUsername(){ return "HB" + Math.floor(100000 + Math.random()*900000); }
 
-let currentEmail = null;
-const actionCodeSettings = {url: window.location.href, handleCodeInApp:true};
-
-// Send OTP
-window.sendOTP = async function(){
-  let email = document.getElementById('email').value.trim();
-  if(!email){ showMsg("Enter Email!","red"); return; }
-  currentEmail = email;
-  try{
-    await sendSignInLinkToEmail(auth,email,actionCodeSettings);
-    window.localStorage.setItem('emailForSignIn',email);
-    showMsg("OTP sent ✅ Check your email","green");
-  }catch(error){ showMsg(error.message,"red"); }
-}
-
-// Verify OTP
-window.verifyOTP = async function(){
-  let email = window.localStorage.getItem('emailForSignIn')||currentEmail;
-  if(!email){ showMsg("Email not found!","red"); return; }
-  if(!isSignInWithEmailLink(auth,window.location.href)){ showMsg("OTP not valid!","red"); return; }
+// Signup with email + password
+window.signup = async function(){
+  const email = document.getElementById('email').value.trim();
+  const pass = document.getElementById('pass').value.trim();
+  if(!email || !pass){ alert("Fill all fields ❌"); return; }
 
   try{
-    const result = await signInWithEmailLink(auth,email,window.location.href);
-    currentUser = result.user;
-    showMsg("OTP verified! ✅ Set your password below","green");
-    document.getElementById('password-section').style.display='block';
-  }catch(error){ showMsg(error.message,"red"); }
+    const result = await createUserWithEmailAndPassword(auth,email,pass);
+    const user = result.user;
+    const username = generateUsername();
+    await setDoc(doc(db,"users",user.uid),{
+      username: username,
+      email: user.email,
+      balance: 0,
+      blocked: false,
+      createdAt: new Date()
+    });
+    alert("Registration Successful ✅ Username: "+username);
+    window.location.href="auth.html";
+  }catch(err){
+    alert(err.message);
+  }
 }
 
-// Set password
-window.setPassword = async function(){
-  const pass = document.getElementById('password').value.trim();
-  if(!pass){ showMsg("Enter password!","red"); return; }
-
-  try{
-    await updatePassword(auth.currentUser,pass);
-    const randomUsername = generateUsername();
-    await setDoc(doc(db,"users",auth.currentUser.uid),{
-      username:randomUsername,
-      email:auth.currentUser.email,
-      balance:0,
-      blocked:false,
-      createdAt:new Date()
-    },{merge:true});
-    showMsg("Registration Successful ✅ Username: "+randomUsername,"green");
-    setTimeout(()=>{window.location.href="auth.html";},1000);
-  }catch(error){ showMsg(error.message,"red"); }
-}
-
-// Google login
+// Google login/signup
 window.googleLogin = async function(){
   try{
-    const result = await signInWithPopup(auth,provider);
+    const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    const randomUsername = generateUsername();
+    const username = generateUsername();
     await setDoc(doc(db,"users",user.uid),{
-      username:randomUsername,
-      email:user.email,
+      username: username,
+      email: user.email,
       balance:0,
       blocked:false,
-      createdAt:new Date()
-    },{merge:true});
-    showMsg("Login / Join Successful ✅ Username: "+randomUsername,"green");
-    setTimeout(()=>{window.location.href="auth.html";},1000);
-  }catch(error){ showMsg(error.message,"red"); }
+      createdAt: new Date()
+    }, {merge:true});
+    alert("Login / Signup Successful ✅ Username: "+username);
+    window.location.href="auth.html";
+  }catch(err){ alert(err.message); }
 }
 
+// Go to login page
 window.goLogin = function(){ window.location.href="auth.html"; }
 </script>
+
 </body>
 </html>
