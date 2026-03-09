@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Hari Bhai Company - Secure Auth</title>
-
 <style>
 body{
 margin:0;
@@ -14,7 +13,6 @@ justify-content:center;
 align-items:center;
 height:100vh;
 }
-
 .card{
 width:340px;
 background:#fff;
@@ -24,7 +22,6 @@ box-shadow:0 20px 60px rgba(0,0,0,0.4);
 text-align:center;
 animation:popup 0.3s ease;
 }
-
 .company-box{
 background:linear-gradient(135deg,#0a66c2,#004e92);
 color:white;
@@ -32,23 +29,19 @@ padding:12px;
 border-radius:10px;
 margin-bottom:15px;
 }
-
 .company-box h1{
 margin:0;
 font-size:18px;
 }
-
 .company-box p{
 margin:3px 0 0;
 font-size:11px;
 opacity:0.9;
 }
-
 h2{
 margin:10px 0 15px;
 color:#0a66c2;
 }
-
 input{
 width:100%;
 padding:9px;
@@ -58,7 +51,6 @@ border:1px solid #ccc;
 font-size:13px;
 box-sizing:border-box;
 }
-
 button{
 width:100%;
 padding:10px;
@@ -70,42 +62,24 @@ border-radius:6px;
 font-weight:bold;
 cursor:pointer;
 }
-
 button:hover{
 background:#004e92;
 }
-
-.verify-box{
-display:flex;
-align-items:center;
-justify-content:flex-start;
-margin-top:8px;
-font-size:13px;
-}
-
-.verify-box input{
-width:auto;
-margin-right:6px;
-}
-
 .switch{
 margin-top:10px;
 font-size:12px;
 }
-
 .switch span{
 color:#0a66c2;
 cursor:pointer;
 font-weight:bold;
 }
-
 .message{
 margin-top:8px;
 font-size:12px;
 font-weight:bold;
 display:none;
 }
-
 @keyframes popup{
 from{transform:scale(0.8);opacity:0;}
 to{transform:scale(1);opacity:1;}
@@ -115,8 +89,7 @@ to{transform:scale(1);opacity:1;}
 
 <body>
 
-<div class="card" id="card">
-
+<div class="card">
 <div class="company-box">
 <h1>Hari Bhai Company</h1>
 <p>Trusted & Secure Digital Services</p>
@@ -124,137 +97,153 @@ to{transform:scale(1);opacity:1;}
 
 <h2>Register</h2>
 
-<input type="email" id="remail" placeholder="Enter Email">
-<input type="password" id="rpass" placeholder="Create Password">
-<input type="password" id="rcpass" placeholder="Confirm Password">
+<!-- Phone Number -->
+<input type="tel" id="phone" placeholder="Enter Phone Number">
 
-<div class="verify-box">
-<input type="checkbox" id="rverify">
-<label for="rverify">I am not a robot</label>
+<!-- reCAPTCHA -->
+<div id="recaptcha-container"></div>
+
+<!-- Send OTP -->
+<button onclick="sendOTP()">Send OTP</button>
+
+<!-- Enter OTP -->
+<input type="text" id="otp" placeholder="Enter OTP">
+
+<!-- Verify OTP -->
+<button onclick="verifyOTP()">Verify OTP</button>
+
+<!-- Password Section (hidden initially) -->
+<div id="password-section" style="display:none;">
+<input type="password" id="password" placeholder="Create Password">
+<button onclick="setPassword()">Set Password</button>
 </div>
 
-<button onclick="register()">Register</button>
+<!-- Google Login -->
 <button onclick="googleLogin()" style="background:#db4437; color:white; margin-top:8px;">
-Register / Login with Google
+Login / Register with Google
 </button>
+
 <div class="switch">
-Already have account?
-<span onclick="goLogin()">Login</span>
+Already have account? <span onclick="goLogin()">Login</span>
 </div>
 
 <div class="message" id="msg"></div>
-
 </div>
 
-
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
+import { getAuth, GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber, updatePassword } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { getFirestore, doc, setDoc } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
+// Firebase config
 const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain: "ff-tournament-915ed.firebaseapp.com",
+  projectId: "ff-tournament-915ed",
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
+
 function generateUsername(){
-return "HB" + Math.floor(100000 + Math.random() * 900000);
+  return "HB" + Math.floor(100000 + Math.random()*900000);
 }
 
-window.register = async function(){
+// Setup reCAPTCHA
+window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+  'size':'normal',
+  'callback':()=>{ console.log("reCAPTCHA solved"); }
+}, auth);
 
-let email=document.getElementById("remail").value.trim();
-let pass=document.getElementById("rpass").value;
-let cpass=document.getElementById("rcpass").value;
-let verify=document.getElementById("rverify").checked;
+let currentUser = null;
 
-if(email===""||pass===""||cpass===""){
-showMsg("All fields required!","red");
-return;
+// Send OTP
+window.sendOTP = function(){
+  const phone = document.getElementById('phone').value;
+  if(!phone){ showMsg("Enter phone number!","red"); return; }
+
+  signInWithPhoneNumber(auth, phone, window.recaptchaVerifier)
+    .then(confirmationResult => {
+      window.confirmationResult = confirmationResult;
+      showMsg("OTP sent ✅ Check your phone","green");
+    })
+    .catch(error => showMsg(error.message,"red"));
 }
 
-if(pass!==cpass){
-showMsg("Passwords do not match!","red");
-return;
+// Verify OTP
+window.verifyOTP = function(){
+  const code = document.getElementById('otp').value;
+  if(!code){ showMsg("Enter OTP!","red"); return; }
+
+  window.confirmationResult.confirm(code)
+    .then(async result => {
+      currentUser = result.user; // save current user
+      showMsg("OTP verified! ✅ Set your password below","green");
+      document.getElementById('password-section').style.display = 'block'; // show password input
+    })
+    .catch(error => showMsg(error.message,"red"));
 }
 
-if(!verify){
-showMsg("Please verify you are human!","red");
-return;
+// Set password after OTP
+window.setPassword = async function(){
+  const pass = document.getElementById('password').value;
+  if(!pass){ showMsg("Enter a password!","red"); return; }
+  if(!currentUser){ showMsg("Something went wrong!","red"); return; }
+
+  try{
+    // Update password in Firebase Auth
+    await updatePassword(currentUser, pass);
+
+    // Save user in Firestore
+    const randomUsername = generateUsername();
+    await setDoc(doc(db,"users",currentUser.uid),{
+      username: randomUsername,
+      phone: currentUser.phoneNumber,
+      balance:0,
+      blocked:false,
+      createdAt:new Date()
+    }, { merge:true });
+
+    showMsg("Account created ✅ Username: "+randomUsername,"green");
+
+    setTimeout(()=>{ window.location.href="auth.html"; },1000);
+  }catch(error){ showMsg(error.message,"red"); }
 }
 
-try{
-
-const userCred = await createUserWithEmailAndPassword(auth,email,pass);
-const user = userCred.user;
-
-let randomUsername = generateUsername();
-
-await setDoc(doc(db,"users",user.uid),{
-username: randomUsername,
-email: email,
-balance: 0,
-blocked: false
-});
-
-showMsg("Account Created ✅ Username: "+randomUsername,"green");
-
-setTimeout(()=>{
-window.location.href="auth.html";
-},1500);
-
-}catch(error){
-showMsg(error.message,"red");
-}
-
-}
-window.googleLogin = async function() {
-  try {
+// Google login
+window.googleLogin = async function(){
+  try{
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
+    const randomUsername = generateUsername();
 
-    let randomUsername = "HB" + Math.floor(100000 + Math.random() * 900000);
-
-    // Firestore me add karo, merge:true se existing user overwrite nahi hoga
-    await setDoc(doc(db, "users", user.uid), {
+    await setDoc(doc(db,"users",user.uid),{
       username: randomUsername,
       email: user.email,
-      balance: 0,
-      blocked: false,
-      createdAt: new Date()
-    }, { merge: true });
+      balance:0,
+      blocked:false,
+      createdAt:new Date()
+    }, { merge:true });
 
-    showMsg("Login / Join Successful ✅ Username: " + randomUsername, "green");
-
-    setTimeout(()=>{
-      window.location.href="auth.html";
-    },1000);
-
-  } catch(error) {
-    showMsg(error.message, "red");
-  }
-}
-window.goLogin=function(){
-window.location.href="auth.html";
+    showMsg("Login / Join Successful ✅ Username: "+randomUsername,"green");
+    setTimeout(()=>{ window.location.href="auth.html"; },1000);
+  }catch(error){ showMsg(error.message,"red"); }
 }
 
+// Helper
 function showMsg(text,color){
-let msg=document.getElementById("msg");
-msg.style.display="block";
-msg.style.color=color;
-msg.innerText=text;
+  const msg = document.getElementById('msg');
+  msg.style.display="block";
+  msg.style.color=color;
+  msg.innerText = text;
 }
+
+// Go to login page
+window.goLogin = function(){ window.location.href="auth.html"; }
 
 </script>
-
 </body>
 </html>
