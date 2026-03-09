@@ -173,17 +173,12 @@ Don't have account? <span onclick="window.location.href='join.html'">Register</s
 
 </div>
 
-
-<!-- Popup -->
-
 <div id="popup" class="popup">
 <div class="popup-box">
 <p id="popupText">Message</p>
 <button onclick="closePopup()">OK</button>
 </div>
 </div>
-
-
 
 <script type="module">
 
@@ -204,7 +199,6 @@ getDoc,
 setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-
 const firebaseConfig = {
 apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
 authDomain: "ff-tournament-915ed.firebaseapp.com",
@@ -216,10 +210,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-
-
 function showPopup(msg){
-document.getElementById("popupText").innerText = msg;
+document.getElementById("popupText").innerHTML = msg;
 document.getElementById("popup").style.display = "flex";
 }
 
@@ -227,15 +219,13 @@ window.closePopup = function(){
 document.getElementById("popup").style.display = "none";
 }
 
-
-
 window.login = async function(){
 
 const email = document.getElementById('email').value.trim().toLowerCase();
 const pass = document.getElementById('pass').value.trim();
 
 if(!email || !pass){
-showPopup("⚠️ Please fill all fields");
+showPopup("⚠️ Please enter email and password");
 return;
 }
 
@@ -251,13 +241,11 @@ window.location.href="index.html";
 
 }catch(err){
 
-showPopup(err.message);
+showPopup("❌ Incorrect email or password.<br>Please reset your password.");
 
 }
 
 }
-
-
 
 window.googleLogin = async function(){
 
@@ -268,7 +256,6 @@ const result = await signInWithPopup(auth, provider);
 const user = result.user;
 
 const userRef = doc(db,"users",user.uid);
-
 const docSnap = await getDoc(userRef);
 
 if(!docSnap.exists()){
@@ -291,35 +278,30 @@ window.location.href="index.html";
 
 }catch(err){
 
-showPopup(err.message);
+showPopup("⚠️ Google login failed");
 
 }
 
 }
-
-
 
 window.resetPassword = async function(){
 
 const email = document.getElementById('email').value.trim();
 
 if(!email){
-
 showPopup("⚠️ Enter your email first");
-
 return;
-
 }
 
 try{
 
 await sendPasswordResetEmail(auth,email);
 
-showPopup("📧 Password reset link sent to your email");
+showPopup("📧 Reset link sent!<br>Check your Inbox or Spam Mail folder.");
 
 }catch(err){
 
-showPopup(err.message);
+showPopup("❌ Unable to send reset link");
 
 }
 
