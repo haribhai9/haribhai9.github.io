@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hari Bhai Company - Secure Login</title>
+<title>Hari Bhai Company - Login</title>
 
 <style>
 body{
@@ -25,8 +25,8 @@ height:100vh;
 }
 
 .container{
-width:300px;
-background:#ffffff;
+width:320px;
+background:#fff;
 border-radius:14px;
 padding:20px;
 box-shadow:0 20px 50px rgba(0,0,0,0.4);
@@ -102,37 +102,35 @@ to{transform:scale(1);opacity:1;}
 
 <body>
 
-<div class="container" id="authBox">
-
+<div class="container">
 <div class="company">Hari Bhai Company</div>
 <div class="tagline">Trusted & Professional Digital Services</div>
 
 <h2>Login</h2>
 
-<input type="tel" id="phone" placeholder="Enter Phone Number">
+<input type="email" id="email" placeholder="Enter Email">
 <input type="password" id="pass" placeholder="Enter Password">
 
 <button onclick="login()">Login</button>
-<button onclick="googleLogin()" style="background:#db4437;">
+<button onclick="googleLogin()" style="background:#db4437; margin-top:8px;">
 Login with Google
 </button>
 
 <div class="switch">
 Don't have account? <span onclick="window.location.href='join.html'">Register</span>
 </div>
-
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail, linkWithCredential, PhoneAuthProvider, signInWithCredential } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Firebase config
 const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain: "ff-tournament-915ed.firebaseapp.com",
+  projectId: "ff-tournament-915ed",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -140,36 +138,22 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-// Login using phone + password
+// Login with email + password
 window.login = async function(){
-  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
   const pass = document.getElementById('pass').value.trim();
 
-  if(!phone || !pass){
+  if(!email || !pass){
     alert("Please fill all fields ❌");
     return;
   }
 
   try{
-    // Fetch users collection to find matching phone
-    let usersRef = doc(db, "users", phone);
-    let q = await getDoc(doc(db,"users",phone));
-    
-    if(!q.exists()){
-      alert("Phone number not found ❌");
-      return;
-    }
-
-    // We are using Firebase Auth: signInWithEmailAndPassword, but in join.html we set password with email=null
-    // So for simplicity, store user's email as phone+"@hari.com"
-    let emailLike = phone+"@hari.com";
-
-    await signInWithEmailAndPassword(auth,emailLike,pass);
+    await signInWithEmailAndPassword(auth, email, pass);
     alert("Login Successful ✅");
     window.location.href="index.html";
-
   }catch(error){
-    alert("Invalid Phone or Password ❌");
+    alert("Invalid Email or Password ❌");
   }
 }
 
@@ -177,14 +161,12 @@ window.login = async function(){
 window.googleLogin = async function(){
   try{
     const result = await signInWithPopup(auth, provider);
-    const user = result.user;
     alert("Login Successful ✅");
     window.location.href="index.html";
   }catch(error){
     alert(error.message);
   }
 }
-
 </script>
 
 </body>
