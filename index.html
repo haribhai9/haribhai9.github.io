@@ -412,9 +412,13 @@ cursor:pointer;
 
 /* ABOUT */
 .about{
-background:#111;
+background:linear-gradient(145deg,#1f2633,#121720);
+padding:25px;
+margin-bottom:25px;
+border-radius:14px;
+box-shadow:0 8px 25px rgba(0,0,0,0.5);
+border:1px solid rgba(255,255,255,0.05);
 color:white;
-padding:50px 20px;
 text-align:center;
 }
 
@@ -501,8 +505,7 @@ display:flex;
 justify-content:space-around;
 align-items:center;
 padding:12px 0;
-box-shadow:0 -4px 20px rgba(0,0,0,0.6);
-border-top:1px solid rgba(255,255,255,0.05);
+box-shadow:0 -6px 25px rgba(0,0,0,0.8);
 z-index:9998;
 }
 
@@ -715,12 +718,19 @@ We believe in building long term trust with our customers through transparency a
 <div class="footer">
 © 2026 Hari Bhai Company | All Rights Reserved
 <div class="footer-links">
-<a href="about.html"class="action-btn about-main">About</a>
-<a href="blog.html"class="action-btn blog-main">Blog</a>
-<a href="privacy.html"class="action-btn privacy-main">Privacy</a>
-<a href="terms.html"class="action-btn terms-main">Tems And Condition</a>
-<a href="support.html"class="action-btn support-main">Support</a>
-<a href="contact.html"class="action-btn contact-main">Contact</a>
+
+<a href="terms.html" class="action-btn terms-main">Terms And Condition</a>
+
+<a href="about.html" class="action-btn about-main">About</a>
+
+<a href="blog.html" class="action-btn blog-main">Blog</a>
+
+<a href="contact.html" class="action-btn contact-main">Contact</a>
+
+<a href="privacy.html" class="action-btn privacy-main">Privacy</a>
+
+<a href="support.html" class="action-btn support-main">Support</a>
+
 </div>
 </div>
 
@@ -828,7 +838,7 @@ window.addEventListener("load", function(){
 const media = document.getElementById("battleMedia");
 
 const photo = "tournament.jpg";
-const gif = "battle.gif";
+const gif = "battle1.gif";
 
 let showPhoto = true;
 
