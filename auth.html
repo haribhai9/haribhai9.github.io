@@ -43,11 +43,11 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// Firebase config (same as your project)
+// Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-  authDomain: "ff-tournament-915ed.firebaseapp.com",
-  projectId: "ff-tournament-915ed",
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain: "ff-tournament-915ed.firebaseapp.com",
+projectId: "ff-tournament-915ed",
 };
 
 const app = initializeApp(firebaseConfig);
@@ -55,18 +55,22 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-// Email + Password login
 window.login = async function(){
-  const email = document.getElementById('email').value.trim().toLowerCase(); // lowercase to avoid caps mismatch
+  const email = document.getElementById('email').value.trim().toLowerCase();
   const pass = document.getElementById('pass').value.trim();
-  if(!email || !pass){ alert("Please fill all fields ❌"); return; }
+
+  if(!email || !pass){
+    alert("Please fill all fields ❌");
+    return;
+  }
 
   try{
-    await signInWithEmailAndPassword(auth,email,pass);
+    const userCredential = await signInWithEmailAndPassword(auth,email,pass);
+    console.log(userCredential.user);
     alert("Login Successful ✅");
     window.location.href="index.html";
   }catch(err){
-    alert("Invalid Email or Password ❌");
+    alert(err.message);
   }
 }
 
@@ -76,10 +80,11 @@ window.googleLogin = async function(){
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
 
-    // Ensure Google user exists in Firestore
+    // Make sure user is in Firestore
     const userRef = doc(db,"users",user.uid);
     const docSnap = await getDoc(userRef);
     if(!docSnap.exists()){
+      // New Google user
       await setDoc(userRef,{
         username: "HB" + Math.floor(100000 + Math.random()*900000),
         email: user.email,
