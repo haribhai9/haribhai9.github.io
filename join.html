@@ -134,7 +134,9 @@ to{transform:scale(1);opacity:1;}
 </div>
 
 <button onclick="register()">Register</button>
-
+<button onclick="googleLogin()" style="background:#db4437; color:white; margin-top:8px;">
+Register / Login with Google
+</button>
 <div class="switch">
 Already have account?
 <span onclick="goLogin()">Login</span>
@@ -148,7 +150,7 @@ Already have account?
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } 
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } 
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import { getFirestore, doc, setDoc } 
@@ -163,7 +165,7 @@ projectId: "ff-tournament-915ed",
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+const provider = new GoogleAuthProvider();
 function generateUsername(){
 return "HB" + Math.floor(100000 + Math.random() * 900000);
 }
@@ -215,7 +217,32 @@ showMsg(error.message,"red");
 }
 
 }
+window.googleLogin = async function() {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = result.user;
 
+    let randomUsername = "HB" + Math.floor(100000 + Math.random() * 900000);
+
+    // Firestore me add karo, merge:true se existing user overwrite nahi hoga
+    await setDoc(doc(db, "users", user.uid), {
+      username: randomUsername,
+      email: user.email,
+      balance: 0,
+      blocked: false,
+      createdAt: new Date()
+    }, { merge: true });
+
+    showMsg("Login / Join Successful ✅ Username: " + randomUsername, "green");
+
+    setTimeout(()=>{
+      window.location.href="auth.html";
+    },1000);
+
+  } catch(error) {
+    showMsg(error.message, "red");
+  }
+}
 window.goLogin=function(){
 window.location.href="auth.html";
 }
