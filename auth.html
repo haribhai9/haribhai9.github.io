@@ -113,7 +113,9 @@ to{transform:scale(1);opacity:1;}
 <input type="password" id="pass" placeholder="Enter Password" required>
 
 <button onclick="login()">Login</button>
-
+<button onclick="googleLogin()" style="background:#db4437;">
+Login with Google
+</button>
 <div class="switch">
 Don't have account?
 <span onclick="showRegister()">Register</span>
@@ -126,9 +128,11 @@ Don't have account?
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { 
-getAuth, 
-createUserWithEmailAndPassword, 
-signInWithEmailAndPassword 
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import { 
@@ -146,7 +150,7 @@ projectId: "ff-tournament-915ed",
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
+const provider = new GoogleAuthProvider();
 function generateUsername(){
 return "HB" + Math.floor(100000 + Math.random() * 900000);
 }
@@ -174,7 +178,32 @@ alert("Invalid Email or Password ❌");
 }
 
 }
+window.googleLogin = async function(){
 
+try{
+
+const result = await signInWithPopup(auth, provider);
+const user = result.user;
+
+let randomUsername = generateUsername();
+
+await setDoc(doc(db,"users",user.uid),{
+username: randomUsername,
+email: user.email,
+balance: 0,
+blocked: false,
+createdAt: new Date()
+},{merge:true});
+
+alert("Login Successful ✅");
+
+window.location.href="index.html";
+
+}catch(error){
+alert(error.message);
+}
+
+}
 window.showRegister = function(){
 
 document.getElementById("authBox").innerHTML=`
