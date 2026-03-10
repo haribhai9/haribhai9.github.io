@@ -32,7 +32,6 @@ border-radius:14px;
 padding:20px;
 box-shadow:0 20px 50px rgba(0,0,0,0.4);
 text-align:center;
-animation:popup 0.3s ease;
 }
 
 .company{
@@ -94,11 +93,6 @@ cursor:pointer;
 font-weight:bold;
 }
 
-@keyframes popup{
-from{transform:scale(0.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
-}
-
 /* Popup */
 
 .popup{
@@ -119,13 +113,6 @@ padding:20px;
 border-radius:12px;
 text-align:center;
 width:260px;
-animation:pop 0.3s ease;
-}
-
-.popup-box p{
-font-size:14px;
-margin-bottom:15px;
-color:#333;
 }
 
 .popup-box button{
@@ -135,11 +122,6 @@ border:none;
 padding:7px 20px;
 border-radius:6px;
 cursor:pointer;
-}
-
-@keyframes pop{
-from{transform:scale(0.7);opacity:0;}
-to{transform:scale(1);opacity:1;}
 }
 
 </style>
@@ -231,13 +213,22 @@ return;
 
 try{
 
-await signInWithEmailAndPassword(auth,email,pass);
+const result = await signInWithEmailAndPassword(auth,email,pass);
+const user = result.user;
+
+if(!user.emailVerified){
+
+showPopup("📧 Your email is not verified.<br>Please check your email inbox or spam folder.");
+
+}else{
 
 showPopup("✅ Login Successful");
 
 setTimeout(()=>{
 window.location.href="index.html";
 },1500);
+
+}
 
 }catch(err){
 
@@ -252,7 +243,6 @@ window.googleLogin = async function(){
 try{
 
 const result = await signInWithPopup(auth, provider);
-
 const user = result.user;
 
 const userRef = doc(db,"users",user.uid);
@@ -261,11 +251,11 @@ const docSnap = await getDoc(userRef);
 if(!docSnap.exists()){
 
 await setDoc(userRef,{
-username: "HB" + Math.floor(100000 + Math.random()*900000),
-email: user.email,
+username:"HB"+Math.floor(100000+Math.random()*900000),
+email:user.email,
 balance:0,
 blocked:false,
-createdAt: new Date()
+createdAt:new Date()
 });
 
 }
