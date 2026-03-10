@@ -6,18 +6,118 @@
 <title>Hari Bhai Company - Register</title>
 
 <style>
-body{margin:0;font-family:'Segoe UI',sans-serif;background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);background-size:400% 400%;animation:bgmove 8s ease infinite;display:flex;justify-content:center;align-items:center;height:100vh;}
-@keyframes bgmove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-.card{width:340px;background:#fff;padding:25px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;}
-.company-box{background:linear-gradient(135deg,#0a66c2,#004e92);color:white;padding:12px;border-radius:10px;margin-bottom:15px;}
-.company-box h1{margin:0;font-size:18px;}
-.company-box p{margin:3px 0 0;font-size:11px;opacity:0.9;}
-h2{margin:10px 0 15px;color:#0a66c2;}
-input{width:100%;padding:9px;margin:7px 0;border-radius:6px;border:1px solid #ccc;font-size:13px;}
-button{width:100%;padding:10px;margin-top:8px;background:#0a66c2;color:white;border:none;border-radius:6px;font-weight:bold;cursor:pointer;}
+
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
+background-size:400% 400%;
+animation:bgmove 8s ease infinite;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+@keyframes bgmove{
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+}
+
+.card{
+width:340px;
+background:#fff;
+padding:25px;
+border-radius:16px;
+box-shadow:0 20px 60px rgba(0,0,0,0.4);
+text-align:center;
+}
+
+.company-box{
+background:linear-gradient(135deg,#0a66c2,#004e92);
+color:white;
+padding:12px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+h2{color:#0a66c2;}
+
+input{
+width:100%;
+padding:9px;
+margin:7px 0;
+border-radius:6px;
+border:1px solid #ccc;
+font-size:13px;
+}
+
+button{
+width:100%;
+padding:10px;
+margin-top:8px;
+background:#0a66c2;
+color:white;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
 button:hover{background:#004e92;}
-.switch{margin-top:10px;font-size:12px;}
-.switch span{color:#0a66c2;cursor:pointer;font-weight:bold;}
+
+.switch{
+margin-top:10px;
+font-size:12px;
+}
+
+/* Animated Popup */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.popup-box{
+background:white;
+padding:25px;
+border-radius:14px;
+text-align:center;
+width:270px;
+animation:pop 0.4s ease;
+}
+
+.popup-success{
+border-top:6px solid #4CAF50;
+}
+
+.popup-error{
+border-top:6px solid #f44336;
+}
+
+@keyframes pop{
+0%{transform:scale(0.5);opacity:0;}
+100%{transform:scale(1);opacity:1;}
+}
+
+.popup button{
+margin-top:10px;
+padding:7px 20px;
+background:#0a66c2;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
 </style>
 </head>
 
@@ -47,6 +147,15 @@ Already have account? <span onclick="goLogin()">Login</span>
 
 </div>
 
+<!-- POPUP -->
+
+<div id="popup" class="popup">
+<div id="popupBox" class="popup-box">
+<p id="popupText"></p>
+<button onclick="closePopup()">OK</button>
+</div>
+</div>
+
 
 <script type="module">
 
@@ -60,107 +169,113 @@ signInWithPopup,
 sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import {
-getFirestore,
-doc,
-setDoc
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore,doc,setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain:"ff-tournament-915ed.firebaseapp.com",
+projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const provider=new GoogleAuthProvider();
 
 
-function generateUsername(){
-return "HB" + Math.floor(100000 + Math.random()*900000);
+function showPopup(msg,type){
+
+const popup=document.getElementById("popup");
+const box=document.getElementById("popupBox");
+
+box.className="popup-box "+(type==="success"?"popup-success":"popup-error");
+
+document.getElementById("popupText").innerHTML=msg;
+
+popup.style.display="flex";
+
+}
+
+window.closePopup=function(){
+document.getElementById("popup").style.display="none";
 }
 
 
-// Email Signup
-window.signup = async function(){
+function generateUsername(){
+return "HB"+Math.floor(100000+Math.random()*900000);
+}
 
-const email = document.getElementById("email").value.trim();
-const pass = document.getElementById("pass").value.trim();
 
-if(!email || !pass){
-alert("Please fill all fields ❌");
+// Signup
+
+window.signup=async function(){
+
+const email=document.getElementById("email").value.trim();
+const pass=document.getElementById("pass").value.trim();
+
+if(!email||!pass){
+showPopup("⚠️ Please fill all fields","error");
 return;
 }
 
 try{
 
-const result = await createUserWithEmailAndPassword(auth,email,pass);
-
-const user = result.user;
+const result=await createUserWithEmailAndPassword(auth,email,pass);
+const user=result.user;
 
 await sendEmailVerification(user);
 
-const username = generateUsername();
-
 await setDoc(doc(db,"users",user.uid),{
-username:username,
+username:generateUsername(),
 email:user.email,
 balance:0,
 blocked:false,
 createdAt:new Date()
 });
 
-alert("Verification email sent 📧\nPlease verify your email before login.");
-
-window.location.href="auth.html";
+showPopup("📧 Verification email sent.<br>Check Inbox or Spam folder.","success");
 
 }catch(err){
 
-alert(err.message);
+showPopup("❌ "+err.message,"error");
 
 }
 
 }
-
 
 
 // Google Login
-window.googleLogin = async function(){
+
+window.googleLogin=async function(){
 
 try{
 
-const result = await signInWithPopup(auth,provider);
-
-const user = result.user;
-
-const username = generateUsername();
+const result=await signInWithPopup(auth,provider);
+const user=result.user;
 
 await setDoc(doc(db,"users",user.uid),{
-username:username,
+username:generateUsername(),
 email:user.email,
 balance:0,
 blocked:false,
 createdAt:new Date()
 },{merge:true});
 
-alert("Login Successful ✅");
+showPopup("✅ Login Successful","success");
 
+setTimeout(()=>{
 window.location.href="index.html";
+},1500);
 
 }catch(err){
 
-alert(err.message);
+showPopup("❌ Google login failed","error");
 
 }
 
 }
 
-
-
-// Go login
 window.goLogin=function(){
 window.location.href="auth.html";
 }
