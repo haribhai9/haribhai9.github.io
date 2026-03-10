@@ -3,9 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Play Tournament</title>
+
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<title>Play Tournaments</title>
+</head>
+
+
 
 <style>
+html,body{
+height:100%;
+margin:0;
+padding:0;
+overflow-x:hidden;
+}
 body{
 margin:0;
 font-family:'Segoe UI',Arial;
@@ -248,11 +263,11 @@ Rules
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <h3>Only Head Custom Room</h3>
-<p>Entry: ₹FREE</p>
-<p>Win: ₹10</p>
+<p>Entry: ₹30</p>
+<p>Win: ₹50</p>
 <p class="time">Match Time: <span id="time_room3">Waiting...</span></p>
 <p class="slot" id="slot_room3">Loading...</p>
-<button class="btn" id="btn_room3" onclick="joinMatch('room3',0)">Join Now</button>
+<button class="btn" id="btn_room3" onclick="joinMatch('room3',30)">Join Now</button>
 <div class="room-box" id="room3"></div>
 </div>
 </div>
@@ -532,5 +547,12 @@ window.open("https://t.me/haribhaicompanyproofs","_blank");
     <button class="cancel" onclick="closePopup()">Cancel</button>
   </div>
 </div>
+<script>
+window.addEventListener("load",function(){
+if(document.documentElement.requestFullscreen){
+document.documentElement.requestFullscreen();
+}
+});
+</script>
 </body>
 </html>
