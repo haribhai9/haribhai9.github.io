@@ -312,6 +312,7 @@ return;
 const userRef = doc(db,"users",user.uid);
 
 onSnapshot(userRef,(snap)=>{
+
 if(!snap.exists()) return;
 
 let data = snap.data();
@@ -320,26 +321,7 @@ let winning = data.winningBalance || 0;
 
 document.getElementById("balance").innerText = deposit + winning;
 
-if(data.joinedRoom){
-showRoom(data.joinedRoom);
-document.getElementById("btn_"+data.joinedRoom).disabled = true;
-}
-
-});
-});
-
-const userRef = doc(db,"users",user.uid);
-
-onSnapshot(userRef,(snap)=>{
-if(!snap.exists()) return;
-
-let data = snap.data();
-let deposit = data.balance || 0;
-let winning = data.winningBalance || 0;
-
-document.getElementById("balance").innerText = deposit + winning;
-
-// Auto show joined room after refresh
+// Auto show joined room
 if(data.joinedRoom){
 showRoom(data.joinedRoom);
 document.getElementById("btn_"+data.joinedRoom).disabled = true;
@@ -348,6 +330,8 @@ document.getElementById("btn_"+data.joinedRoom).disabled = true;
 });
 
 });
+
+
 
 /* ================= MATCH TIME ================= */
 
