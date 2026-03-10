@@ -167,7 +167,7 @@ float:right;">❌</button>
 <h3>CUSTOM MATCH RULE</h3>
 
 <p>
-1) HACKER NOT ALLOWED IF HACKER FOUND THEN HE OR SHE WILL BE BAN PERMANENTLY AND DETECT ALL MONEY HACKER ARE STRICTLY PROHIBITED 🚫
+1) HACKER NOT ALLOWED IF HACKER FOUND THEN HE OR SHE WILL BE BAN PERMANENTLY AND DETECT ALL MONEY ( HACKER ARE STRICTLY PROHIBITED 🚫
 </p>
 
 <p>
@@ -175,13 +175,10 @@ float:right;">❌</button>
 </p>
 
 <p>
-3) Grenade not allowed and follow general custom rule.
+3) grenade not allowed and follow general custom rule.
 </p>
-  
-<p>
- 4) Dont break Gloowall</p>
 
-  <p>Thanks follow carefully all rules 🥰</p>
+<p>Thanks follow carefully all rules 🥰</p>
 
 </div>
 <div class="header">
@@ -236,11 +233,11 @@ Rules
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <h3>Body Custom Room</h3>
-<p>Entry: ₹20</p>
-<p>Win: ₹30</p>
+<p>Entry: ₹10</p>
+<p>Win: ₹20</p>
 <p class="time">Match Time: <span id="time_room2">Waiting...</span></p>
 <p class="slot" id="slot_room2">Loading...</p>
-<button class="btn" id="btn_room2" onclick="joinMatch('room2',20)">Join Now</button>
+<button class="btn" id="btn_room2" onclick="joinMatch('room2',10)">Join Now</button>
 <div class="room-box" id="room2"></div>
 </div>
 </div>
@@ -305,12 +302,31 @@ const maxSlot = 2;
 
 onAuthStateChanged(auth,(user)=>{
 
+currentUser = user;
+
 if(!user){
-window.location.href="auth.html";
+console.log("User not logged in");
 return;
 }
 
-currentUser = user;
+const userRef = doc(db,"users",user.uid);
+
+onSnapshot(userRef,(snap)=>{
+if(!snap.exists()) return;
+
+let data = snap.data();
+let deposit = data.balance || 0;
+let winning = data.winningBalance || 0;
+
+document.getElementById("balance").innerText = deposit + winning;
+
+if(data.joinedRoom){
+showRoom(data.joinedRoom);
+document.getElementById("btn_"+data.joinedRoom).disabled = true;
+}
+
+});
+});
 
 const userRef = doc(db,"users",user.uid);
 
@@ -398,6 +414,13 @@ let selectedRoom = null;
 let selectedFee = 0;
 
 window.joinMatch = function(room,fee){
+
+if(!currentUser){
+alert("Please login first ❌");
+window.location.href = "auth.html";
+return;
+}
+
 selectedRoom = room;
 selectedFee = fee;
 
