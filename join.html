@@ -4,46 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hari Bhai Company - Register</title>
+
 <style>
 body{margin:0;font-family:'Segoe UI',sans-serif;background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);background-size:400% 400%;animation:bgmove 8s ease infinite;display:flex;justify-content:center;align-items:center;height:100vh;}
 @keyframes bgmove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-.card{width:340px;background:#fff;padding:25px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;animation:popup 0.3s ease;}
+.card{width:340px;background:#fff;padding:25px;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.4);text-align:center;}
 .company-box{background:linear-gradient(135deg,#0a66c2,#004e92);color:white;padding:12px;border-radius:10px;margin-bottom:15px;}
 .company-box h1{margin:0;font-size:18px;}
 .company-box p{margin:3px 0 0;font-size:11px;opacity:0.9;}
 h2{margin:10px 0 15px;color:#0a66c2;}
-input{width:100%;padding:9px;margin:7px 0;border-radius:6px;border:1px solid #ccc;font-size:13px;box-sizing:border-box;}
+input{width:100%;padding:9px;margin:7px 0;border-radius:6px;border:1px solid #ccc;font-size:13px;}
 button{width:100%;padding:10px;margin-top:8px;background:#0a66c2;color:white;border:none;border-radius:6px;font-weight:bold;cursor:pointer;}
 button:hover{background:#004e92;}
 .switch{margin-top:10px;font-size:12px;}
 .switch span{color:#0a66c2;cursor:pointer;font-weight:bold;}
 </style>
 </head>
+
 <body>
 
 <div class="card">
+
 <div class="company-box">
 <h1>Hari Bhai Company</h1>
 <p>Trusted & Secure Digital Services</p>
 </div>
 
-<h2>Register / Signup</h2>
+<h2>Register</h2>
 
 <input type="email" id="email" placeholder="Enter Email">
-<input type="password" id="pass" placeholder="Enter Password">
+<input type="password" id="pass" placeholder="Create Password">
+
 <button onclick="signup()">Register</button>
 
-<button onclick="googleLogin()" style="background:#db4437; color:white; margin-top:8px;">Login / Register with Google</button>
+<button onclick="googleLogin()" style="background:#db4437;margin-top:8px;">
+Login / Register with Google
+</button>
 
 <div class="switch">
 Already have account? <span onclick="goLogin()">Login</span>
 </div>
+
 </div>
 
+
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+GoogleAuthProvider,
+signInWithPopup,
+sendEmailVerification
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 
 const firebaseConfig = {
 apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
@@ -56,52 +78,93 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
-function generateUsername(){ return "HB" + Math.floor(100000 + Math.random()*900000); }
 
-// Signup with email + password
+function generateUsername(){
+return "HB" + Math.floor(100000 + Math.random()*900000);
+}
+
+
+// Email Signup
 window.signup = async function(){
-  const email = document.getElementById('email').value.trim();
-  const pass = document.getElementById('pass').value.trim();
-  if(!email || !pass){ alert("Fill all fields ❌"); return; }
 
-  try{
-    const result = await createUserWithEmailAndPassword(auth,email,pass);
-    const user = result.user;
-    const username = generateUsername();
-    await setDoc(doc(db,"users",user.uid),{
-      username: username,
-      email: user.email,
-      balance: 0,
-      blocked: false,
-      createdAt: new Date()
-    });
-    alert("Registration Successful ✅ Username: "+username);
-    window.location.href="auth.html";
-  }catch(err){
-    alert(err.message);
-  }
+const email = document.getElementById("email").value.trim();
+const pass = document.getElementById("pass").value.trim();
+
+if(!email || !pass){
+alert("Please fill all fields ❌");
+return;
 }
 
-// Google login/signup
+try{
+
+const result = await createUserWithEmailAndPassword(auth,email,pass);
+
+const user = result.user;
+
+await sendEmailVerification(user);
+
+const username = generateUsername();
+
+await setDoc(doc(db,"users",user.uid),{
+username:username,
+email:user.email,
+balance:0,
+blocked:false,
+createdAt:new Date()
+});
+
+alert("Verification email sent 📧\nPlease verify your email before login.");
+
+window.location.href="auth.html";
+
+}catch(err){
+
+alert(err.message);
+
+}
+
+}
+
+
+
+// Google Login
 window.googleLogin = async function(){
-  try{
-    const result = await signInWithPopup(auth, provider);
-    const user = result.user;
-    const username = generateUsername();
-    await setDoc(doc(db,"users",user.uid),{
-      username: username,
-      email: user.email,
-      balance:0,
-      blocked:false,
-      createdAt: new Date()
-    }, {merge:true});
-    alert("Login / Signup Successful ✅ Username: "+username);
-    window.location.href="auth.html";
-  }catch(err){ alert(err.message); }
+
+try{
+
+const result = await signInWithPopup(auth,provider);
+
+const user = result.user;
+
+const username = generateUsername();
+
+await setDoc(doc(db,"users",user.uid),{
+username:username,
+email:user.email,
+balance:0,
+blocked:false,
+createdAt:new Date()
+},{merge:true});
+
+alert("Login Successful ✅");
+
+window.location.href="index.html";
+
+}catch(err){
+
+alert(err.message);
+
 }
 
-// Go to login page
-window.goLogin = function(){ window.location.href="auth.html"; }
+}
+
+
+
+// Go login
+window.goLogin=function(){
+window.location.href="auth.html";
+}
+
 </script>
 
 </body>
