@@ -1,741 +1,725 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f172a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Hari Bhai Company</title>
+<!DOCTYPE html>  <html>  
+<head>  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<meta name="theme-color" content="#0f172a">  
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="mobile-web-app-capable" content="yes">  
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">  
+<title>Hari Bhai Company</title>  <style>  
+html,body{  
+height:100%;  
+margin:0;  
+padding:0;  
+overflow-x:hidden;  
+}  
+/* TOP STATUS BAR SPACE */  
+body::before{  
+content:"";  
+display:block;  
+height:35px;  
+background:black;  
+}  
+body{  
+margin:0;  
+font-family:'Segoe UI',Arial;  
+background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);  
+background-size:400% 400%;  
+animation:gradientBG 10s ease infinite;  
+scroll-behavior:smooth;  
+padding-bottom:90px;  
+}  
+  
+@keyframes gradientBG{  
+0%{background-position:0% 50%;}  
+50%{background-position:100% 50%;}  
+100%{background-position:0% 50%;}  
+}  
+  
+/* NAVBAR */  
+.navbar{  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+padding:15px 25px;  
+background:#0f172a;  
+box-shadow:0 4px 20px rgba(0,0,0,0.6);  
+position:sticky;  
+top:0;  
+z-index:1000;  
+}  
+  
+.logo img{height:45px;}  
+  
+.nav-buttons{display:flex;gap:10px;}  
+  
+.signin,.join{  
+padding:8px 18px;  
+border-radius:25px;  
+font-weight:bold;  
+cursor:pointer;  
+transition:0.3s;  
+border:none;  
+}  
+  
+.signin{  
+border:2px solid #0a66c2;  
+background:white;  
+color:#0a66c2;  
+}  
+  
+.signin:hover{  
+background:#0a66c2;  
+color:white;  
+}  
+  
+.join{  
+background:#0a66c2;  
+color:white;  
+}  
+  
+.join:hover{background:#003366;}  
+  
+/* HERO */  
+.hero{  
+text-align:center;  
+padding:60px 15px 40px;  
+color:white;  
+background:linear-gradient(145deg,#1f2633,#121720);  
+  
+width:100%;  
+max-width:100%;  
+box-sizing:border-box;  
+  
+margin:0;  
+border-radius:0;  
+  
+position:relative;  
+overflow:hidden;  
+}  
+  
+.hero h1{  
+font-size:32px;  
+margin-bottom:10px;  
+animation:floatText 3s ease-in-out infinite;  
+}  
+  
+.hero p{  
+font-size:16px;  
+opacity:0.9;  
+}  
+  
+.hero::before{  
+content:"";  
+position:absolute;  
+top:0;  
+left:0;  
+width:100%;  
+height:100%;  
+background:radial-gradient(circle at 20% 30%,rgba(255,255,255,0.08),transparent),  
+radial-gradient(circle at 80% 70%,rgba(255,255,255,0.05),transparent);  
+pointer-events:none;  
+}  
+@keyframes floatText{  
+0%{transform:translateY(0px);}  
+50%{transform:translateY(-6px);}  
+100%{transform:translateY(0px);}  
+}  
+  
+.battle-banner{  
+position:relative;  
+text-align:center;  
+margin-top:20px;  
+width:100%;  
+}  
+  
+.battle-banner img{  
+width:100%;  
+max-height:420px;  
+object-fit:contain;  
+border-radius:12px;  
+box-shadow:0 6px 18px rgba(0,0,0,0.4);  
+background:black;  
+}  
+.battle-heading{  
+text-align:center;  
+font-size:36px;  
+font-weight:900;  
+margin-top:15px;  
+margin-bottom:10px;  
+letter-spacing:3px;  
+  
+/* Colorful Gradient */  
+background:linear-gradient(90deg,  
+#ff0000,  
+#ff7300,  
+#ffea00,  
+#00ffea,  
+#00ff00,  
+#0099ff,  
+#ff00c8);  
+  
+background-size:500%;  
+  
+/* Text Gradient */  
+-webkit-background-clip:text;  
+-webkit-text-fill-color:transparent;  
+  
+/* Animation */  
+animation:rainbowMove 6s linear infinite;  
+  
+/* Glow Effect */  
+text-shadow:  
+0 0 10px rgba(255,255,255,0.5),  
+0 0 20px rgba(255,0,0,0.5),  
+0 0 30px rgba(0,255,255,0.5);  
+  
+/* Slight 3D */  
+transform:perspective(500px) rotateX(8deg);  
+}  
+  
+@keyframes rainbowMove{  
+0%{background-position:0%;}  
+100%{background-position:500%;}  
+}  
+  
+.play-now-btn{  
+display:block;  
+width:200px;  
+margin:15px auto;  
+padding:12px;  
+background:#28a745;  
+color:white;  
+text-align:center;  
+font-weight:bold;  
+border-radius:30px;  
+text-decoration:none;  
+font-size:16px;  
+box-shadow:0 4px 12px rgba(0,0,0,0.3);
 
-<style>
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
-}
-/* TOP STATUS BAR SPACE */
-body::before{
-content:"";
-display:block;
-height:35px;
-background:black;
-}
-body{
-margin:0;
-font-family:'Segoe UI',Arial;
-background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);
-background-size:400% 400%;
-animation:gradientBG 10s ease infinite;
-scroll-behavior:smooth;
-padding-bottom:90px;
-}
+transition:0.3s;  
+}  
+  
+.play-now-btn:hover{  
+background:#1e7e34;  
+transform:scale(1.05);  
+}  
+  
+@keyframes zoomIn{  
+from{transform:scale(1);}  
+to{transform:scale(1.05);}  
+}  
+/* TRUST */  
+.trust{  
+padding:40px 15px;  
+display:flex;  
+justify-content:center;  
+}  
+  
+.trust-box{  
+background:white;  
+padding:25px;  
+border-radius:18px;  
+box-shadow:0 6px 18px rgba(0,0,0,0.1);  
+text-align:center;  
+max-width:380px;  
+width:100%;  
+}  
+  
+.trust-img{  
+width:180px;  
+border-radius:15px;  
+margin-bottom:10px;  
+}  
+  
+.owner-title{  
+font-size:20px;  
+font-weight:bold;  
+background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);  
+background-size:400%;  
+-webkit-background-clip:text;  
+-webkit-text-fill-color:transparent;  
+animation:colorMove 6s linear infinite;  
+margin-bottom:10px;  
+}  
+  
+@keyframes colorMove{  
+0%{background-position:0%;}  
+100%{background-position:400%;}  
+}  
+  
+.main-btn{  
+display:inline-block;  
+padding:10px 22px;  
+background:#0088cc;  
+color:white;  
+border-radius:30px;  
+text-decoration:none;  
+font-weight:bold;  
+margin-bottom:10px;  
+}  
+  
+.details-btn{  
+display:block;  
+width:100%;  
+padding:8px;  
+background:#0a66c2;  
+color:white;  
+border:none;  
+border-radius:25px;  
+cursor:pointer;  
+margin-top:5px;  
+text-decoration:none;   /* 👈 Underline remove */  
+}  
+  
+.owner-details{  
+max-height:0;  
+overflow:hidden;  
+transition:max-height 0.5s ease;  
+text-align:left;  
+padding-left:10px;  
+}  
+  
+/* SERVICES */  
+.services{  
+padding:50px 20px;  
+text-align:center;  
+color:white;  
+background:transparent;  
+}  
+  
+.admin-heading{  
+text-align:center;  
+font-size:28px;  
+font-weight:bold;  
+margin-bottom:30px;  
+background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);  
+background-size:400%;  
+-webkit-background-clip:text;  
+-webkit-text-fill-color:transparent;  
+animation:colorMove 6s linear infinite;  
+}  
+  
+.service-box{  
+background:linear-gradient(145deg,#1f2633,#121720);  
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+transition:0.3s;  
+}  
+  
+.service-box:hover{  
+transform:translateY(-6px) scale(1.01);  
+box-shadow:0 10px 30px rgba(0,0,0,0.7);  
+}  
+  
+.tiger-title{  
+font-size:18px;  
+font-weight:bold;  
+color:#ff3d00;  
+margin-bottom:8px;  
+}  
+  
+.btn-row{  
+margin-top:12px;  
+display:flex;  
+gap:10px;  
+flex-wrap:wrap;  
+}  
+  
+.buy-btn,.order-btn{  
+padding:8px 18px;  
+border-radius:25px;  
+color:white;  
+text-decoration:none;  
+font-weight:bold;  
+cursor:pointer;  
+}  
+  
+.buy-btn{background:#28a745;}  
+.order-btn{background:#0a66c2;}  
+  
+.flash-img{  
+width:90px;  
+margin-bottom:10px;  
+}  
+  
+/* WHY */  
+.why{  
+background:linear-gradient(145deg,#1f2633,#121720);  
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+transition:0.3s;  
+}  
+  
+/* TESTIMONIAL */  
+.testimonial{  
+background:linear-gradient(145deg,#1f2633,#121720);  
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+transition:0.3s;  
+}  
+  
+.testimonial-box{  
+background:#242a33;  
+color:white;  
+padding:20px;  
+border-radius:12px;  
+margin-bottom:15px;  
+}  
+.faq{  
+background:linear-gradient(145deg,#1f2633,#121720);  
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+text-align:center;  
+}  
+  
+.faq p{  
+max-width:600px;  
+margin:10px auto;  
+line-height:1.6;  
+}  
+/* CONTACT */  
+.contact-form{  
+background:linear-gradient(145deg,#1f2633,#121720);
 
-@keyframes gradientBG{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
-}
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+transition:0.3s;  
+}  
+  
+.contact-form input,  
+.contact-form textarea{  
+width:90%;  
+max-width:400px;  
+padding:10px;  
+margin:8px 0;  
+border-radius:8px;  
+border:1px solid #ccc;  
+}  
+  
+.contact-form button{  
+padding:10px 25px;  
+background:#0a66c2;  
+color:white;  
+border:none;  
+border-radius:25px;  
+cursor:pointer;  
+}  
+  
+/* ABOUT */  
+.about{  
+background:linear-gradient(145deg,#1f2633,#121720);  
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+text-align:center;  
+}  
+  
+/* FOOTER */  
+.footer{  
+background:black;  
+color:#aaa;  
+padding:40px 20px;  
+text-align:center;  
+}  
+  
+.footer-links{  
+margin-top:15px;  
+display:flex;  
+justify-content:center;  
+gap:20px;  
+flex-wrap:wrap;  
+}  
+  
+.footer-links a{  
+color:#0a66c2;  
+text-decoration:none;  
+}  
+  
+/* WhatsApp */  
+.whatsapp-float{  
+position:fixed;  
+bottom:130px;  
+right:20px;  
+background:#25D366;  
+color:white;  
+border-radius:50%;  
+width:60px;  
+height:60px;  
+display:flex;  
+justify-content:center;  
+align-items:center;  
+font-size:28px;  
+text-decoration:none;  
+box-shadow:0 4px 10px rgba(0,0,0,0.3);  
+z-index:9999;  
+}  
+/* BIG TOURNAMENT TEXT */  
+.banner-text{  
+position:absolute;  
+top:20px;  
+left:50%;  
+transform:translateX(-50%);  
+font-size:34px;  
+font-weight:900;  
+font-family:Impact, Arial Black, sans-serif;  
+text-transform:uppercase;  
+letter-spacing:2px;  
+text-align:center;  
+padding:8px 20px;  
+border-radius:10px;  
+  
+background:linear-gradient(90deg,#ff0000,#ff7300,#ffea00,#00ffea,#ff00c8);  
+background-size:400%;  
+  
+-webkit-background-clip:text;  
+-webkit-text-fill-color:transparent;  
+  
+animation:fireText 4s linear infinite;  
+  
+text-shadow:  
+0 0 10px red,  
+0 0 20px orange,  
+0 0 30px yellow;  
+}  
+  
+@keyframes fireText{  
+0%{background-position:0%;}  
+100%{background-position:400%;}  
+}  
+/* Bottom Action Bar */  
+.bottom-action-bar{  
+position:fixed;  
+bottom:8px;  
+left:0;  
+width:100%;  
+background:#0f172a;  
+display:flex;  
+justify-content:space-around;  
+align-items:center;  
+padding:12px 0;  
+box-shadow:0 -6px 25px rgba(0,0,0,0.8);  
+z-index:9998;  
+}  
+  
+.action-btn{  
+text-decoration:none;  
+font-weight:bold;  
+padding:10px 18px;  
+border-radius:30px;  
+color:white;  
+font-size:14px;  
+}  
+  
+.buy-main{  
+background:linear-gradient(45deg,#28a745,#00c851);  
+}  
+  
+.play-main{  
+background:linear-gradient(45deg,#ff512f,#dd2476);  
+padding:12px 24px;  
+font-size:16px;  
+box-shadow:0 4px 12px rgba(0,0,0,0.3);  
+}  
+  
+.account-main{  
+background:linear-gradient(45deg,#0a66c2,#003366);  
+}  
+.ff-highlights{  
+background:linear-gradient(145deg,#1f2633,#121720);  
+padding:25px;  
+margin-bottom:25px;  
+border-radius:14px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.5);  
+border:1px solid rgba(255,255,255,0.05);  
+color:white;  
+transition:0.3s;  
+}  
+.ff-title{  
+font-size:30px;  
+font-weight:900;  
+margin-bottom:25px;  
+background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa);  
+-webkit-background-clip:text;  
+-webkit-text-fill-color:transparent;  
+}  
+  
+.ff-row{  
+display:flex;  
+gap:20px;  
+overflow-x:auto;  
+padding-bottom:10px;  
+}  
+  
+.ff-card{  
+min-width:230px;  
+background:linear-gradient(145deg,#1f2633,#121720);  
+color:white;  
+border-radius:15px;  
+box-shadow:0 8px 25px rgba(0,0,0,0.6);  
+overflow:hidden;  
+transition:0.3s;  
+}  
+.ff-card:hover{  
+transform:translateY(-6px);  
+}  
+  
+.ff-card img{  
+width:100%;  
+height:140px;  
+object-fit:cover;  
+}  
+  
+.ff-text{  
+padding:12px;  
+}  
+  
+.ff-text h3{  
+margin:5px 0;  
+font-size:16px;
 
-/* NAVBAR */
-.navbar{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px 25px;
-background:#0f172a;
-box-shadow:0 4px 20px rgba(0,0,0,0.6);
-position:sticky;
-top:0;
-z-index:1000;
-}
-
-.logo img{height:45px;}
-
-.nav-buttons{display:flex;gap:10px;}
-
-.signin,.join{
+}  
+  
+.ff-text p{  
+font-size:13px;  
+color:#bbb;  
+}  
+.download-apk-btn{
+display:inline-block;
+margin-top:10px;
 padding:8px 18px;
 border-radius:25px;
 font-weight:bold;
 cursor:pointer;
-transition:0.3s;
-border:none;
-}
-
-.signin{
 border:2px solid #0a66c2;
 background:white;
 color:#0a66c2;
+text-decoration:none;
+
+animation:apkShake 1.5s infinite;
+transition:0.3s;
 }
 
-.signin:hover{
+.download-apk-btn:hover{
 background:#0a66c2;
 color:white;
 }
 
-.join{
-background:#0a66c2;
-color:white;
-}
-
-.join:hover{background:#003366;}
-
-/* HERO */
-.hero{
-text-align:center;
-padding:60px 15px 40px;
-color:white;
-background:linear-gradient(145deg,#1f2633,#121720);
-
-width:100%;
-max-width:100%;
-box-sizing:border-box;
-
-margin:0;
-border-radius:0;
-
-position:relative;
-overflow:hidden;
-}
-
-.hero h1{
-font-size:32px;
-margin-bottom:10px;
-animation:floatText 3s ease-in-out infinite;
-}
-
-.hero p{
-font-size:16px;
-opacity:0.9;
-}
-
-.hero::before{
-content:"";
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:radial-gradient(circle at 20% 30%,rgba(255,255,255,0.08),transparent),
-radial-gradient(circle at 80% 70%,rgba(255,255,255,0.05),transparent);
-pointer-events:none;
-}
-@keyframes floatText{
+@keyframes apkShake{
 0%{transform:translateY(0px);}
-50%{transform:translateY(-6px);}
+25%{transform:translateY(-3px);}
+50%{transform:translateY(0px);}
+75%{transform:translateY(3px);}
 100%{transform:translateY(0px);}
 }
+</style>  </head>  <body>  <!-- ===== ORIGINAL FULL CONTENT ===== -->  <div class="navbar">  
+<div class="logo"><img src="logo.png"></div>  
+<div class="nav-buttons">  
+<button class="signin" onclick="signInClick()">Sign in</button>  <button class="join" onclick="joinClick()">Join now</button>
 
-.battle-banner{
-position:relative;
-text-align:center;
-margin-top:20px;
-width:100%;
-}
-
-.battle-banner img{
-width:100%;
-max-height:420px;
-object-fit:contain;
-border-radius:12px;
-box-shadow:0 6px 18px rgba(0,0,0,0.4);
-background:black;
-}
-.battle-heading{
-text-align:center;
-font-size:36px;
-font-weight:900;
-margin-top:15px;
-margin-bottom:10px;
-letter-spacing:3px;
-
-/* Colorful Gradient */
-background:linear-gradient(90deg,
-#ff0000,
-#ff7300,
-#ffea00,
-#00ffea,
-#00ff00,
-#0099ff,
-#ff00c8);
-
-background-size:500%;
-
-/* Text Gradient */
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
-/* Animation */
-animation:rainbowMove 6s linear infinite;
-
-/* Glow Effect */
-text-shadow:
-0 0 10px rgba(255,255,255,0.5),
-0 0 20px rgba(255,0,0,0.5),
-0 0 30px rgba(0,255,255,0.5);
-
-/* Slight 3D */
-transform:perspective(500px) rotateX(8deg);
-}
-
-@keyframes rainbowMove{
-0%{background-position:0%;}
-100%{background-position:500%;}
-}
-
-.play-now-btn{
-display:block;
-width:200px;
-margin:15px auto;
-padding:12px;
-background:#28a745;
-color:white;
-text-align:center;
-font-weight:bold;
-border-radius:30px;
-text-decoration:none;
-font-size:16px;
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
-transition:0.3s;
-}
-
-.play-now-btn:hover{
-background:#1e7e34;
-transform:scale(1.05);
-}
-
-@keyframes zoomIn{
-from{transform:scale(1);}
-to{transform:scale(1.05);}
-}
-/* TRUST */
-.trust{
-padding:40px 15px;
-display:flex;
-justify-content:center;
-}
-
-.trust-box{
-background:white;
-padding:25px;
-border-radius:18px;
-box-shadow:0 6px 18px rgba(0,0,0,0.1);
-text-align:center;
-max-width:380px;
-width:100%;
-}
-
-.trust-img{
-width:180px;
-border-radius:15px;
-margin-bottom:10px;
-}
-
-.owner-title{
-font-size:20px;
-font-weight:bold;
-background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);
-background-size:400%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:colorMove 6s linear infinite;
-margin-bottom:10px;
-}
-
-@keyframes colorMove{
-0%{background-position:0%;}
-100%{background-position:400%;}
-}
-
-.main-btn{
-display:inline-block;
-padding:10px 22px;
-background:#0088cc;
-color:white;
-border-radius:30px;
-text-decoration:none;
-font-weight:bold;
-margin-bottom:10px;
-}
-
-.details-btn{
-display:block;
-width:100%;
-padding:8px;
-background:#0a66c2;
-color:white;
-border:none;
-border-radius:25px;
-cursor:pointer;
-margin-top:5px;
-text-decoration:none;   /* 👈 Underline remove */
-}
-
-.owner-details{
-max-height:0;
-overflow:hidden;
-transition:max-height 0.5s ease;
-text-align:left;
-padding-left:10px;
-}
-
-/* SERVICES */
-.services{
-padding:50px 20px;
-text-align:center;
-color:white;
-background:transparent;
-}
-
-.admin-heading{
-text-align:center;
-font-size:28px;
-font-weight:bold;
-margin-bottom:30px;
-background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);
-background-size:400%;
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-animation:colorMove 6s linear infinite;
-}
-
-.service-box{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-transition:0.3s;
-}
-
-.service-box:hover{
-transform:translateY(-6px) scale(1.01);
-box-shadow:0 10px 30px rgba(0,0,0,0.7);
-}
-
-.tiger-title{
-font-size:18px;
-font-weight:bold;
-color:#ff3d00;
-margin-bottom:8px;
-}
-
-.btn-row{
-margin-top:12px;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.buy-btn,.order-btn{
-padding:8px 18px;
-border-radius:25px;
-color:white;
-text-decoration:none;
-font-weight:bold;
-cursor:pointer;
-}
-
-.buy-btn{background:#28a745;}
-.order-btn{background:#0a66c2;}
-
-.flash-img{
-width:90px;
-margin-bottom:10px;
-}
-
-/* WHY */
-.why{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-transition:0.3s;
-}
-
-/* TESTIMONIAL */
-.testimonial{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-transition:0.3s;
-}
-
-.testimonial-box{
-background:#242a33;
-color:white;
-padding:20px;
-border-radius:12px;
-margin-bottom:15px;
-}
-.faq{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-text-align:center;
-}
-
-.faq p{
-max-width:600px;
-margin:10px auto;
-line-height:1.6;
-}
-/* CONTACT */
-.contact-form{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-transition:0.3s;
-}
-
-.contact-form input,
-.contact-form textarea{
-width:90%;
-max-width:400px;
-padding:10px;
-margin:8px 0;
-border-radius:8px;
-border:1px solid #ccc;
-}
-
-.contact-form button{
-padding:10px 25px;
-background:#0a66c2;
-color:white;
-border:none;
-border-radius:25px;
-cursor:pointer;
-}
-
-/* ABOUT */
-.about{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-text-align:center;
-}
-
-/* FOOTER */
-.footer{
-background:black;
-color:#aaa;
-padding:40px 20px;
-text-align:center;
-}
-
-.footer-links{
-margin-top:15px;
-display:flex;
-justify-content:center;
-gap:20px;
-flex-wrap:wrap;
-}
-
-.footer-links a{
-color:#0a66c2;
-text-decoration:none;
-}
-
-/* WhatsApp */
-.whatsapp-float{
-position:fixed;
-bottom:130px;
-right:20px;
-background:#25D366;
-color:white;
-border-radius:50%;
-width:60px;
-height:60px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
-text-decoration:none;
-box-shadow:0 4px 10px rgba(0,0,0,0.3);
-z-index:9999;
-}
-/* BIG TOURNAMENT TEXT */
-.banner-text{
-position:absolute;
-top:20px;
-left:50%;
-transform:translateX(-50%);
-font-size:34px;
-font-weight:900;
-font-family:Impact, Arial Black, sans-serif;
-text-transform:uppercase;
-letter-spacing:2px;
-text-align:center;
-padding:8px 20px;
-border-radius:10px;
-
-background:linear-gradient(90deg,#ff0000,#ff7300,#ffea00,#00ffea,#ff00c8);
-background-size:400%;
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
-animation:fireText 4s linear infinite;
-
-text-shadow:
-0 0 10px red,
-0 0 20px orange,
-0 0 30px yellow;
-}
-
-@keyframes fireText{
-0%{background-position:0%;}
-100%{background-position:400%;}
-}
-/* Bottom Action Bar */
-.bottom-action-bar{
-position:fixed;
-bottom:20px;
-left:0;
-width:100%;
-background:#0f172a;
-display:flex;
-justify-content:space-around;
-align-items:center;
-padding:12px 0;
-box-shadow:0 -6px 25px rgba(0,0,0,0.8);
-z-index:9998;
-}
-
-.action-btn{
-text-decoration:none;
-font-weight:bold;
-padding:10px 18px;
-border-radius:30px;
-color:white;
-font-size:14px;
-}
-
-.buy-main{
-background:linear-gradient(45deg,#28a745,#00c851);
-}
-
-.play-main{
-background:linear-gradient(45deg,#ff512f,#dd2476);
-padding:12px 24px;
-font-size:16px;
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
-}
-
-.account-main{
-background:linear-gradient(45deg,#0a66c2,#003366);
-}
-.ff-highlights{
-background:linear-gradient(145deg,#1f2633,#121720);
-padding:25px;
-margin-bottom:25px;
-border-radius:14px;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-border:1px solid rgba(255,255,255,0.05);
-color:white;
-transition:0.3s;
-}
-.ff-title{
-font-size:30px;
-font-weight:900;
-margin-bottom:25px;
-background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-}
-
-.ff-row{
-display:flex;
-gap:20px;
-overflow-x:auto;
-padding-bottom:10px;
-}
-
-.ff-card{
-min-width:230px;
-background:linear-gradient(145deg,#1f2633,#121720);
-color:white;
-border-radius:15px;
-box-shadow:0 8px 25px rgba(0,0,0,0.6);
-overflow:hidden;
-transition:0.3s;
-}
-.ff-card:hover{
-transform:translateY(-6px);
-}
-
-.ff-card img{
-width:100%;
-height:140px;
-object-fit:cover;
-}
-
-.ff-text{
-padding:12px;
-}
-
-.ff-text h3{
-margin:5px 0;
-font-size:16px;
-}
-
-.ff-text p{
-font-size:13px;
-color:#bbb;
-}
-</style>
-</head>
-
-<body>
-
-<!-- ===== ORIGINAL FULL CONTENT ===== -->
-
-<div class="navbar">
-<div class="logo"><img src="logo.png"></div>
-<div class="nav-buttons">
-<button class="signin" onclick="signInClick()">Sign in</button>
-
-<button class="join" onclick="joinClick()">Join now</button>
+</div>  
+</div> 
+<div style="text-align:center;margin-top:10px;">
+<a href="app.apk" class="download-apk-btn">⬇ Download Now APK</a>
 </div>
-</div>
-
-<div class="hero">
-<h1>Welcome to Hari Bhai Company</h1>
-<p>Trusted Business & Professional Services</p>
-
-<h2 class="battle-heading">FREE FIRE PAID TOURNAMENT</h2>
-
-<div class="battle-banner">
-
-<img id="battleMedia" src="tournament.jpg">
-
-</div>
-<a href="play.html" class="play-now-btn">▶ PLAY NOW</a>
-</div>
-
-<div class="ff-highlights">
-
-<h2 class="ff-title">🔥 Tournament Highlights 🔥</h2>
-
-<div class="ff-row">
-
-<div class="ff-card">
-<img src="t1.jpg">
-<div class="ff-text">
-<h3>Daily Matches</h3>
-<p>Play exciting Free Fire matches every day.</p>
-</div>
-</div>
-
-<div class="ff-card">
-<img src="t2.jpg">
-<div class="ff-text">
-<h3>Low Entry</h3>
-<p>Join tournaments starting from ₹10.</p>
-</div>
-</div>
-
-<div class="ff-card">
-<img src="t3.jpg">
-<div class="ff-text">
-<h3>Win Cash</h3>
-<p>Win real prize money instantly.</p>
-</div>
-</div>
-
-<div class="ff-card">
-<img src="t4.jpg">
-<div class="ff-text">
-<h3>Fast Results</h3>
-<p>Room ID and results delivered fast.</p>
-</div>
-</div>
-
-</div>
-
-</div>
-<div class="why">
-<h2>Why Choose Us?</h2>
-<p>✔ Fair Gameplay for all players</p>
-<p>✔ Room ID shared before match</p>
-<p>✔ Fast prize distribution</p>
-<p>✔ Easy tournament joining</p>
-</div>
-
-<div class="testimonial">
-<h2>Players Reviews</h2>
-<div class="testimonial-box">
-<p>"Bhai yeh tournament website bahut mast hai. Room ID time par mil jata hai aur prize bhi jaldi milta hai. Main 3 match jeet chuka hu." ⭐⭐⭐⭐⭐</p>
-</div>
-<div class="testimonial-box">
-<p>"Sabse trusted tournament platform hai. Entry fee kam hai aur competition bhi achha hota hai. Main daily yahi match khelta hu." ⭐⭐⭐⭐⭐</p>
-</div>
-</div>
-
-<div class="faq">
-<h2>Frequently Asked Questions</h2>
-<p><strong>What payment methods are accepted?</strong></p>
-<p>UPI, Bank Transfer and International Transfer accepted.</p>
-</div>
-
-<div class="contact-form">
-<h2>Quick Contact</h2>
-<input type="text" placeholder="Your Name">
-<input type="email" placeholder="Your Email">
-<textarea placeholder="Your Message"></textarea>
-<br>
-<button>Send Message</button>
-</div>
-
-<div class="about">
-<h2>About Hari Bhai Company</h2>
-<p>
-Hari Bhai Company is a trusted digital service provider delivering high quality gaming and promotional services.
-We focus on fast delivery, secure transactions and 100% customer satisfaction.
-Our goal is to provide affordable and premium level services without any delay.
-</p>
-<br>
-<p>
-✔ Professional Team Support <br>
-✔ 24/7 Customer Assistance <br>
-✔ Verified & Trusted Seller <br>
-✔ Secure Payment System <br>
-✔ Fast Response Time
-</p>
-<br>
-<p>
-We believe in building long term trust with our customers through transparency and reliable service.
-</p>
-</div>
-
-<div class="footer">
-© 2026 Hari Bhai Company | All Rights Reserved
-<div class="footer-links">
-
-<a href="terms.html" class="action-btn terms-main">Terms And Condition</a>
+<div class="hero">  
+<h1>Welcome to Hari Bhai Company</h1>  
+<p>Trusted Business & Professional Services</p>  <h2 class="battle-heading">FREE FIRE PAID TOURNAMENT</h2>  <div class="battle-banner">  <img id="battleMedia" src="tournament.jpg">  </div>  
+<a href="play.html" class="play-now-btn">▶ PLAY NOW</a>  
+</div>  <div class="ff-highlights">  <h2 class="ff-title">🔥 Tournament Highlights 🔥</h2>  <div class="ff-row">  <div class="ff-card">  
+<img src="t1.jpg">  
+<div class="ff-text">  
+<h3>Daily Matches</h3>  
+<p>Play exciting Free Fire matches every day.</p>  
+</div>  
+</div>  <div class="ff-card">  
+<img src="t2.jpg">  
+<div class="ff-text">  
+<h3>Low Entry</h3>  
+<p>Join tournaments starting from ₹10.</p>  
+</div>  
+</div>  <div class="ff-card">  
+<img src="t3.jpg">  
+<div class="ff-text">  
+<h3>Win Cash</h3>  
+<p>Win real prize money instantly.</p>  
+</div>  
+</div>  <div class="ff-card">  
+<img src="t4.jpg">  
+<div class="ff-text">  
+<h3>Fast Results</h3>  
+<p>Room ID and results delivered fast.</p>  
+</div>  
+</div>  </div>  </div>  
+<div class="why">  
+<h2>Why Choose Us?</h2>  
+<p>✔ Fair Gameplay for all players</p>  
+<p>✔ Room ID shared before match</p>  
+<p>✔ Fast prize distribution</p>  
+<p>✔ Easy tournament joining</p>  
+</div>  <div class="testimonial">  
+<h2>Players Reviews</h2>  
+<div class="testimonial-box">  
+<p>"Bhai yeh tournament website bahut mast hai. Room ID time par mil jata hai aur prize bhi jaldi milta hai. Main 3 match jeet chuka hu." ⭐⭐⭐⭐⭐</p>  
+</div>  
+<div class="testimonial-box">  
+<p>"Sabse trusted tournament platform hai. Entry fee kam hai aur competition bhi achha hota hai. Main daily yahi match khelta hu." ⭐⭐⭐⭐⭐</p>  
+</div>  
+</div>  <div class="faq">  
+<h2>Frequently Asked Questions</h2>  
+<p><strong>What payment methods are accepted?</strong></p>  
+<p>UPI, Bank Transfer and International Transfer accepted.</p>  
+</div>  <div class="contact-form">  
+<h2>Quick Contact</h2>  
+<input type="text" placeholder="Your Name">  
+<input type="email" placeholder="Your Email">  
+<textarea placeholder="Your Message"></textarea>  
+<br>  
+<button>Send Message</button>  
+</div>  <div class="about">  
+<h2>About Hari Bhai Company</h2>  
+<p>  
+Hari Bhai Company is a trusted digital service provider delivering high quality gaming and promotional services.  
+We focus on fast delivery, secure transactions and 100% customer satisfaction.  
+Our goal is to provide affordable and premium level services without any delay.  
+</p>  
+<br>  
+<p>  
+✔ Professional Team Support <br>  
+✔ 24/7 Customer Assistance <br>  
+✔ Verified & Trusted Seller <br>  
+✔ Secure Payment System <br>  
+✔ Fast Response Time  
+</p>  
+<br>  
+<p>  
+We believe in building long term trust with our customers through transparency and reliable service.  
+</p>  
+</div>  <div class="footer">  
+© 2026 Hari Bhai Company | All Rights Reserved  
+<div class="footer-links">  <a href="terms.html" class="action-btn terms-main">Terms And Condition</a>
 
 <a href="about.html" class="action-btn about-main">About</a>
 
@@ -747,136 +731,127 @@ We believe in building long term trust with our customers through transparency a
 
 <a href="support.html" class="action-btn support-main">Support</a>
 
-</div>
-</div>
-
-<a href="https://wa.me/+916375778389" target="_blank" class="whatsapp-float">💬</a>
+</div>  
+</div>  <a href="https://wa.me/+916375778389" target="_blank" class="whatsapp-float">💬</a>
 
 <div class="bottom-action-bar">
-<a href="index.html" class="action-btn buy-main">🔥 Home</a>
-<a href="play.html" class="action-btn play-main">▶ Play</a>
-<a href="account.html" class="action-btn account-main">👤 Account</a>
-</div>
-<!-- POPUP -->
-<div id="popup" class="popup">
-  <div class="popup-box">
-    <p id="popupText"></p>
-    <button onclick="closePopup()">OK</button>
-  </div>
-</div>
 
-<style>
-.popup{
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,0.6);
-display:none;
-justify-content:center;
-align-items:center;
-animation:fadeIn 0.3s ease;
-z-index:99999;
-}
-.popup-box{
-background:white;
-color:black;
-padding:20px;
-border-radius:12px;
-text-align:center;
-width:80%;
-max-width:300px;
-animation:slideUp 0.3s ease;
-}
-.popup-box button{
-margin-top:15px;
-padding:8px 20px;
-border:none;
-background:#0a66c2;
-color:white;
-border-radius:6px;
-cursor:pointer;
-}
-@keyframes fadeIn{
-from{opacity:0}
-to{opacity:1}
-}
-@keyframes slideUp{
-from{transform:translateY(40px);opacity:0}
-to{transform:translateY(0);opacity:1}
-}
-</style>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-let currentUser = null;
-
-onAuthStateChanged(auth,(user)=>{
-currentUser = user;
-});
-
-window.signInClick = function(){
-if(currentUser){
-showPopup("You are already Signed In ✅");
-}else{
-window.location.href="auth.html";
-}
-}
-
-window.joinClick = function(){
-if(currentUser){
-showPopup("You are already Registered ✅");
-}else{
-window.location.href="auth.html";
-}
-}
-
-function showPopup(msg){
-document.getElementById("popupText").innerText = msg;
-document.getElementById("popup").style.display="flex";
-}
-
-window.closePopup = function(){
-document.getElementById("popup").style.display="none";
-}
-window.addEventListener("load", function(){
-
-const media = document.getElementById("battleMedia");
-
-const photo = "tournament.jpg";
-const gif = "battle1.gif";
-
-let showPhoto = true;
-
-setInterval(()=>{
-if(showPhoto){
-media.src = gif;
-}else{
-media.src = photo;
-}
-showPhoto = !showPhoto;
-},3000);
-
-});
-</script>
-
-<script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
-}
-});
-</script>
-
-</body>
+<a href="index.html" class="action-btn buy-main">🔥 Home</a>  
+<a href="play.html" class="action-btn play-main">▶ Play</a>  
+<a href="account.html" class="action-btn account-main">👤 Account</a>  
+</div>  
+<!-- POPUP -->  
+<div id="popup" class="popup">  
+  <div class="popup-box">  
+    <p id="popupText"></p>  
+    <button onclick="closePopup()">OK</button>  
+  </div>  
+</div>  <style>  
+.popup{  
+position:fixed;  
+top:0;left:0;  
+width:100%;height:100%;  
+background:rgba(0,0,0,0.6);  
+display:none;  
+justify-content:center;  
+align-items:center;  
+animation:fadeIn 0.3s ease;  
+z-index:99999;  
+}  
+.popup-box{  
+background:white;  
+color:black;  
+padding:20px;  
+border-radius:12px;  
+text-align:center;  
+width:80%;  
+max-width:300px;  
+animation:slideUp 0.3s ease;  
+}  
+.popup-box button{  
+margin-top:15px;  
+padding:8px 20px;  
+border:none;  
+background:#0a66c2;  
+color:white;  
+border-radius:6px;  
+cursor:pointer;  
+}  
+@keyframes fadeIn{  
+from{opacity:0}  
+to{opacity:1}  
+}  
+@keyframes slideUp{  
+from{transform:translateY(40px);opacity:0}  
+to{transform:translateY(0);opacity:1}  
+}  
+</style>  <script type="module">  
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";  
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";  
+  
+const firebaseConfig = {  
+apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",  
+authDomain: "ff-tournament-915ed.firebaseapp.com",  
+projectId: "ff-tournament-915ed",  
+};  
+  
+const app = initializeApp(firebaseConfig);  
+const auth = getAuth(app);  
+  
+let currentUser = null;  
+  
+onAuthStateChanged(auth,(user)=>{  
+currentUser = user;  
+});  
+  
+window.signInClick = function(){  
+if(currentUser){  
+showPopup("You are already Signed In ✅");  
+}else{  
+window.location.href="auth.html";  
+}  
+}  
+  
+window.joinClick = function(){  
+if(currentUser){  
+showPopup("You are already Registered ✅");  
+}else{  
+window.location.href="auth.html";  
+}  
+}  
+  
+function showPopup(msg){  
+document.getElementById("popupText").innerText = msg;  
+document.getElementById("popup").style.display="flex";  
+}  
+  
+window.closePopup = function(){  
+document.getElementById("popup").style.display="none";  
+}  
+window.addEventListener("load", function(){  
+  
+const media = document.getElementById("battleMedia");  
+  
+const photo = "tournament.jpg";  
+const gif = "battle1.gif";  
+  
+let showPhoto = true;  
+  
+setInterval(()=>{  
+if(showPhoto){  
+media.src = gif;  
+}else{  
+media.src = photo;  
+}  
+showPhoto = !showPhoto;  
+},3000);  
+  
+});  
+</script>  <script>  
+window.addEventListener("load",function(){  
+if(document.documentElement.requestFullscreen){  
+document.documentElement.requestFullscreen();  
+}  
+});  
+</script>  </body>  
 </html>
