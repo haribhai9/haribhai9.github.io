@@ -15,6 +15,13 @@ margin:0;
 padding:0;
 overflow-x:hidden;
 }
+/* TOP STATUS BAR SPACE */
+body::before{
+content:"";
+display:block;
+height:35px;
+background:black;
+}
 body{
 margin:0;
 font-family:'Segoe UI',Arial;
@@ -22,7 +29,15 @@ background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);
 background-size:400% 400%;
 animation:gradientBG 10s ease infinite;
 scroll-behavior:smooth;
-padding-bottom:80px;
+padding-bottom:120px;
+}
+
+/* BOTTOM MOBILE BUTTON SPACE */
+body::after{
+content:"";
+display:block;
+height:80px;
+background:white;
 }
 
 @keyframes gradientBG{
@@ -506,7 +521,7 @@ text-shadow:
 /* Bottom Action Bar */
 .bottom-action-bar{
 position:fixed;
-bottom:0;
+bottom:80px;
 left:0;
 width:100%;
 background:#0f172a;
