@@ -233,11 +233,13 @@ Rules
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <h3>Body Custom Room</h3>
-<p>Entry: ₹FREE</p>
-<p>Win: ₹10</p>
+<p>Entry: ₹<span id="entry_room1">...</span></p>
+<p>Win: ₹<span id="win_room1">...</span></p>
 <p class="time">Match Time: <span id="time_room1">Waiting...</span></p>
 <p class="slot" id="slot_room1">Loading...</p>
-<button class="btn" id="btn_room1" onclick="joinMatch('room1',0)">Join Now</button>
+<button class="btn" id="btn_room1" onclick="joinMatch('room1')">
+Join Now
+</button>
 <div class="room-box" id="room1"></div>
 </div>
 </div>
@@ -248,11 +250,13 @@ Rules
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <h3>Body Custom Room</h3>
-<p>Entry: ₹10</p>
-<p>Win: ₹20</p>
+<p>Entry: ₹<span id="entry_room2">...</span></p>
+<p>Win: ₹<span id="win_room2">...</span></p>
 <p class="time">Match Time: <span id="time_room2">Waiting...</span></p>
 <p class="slot" id="slot_room2">Loading...</p>
-<button class="btn" id="btn_room2" onclick="joinMatch('room2',10)">Join Now</button>
+<button class="btn" id="btn_room2" onclick="joinMatch('room2')">
+Join Now
+</button>
 <div class="room-box" id="room2"></div>
 </div>
 </div>
@@ -263,11 +267,13 @@ Rules
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <h3>Only Head Custom Room</h3>
-<p>Entry: ₹30</p>
-<p>Win: ₹50</p>
+<p>Entry: ₹<span id="entry_room3">...</span></p>
+<p>Win: ₹<span id="win_room3">...</span></p>
 <p class="time">Match Time: <span id="time_room3">Waiting...</span></p>
 <p class="slot" id="slot_room3">Loading...</p>
-<button class="btn" id="btn_room3" onclick="joinMatch('room3',30)">Join Now</button>
+<button class="btn" id="btn_room3" onclick="joinMatch('room3')">
+Join Now
+</button>
 <div class="room-box" id="room3"></div>
 </div>
 </div>
@@ -278,11 +284,13 @@ Rules
 <div class="t-info">
 <h3>Free Fire Tournament</h3>
 <h3>Only Head Custom Room</h3>
-<p>Entry: ₹50</p>
-<p>Win: ₹85</p>
+<p>Entry: ₹<span id="entry_room4">...</span></p>
+<p>Win: ₹<span id="win_room4">...</span></p>
 <p class="time">Match Time: <span id="time_room4">Waiting...</span></p>
 <p class="slot" id="slot_room4">Loading...</p>
-<button class="btn" id="btn_room4" onclick="joinMatch('room4',50)">Join Now</button>
+<button class="btn" id="btn_room4" onclick="joinMatch('room4')">
+Join Now
+</button>
 <div class="room-box" id="room4"></div>
 </div>
 </div>
@@ -392,7 +400,14 @@ return;
 }
 
 let slot = snap.data().slots || 0;
+let over = snap.data().over || false;
 
+if(over){
+slotText.innerHTML = "MATCH OVER ❌";
+slotText.style.color = "red";
+btn.disabled = true;
+return;
+}
 if(slot >= maxSlot){
 slotText.innerHTML = "Slot: FULL ❌";
 slotText.style.color = "red";
@@ -407,12 +422,29 @@ btn.disabled = false;
 
 });
 
+["room1","room2","room3","room4"].forEach((room)=>{
+
+onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
+
+if(snap.exists()){
+
+let data = snap.data();
+
+document.getElementById("entry_"+room).innerText = data.entry;
+document.getElementById("win_"+room).innerText = data.win;
+
+}
+
+});
+
+});
+
 /* ================= JOIN MATCH ================= */
 
 let selectedRoom = null;
 let selectedFee = 0;
 
-window.joinMatch = function(room,fee){
+window.joinMatch = async function(room){
 
 if(!currentUser){
 alert("Please login first ❌");
@@ -420,12 +452,20 @@ window.location.href = "auth.html";
 return;
 }
 
+const prizeSnap = await getDoc(doc(db,"settings",room+"Prize"));
+
+if(!prizeSnap.exists()){
+alert("Prize not set by admin ❌");
+return;
+}
+
 selectedRoom = room;
-selectedFee = fee;
+selectedFee = prizeSnap.data().entry;
 
 document.getElementById("gameNameInput").value = "";
 document.getElementById("joinPopup").style.display = "flex";
-};window.confirmJoin = async function(){
+
+}window.confirmJoin = async function(){
 
 const gameName = document.getElementById("gameNameInput").value.trim();
 
