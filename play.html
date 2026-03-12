@@ -483,6 +483,11 @@ const roomSnap = await getDoc(roomRef);
 if(!userSnap.exists() || !roomSnap.exists()) return;
 
 let userData = userSnap.data();
+if(userData.blocked){
+alert("You are blocked by admin ❌");
+closePopup();
+return;
+}
 let deposit = userData.balance || 0;
 let winning = userData.winningBalance || 0;
 
