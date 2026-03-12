@@ -75,6 +75,7 @@ throw new Error("Access Blocked");
 <input type="text" id="roomPASS_room1">
 <button class="green" onclick="saveRoom('room1')">Save Room 1</button>
 <button class="red" onclick="resetRoom('room1')">Reset Room 1</button>
+<button class="blue" onclick="toggleRoom('room1')">Toggle OVER</button>
 <hr>
 
 <label>Room 2 ID</label>
@@ -83,6 +84,7 @@ throw new Error("Access Blocked");
 <input type="text" id="roomPASS_room2">
 <button class="green" onclick="saveRoom('room2')">Save Room 2</button>
 <button class="red" onclick="resetRoom('room2')">Reset Room 2</button>
+<button class="blue" onclick="toggleRoom('room2')">Toggle OVER</button>
 <hr>
 
 <label>Room 3 ID</label>
@@ -91,7 +93,7 @@ throw new Error("Access Blocked");
 <input type="text" id="roomPASS_room3">
 <button class="green" onclick="saveRoom('room3')">Save Room 3</button>
 <button class="red" onclick="resetRoom('room3')">Reset Room 3</button>
-
+<button class="blue" onclick="toggleRoom('room3')">Toggle OVER</button>
 <hr>
 
 <label>Room 4 ID</label>
@@ -100,6 +102,7 @@ throw new Error("Access Blocked");
 <input type="text" id="roomPASS_room4">
 <button class="green" onclick="saveRoom('room4')">Save Room 4</button>
 <button class="red" onclick="resetRoom('room4')">Reset Room 4</button>
+<button class="blue" onclick="toggleRoom('room4')">Toggle OVER</button>
 </div>
 
 <!-- MATCH TIME -->
@@ -128,6 +131,41 @@ throw new Error("Access Blocked");
 <label>Match 4 Time</label>
 <input type="text" id="matchTime4">
 <button class="green" onclick="updateMatchTime('match4')">Update</button>
+</div>
+
+<div class="card">
+<h3>💰 Entry & Win Control</h3>
+
+<label>Room 1 Entry</label>
+<input type="number" id="entry1">
+<label>Room 1 Win</label>
+<input type="number" id="win1">
+<button class="green" onclick="updatePrize('room1')">Update</button>
+
+<hr>
+
+<label>Room 2 Entry</label>
+<input type="number" id="entry2">
+<label>Room 2 Win</label>
+<input type="number" id="win2">
+<button class="green" onclick="updatePrize('room2')">Update</button>
+
+<hr>
+
+<label>Room 3 Entry</label>
+<input type="number" id="entry3">
+<label>Room 3 Win</label>
+<input type="number" id="win3">
+<button class="green" onclick="updatePrize('room3')">Update</button>
+
+<hr>
+
+<label>Room 4 Entry</label>
+<input type="number" id="entry4">
+<label>Room 4 Win</label>
+<input type="number" id="win4">
+<button class="green" onclick="updatePrize('room4')">Update</button>
+
 </div>
 
 <!-- USERS -->
@@ -205,7 +243,38 @@ time:time
 
 alert(match+" Time Updated ✅");
 }
+window.updatePrize = async function(room){
 
+let number = room.replace("room","");
+
+let entry = document.getElementById("entry"+number).value;
+let win = document.getElementById("win"+number).value;
+
+await setDoc(doc(db,"settings",room+"Prize"),{
+entry: Number(entry),
+win: Number(win)
+});
+
+alert(room+" Prize Updated ✅");
+
+}
+["room1","room2","room3","room4"].forEach((room)=>{
+
+onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
+
+if(snap.exists()){
+
+let data = snap.data();
+let number = room.replace("room","");
+
+document.getElementById("entry"+number).value = data.entry;
+document.getElementById("win"+number).value = data.win;
+
+}
+
+});
+
+});
 
 // realtime load
 onSnapshot(doc(db,"settings","match1"),(snap)=>{
@@ -471,6 +540,20 @@ gameName: ""
 }
 
 alert("Room Reset Successfully ✅");
+
+}
+window.toggleRoom = async function(room){
+
+const ref = doc(db,"rooms",room);
+const snap = await getDoc(ref);
+
+let current = snap.data()?.over || false;
+
+await updateDoc(ref,{
+over: !current
+});
+
+alert(room + (current ? " OPENED ✅" : " CLOSED (OVER) ❌"));
 
 }
 </script>
