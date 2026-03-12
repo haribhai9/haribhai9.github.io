@@ -225,6 +225,8 @@ let roomPASS=document.getElementById("roomPASS_"+id).value;
 await setDoc(doc(db,"rooms",id),{
 roomID: roomID,
 roomPASS: roomPASS
+slots:0,
+over:false
 },{merge:true});
 
 alert(id+" Saved ✅");
@@ -247,17 +249,22 @@ window.updatePrize = async function(room){
 
 let number = room.replace("room","");
 
-let entry = document.getElementById("entry"+number).value;
-let win = document.getElementById("win"+number).value;
+let entry = parseInt(document.getElementById("entry"+number).value);
+let win = parseInt(document.getElementById("win"+number).value);
+
+if(isNaN(entry) || isNaN(win)){
+alert("Enter valid entry and win amount ❌");
+return;
+}
 
 await setDoc(doc(db,"settings",room+"Prize"),{
-entry: Number(entry),
-win: Number(win)
+entry: entry,
+win: win
 });
 
 alert(room+" Prize Updated ✅");
-
 }
+
 ["room1","room2","room3","room4"].forEach((room)=>{
 
 onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
