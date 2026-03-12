@@ -302,25 +302,46 @@ document.getElementById("matchTime4").value=snap.data().time;
 });
 
 // ================= USERS =================
-const usersDiv=document.getElementById("users");
+const usersDiv = document.getElementById("users");
 
-onSnapshot(collection(db,"users"),(snapshot)=>{
+// sirf joined users
+const joinedUsersQuery = query(
+collection(db,"users"),
+where("joinedRoom", ">", "")
+);
+
+onSnapshot(joinedUsersQuery, async (snapshot)=>{
 
 usersDiv.innerHTML="";
 
-snapshot.forEach((docSnap)=>{
+if(snapshot.empty){
+usersDiv.innerHTML="<p>No Active Players</p>";
+return;
+}
 
-const data=docSnap.data();
-const uid=docSnap.id;
+for(const docSnap of snapshot.docs){
 
-usersDiv.innerHTML+=`
+const data = docSnap.data();
+const uid = docSnap.id;
+const room = data.joinedRoom;
+
+// room entry fetch
+let entryFee = "Loading...";
+try{
+const prizeSnap = await getDoc(doc(db,"settings",room+"Prize"));
+if(prizeSnap.exists()){
+entryFee = prizeSnap.data().entry;
+}
+}catch(e){}
+
+usersDiv.innerHTML += `
 <div class="user-box">
-<b>${data.username}</b><br>
-Deposit: ₹${data.balance || 0}<br>
-Winning: ₹${data.winningBalance || 0}<br>
-Joined Room: ${data.joinedRoom ? data.joinedRoom : "Not Joined"}<br>
-Game Name: ${data.gameName ? data.gameName : "Not Entered"}<br>
-Status: ${data.blocked ? "🚫 Blocked" : "✅ Active"}<br>
+
+<b>Username:</b> ${data.username}<br>
+<b>Entry:</b> ₹${entryFee}<br>
+<b>Room:</b> ${room}<br>
+<b>Game Name:</b> ${data.gameName || "Not Entered"}<br>
+<b>Status:</b> ${data.blocked ? "🚫 Blocked" : "✅ Active"}<br>
 
 <input type="number" placeholder="Enter Amount" id="amt_${uid}">
 
@@ -329,10 +350,12 @@ Status: ${data.blocked ? "🚫 Blocked" : "✅ Active"}<br>
 <button class="blue" onclick="toggleBlock('${uid}',${data.blocked})">
 ${data.blocked ? "Unblock" : "Block"}
 </button>
+
 </div>
 <hr>
 `;
-});
+}
+
 });
 
 window.addBalance = async function(uid){
@@ -518,7 +541,8 @@ if(!confirm("Are you sure? This will reset everything!")) return;
 await setDoc(doc(db,"rooms",roomId),{
 roomID:"",
 roomPASS:"",
-slots:0
+slots:0,
+over:false
 });
 
 // 2️⃣ Reset All Users Joined In This Room
