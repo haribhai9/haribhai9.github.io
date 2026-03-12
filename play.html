@@ -10,79 +10,24 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <title>Play Tournaments</title>
-</head>
-
-
 
 <style>
+
 html,body{
 height:100%;
 margin:0;
 padding:0;
 overflow-x:hidden;
 }
+
 body{
 margin:0;
 font-family:'Segoe UI',Arial;
 background:#0f172a;
 color:white;
 }
-/* POPUP STYLE */
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-display:none;
-justify-content:center;
-align-items:center;
-animation: fadeIn 0.3s ease-in-out;
-}
 
-.popup-content{
-background:linear-gradient(45deg,#3b82f6,#06b6d4);
-padding:25px;
-border-radius:15px;
-width:85%;
-max-width:320px;
-text-align:center;
-animation: popScale 0.3s ease;
-}
-
-.popup-content input{
-width:100%;
-padding:10px;
-margin-top:10px;
-border:none;
-border-radius:6px;
-}
-
-.popup-content button{
-width:100%;
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.popup-content .cancel{
-background:#ef4444;
-color:white;
-}
-
-@keyframes popScale{
-from{transform:scale(0.6);}
-to{transform:scale(1);}
-}
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
-}
+/* HEADER */
 
 .header{
 display:flex;
@@ -98,6 +43,8 @@ padding:6px 14px;
 border-radius:20px;
 font-weight:bold;
 }
+
+/* TOURNAMENT CARD */
 
 .tournament{
 background:#1e293b;
@@ -152,53 +99,63 @@ padding:10px;
 border-radius:6px;
 display:none;
 }
+
+/* POPUP */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.popup-content{
+background:linear-gradient(45deg,#3b82f6,#06b6d4);
+padding:25px;
+border-radius:15px;
+width:85%;
+max-width:320px;
+text-align:center;
+}
+
+.popup-content input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+}
+
+.popup-content button{
+width:100%;
+margin-top:10px;
+padding:10px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.popup-content .cancel{
+background:#ef4444;
+color:white;
+}
+
 </style>
 </head>
 
 <body>
-<!-- RULES PANEL -->
 
-<div id="rulesPanel" style="
-position:fixed;
-top:0;
-right:-100%;
-width:80%;
-height:100%;
-background:#1e293b;
-padding:20px;
-transition:0.4s;
-z-index:999;
-overflow:auto;
-">
-
-<button onclick="closeRules()" style="
-background:red;
-color:white;
-border:none;
-padding:6px 10px;
-border-radius:6px;
-float:right;">❌</button>
-
-<h3>CUSTOM MATCH RULE</h3>
-
-<p>
-1) HACKER NOT ALLOWED IF HACKER FOUND THEN HE OR SHE WILL BE BAN PERMANENTLY AND DETECT ALL MONEY ( HACKER ARE STRICTLY PROHIBITED 🚫
-</p>
-
-<p>
-2) Room id pass jab provide kara dia jaye tab 10 min me custom me ajana varna winner bana dia jayega opposite player ko.
-</p>
-
-<p>
-3) grenade not allowed and follow general custom rule.
-</p>
-
-<p>Thanks follow carefully all rules 🥰</p>
-
-</div>
 <div class="header">
 
-<div class="balance">Balance: ₹<span id="balance">0</span></div>
+<div class="balance">
+Balance ₹<span id="balance">0</span>
+</div>
 
 <div style="display:flex; gap:8px;">
 
@@ -210,7 +167,7 @@ border-radius:6px;
 font-weight:bold;
 cursor:pointer;
 color:white;">
-Check Proofs
+Proofs
 </button>
 
 <button onclick="openRules()" style="
@@ -224,130 +181,184 @@ Rules
 </button>
 
 </div>
-
 </div>
 
 <!-- ROOM 1 -->
+
 <div class="tournament">
+
 <img src="new.png">
+
 <div class="t-info">
+
 <h3>Free Fire Tournament</h3>
 <h3>Body Custom Room</h3>
-<p>Entry: ₹<span id="entry_room1">...</span></p>
-<p>Win: ₹<span id="win_room1">...</span></p>
-<p class="time">Match Time: <span id="time_room1">Waiting...</span></p>
+
+<p>Entry ₹<span id="entry_room1">0</span></p>
+<p>Win ₹<span id="win_room1">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room1">Waiting...</span>
+</p>
+
 <p class="slot" id="slot_room1">Loading...</p>
+
 <button class="btn" id="btn_room1" onclick="joinMatch('room1')">
 Join Now
 </button>
+
 <div class="room-box" id="room1"></div>
+
 </div>
 </div>
 
 <!-- ROOM 2 -->
+
 <div class="tournament">
+
 <img src="newi.png">
+
 <div class="t-info">
+
 <h3>Free Fire Tournament</h3>
 <h3>Body Custom Room</h3>
-<p>Entry: ₹<span id="entry_room2">...</span></p>
-<p>Win: ₹<span id="win_room2">...</span></p>
-<p class="time">Match Time: <span id="time_room2">Waiting...</span></p>
+
+<p>Entry ₹<span id="entry_room2">0</span></p>
+<p>Win ₹<span id="win_room2">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room2">Waiting...</span>
+</p>
+
 <p class="slot" id="slot_room2">Loading...</p>
+
 <button class="btn" id="btn_room2" onclick="joinMatch('room2')">
 Join Now
 </button>
+
 <div class="room-box" id="room2"></div>
+
 </div>
 </div>
 
 <!-- ROOM 3 -->
+
 <div class="tournament">
+
 <img src="newii.png">
+
 <div class="t-info">
+
 <h3>Free Fire Tournament</h3>
 <h3>Only Head Custom Room</h3>
-<p>Entry: ₹<span id="entry_room3">...</span></p>
-<p>Win: ₹<span id="win_room3">...</span></p>
-<p class="time">Match Time: <span id="time_room3">Waiting...</span></p>
+
+<p>Entry ₹<span id="entry_room3">0</span></p>
+<p>Win ₹<span id="win_room3">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room3">Waiting...</span>
+</p>
+
 <p class="slot" id="slot_room3">Loading...</p>
+
 <button class="btn" id="btn_room3" onclick="joinMatch('room3')">
 Join Now
 </button>
+
 <div class="room-box" id="room3"></div>
+
 </div>
 </div>
 
 <!-- ROOM 4 -->
+
 <div class="tournament">
+
 <img src="newiii.png">
+
 <div class="t-info">
+
 <h3>Free Fire Tournament</h3>
 <h3>Only Head Custom Room</h3>
-<p>Entry: ₹<span id="entry_room4">...</span></p>
-<p>Win: ₹<span id="win_room4">...</span></p>
-<p class="time">Match Time: <span id="time_room4">Waiting...</span></p>
+
+<p>Entry ₹<span id="entry_room4">0</span></p>
+<p>Win ₹<span id="win_room4">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room4">Waiting...</span>
+</p>
+
 <p class="slot" id="slot_room4">Loading...</p>
+
 <button class="btn" id="btn_room4" onclick="joinMatch('room4')">
 Join Now
 </button>
+
 <div class="room-box" id="room4"></div>
+
 </div>
 </div>
+
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
 import {
 getFirestore,
 doc,
 onSnapshot,
-updateDoc,
 getDoc,
+updateDoc,
 increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+authDomain:"ff-tournament-915ed.firebaseapp.com",
+projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
 let currentUser;
-const maxSlot = 2;
+const maxSlot=2;
 
-/* ================= AUTH ================= */
+/* USER BALANCE */
 
 onAuthStateChanged(auth,(user)=>{
 
-currentUser = user;
+currentUser=user;
 
-if(!user){
-console.log("User not logged in");
-return;
-}
+if(!user) return;
 
-const userRef = doc(db,"users",user.uid);
+const userRef=doc(db,"users",user.uid);
 
 onSnapshot(userRef,(snap)=>{
 
 if(!snap.exists()) return;
 
-let data = snap.data();
-let deposit = data.balance || 0;
-let winning = data.winningBalance || 0;
+let data=snap.data();
 
-document.getElementById("balance").innerText = deposit + winning;
+let deposit=data.balance||0;
+let win=data.winningBalance||0;
 
-// Auto show joined room
+document.getElementById("balance").innerText=deposit+win;
+
 if(data.joinedRoom){
 showRoom(data.joinedRoom);
-document.getElementById("btn_"+data.joinedRoom).disabled = true;
+document.getElementById("btn_"+data.joinedRoom).disabled=true;
 }
 
 });
@@ -355,249 +366,206 @@ document.getElementById("btn_"+data.joinedRoom).disabled = true;
 });
 
 
+/* ROOM SLOT */
 
-/* ================= MATCH TIME ================= */
-
-// Match 1 Time
-onSnapshot(doc(db,"settings","match1"),(snap)=>{
-if(snap.exists()){
-document.getElementById("time_room1").innerText = snap.data().time;
-}
-});
-
-// Match 2 Time
-onSnapshot(doc(db,"settings","match2"),(snap)=>{
-if(snap.exists()){
-document.getElementById("time_room2").innerText = snap.data().time;
-}
-});
-// Match 3 Time
-onSnapshot(doc(db,"settings","match3"),(snap)=>{
-if(snap.exists()){
-document.getElementById("time_room3").innerText = snap.data().time;
-}
-});
-
-// Match 4 Time
-onSnapshot(doc(db,"settings","match4"),(snap)=>{
-if(snap.exists()){
-document.getElementById("time_room4").innerText = snap.data().time;
-}
-});
-
-/* ================= SLOT LIVE ================= */
-
-["room1","room2","room3","room4"].forEach((room)=>{
+["room1","room2","room3","room4"].forEach(room=>{
 
 onSnapshot(doc(db,"rooms",room),(snap)=>{
 
-let slotText = document.getElementById("slot_"+room);
-let btn = document.getElementById("btn_"+room);
+let slotText=document.getElementById("slot_"+room);
+let btn=document.getElementById("btn_"+room);
 
 if(!snap.exists()){
-slotText.innerHTML = "Waiting for Admin...";
+slotText.innerText="Waiting Admin...";
 return;
 }
 
-let slot = snap.data().slots || 0;
-let over = snap.data().over || false;
+let slot=snap.data().slots||0;
+let over=snap.data().over||false;
 
 if(over){
-slotText.innerHTML = "MATCH OVER ❌";
-slotText.style.color = "red";
-btn.disabled = true;
+slotText.innerText="MATCH OVER ❌";
+btn.disabled=true;
 return;
 }
-if(slot >= maxSlot){
-slotText.innerHTML = "Slot: FULL ❌";
-slotText.style.color = "red";
-btn.disabled = true;
+
+if(slot>=maxSlot){
+slotText.innerText="Slot FULL ❌";
+btn.disabled=true;
 }else{
-slotText.innerHTML = "Slot: "+slot+" / "+maxSlot;
-slotText.style.color = "#22c55e";
-btn.disabled = false;
+slotText.innerText="Slot "+slot+" / "+maxSlot;
+btn.disabled=false;
 }
 
 });
 
 });
 
-["room1","room2","room3","room4"].forEach((room)=>{
+
+/* ENTRY WIN */
+
+["room1","room2","room3","room4"].forEach(room=>{
 
 onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
 
+if(!snap.exists()) return;
+
+let data=snap.data();
+
+document.getElementById("entry_"+room).innerText=data.entry;
+document.getElementById("win_"+room).innerText=data.win;
+
+});
+
+});
+
+
+/* MATCH TIME */
+
+for(let i=1;i<=4;i++){
+
+onSnapshot(doc(db,"settings","match"+i),(snap)=>{
+
 if(snap.exists()){
 
-let data = snap.data();
-
-document.getElementById("entry_"+room).innerText = data.entry;
-document.getElementById("win_"+room).innerText = data.win;
+document.getElementById("time_room"+i).innerText=snap.data().time;
 
 }
 
 });
 
-});
+}
 
-/* ================= JOIN MATCH ================= */
 
-let selectedRoom = null;
-let selectedFee = 0;
+/* JOIN MATCH */
 
-window.joinMatch = async function(room){
+let selectedRoom;
+let selectedFee;
 
-if(!currentUser){
-alert("Please login first ❌");
-window.location.href = "auth.html";
+window.joinMatch=async function(room){
+
+const prize=await getDoc(doc(db,"settings",room+"Prize"));
+
+selectedRoom=room;
+selectedFee=prize.data().entry;
+
+document.getElementById("joinPopup").style.display="flex";
+
+}
+
+
+window.confirmJoin=async function(){
+
+let gameName=document.getElementById("gameNameInput").value.trim();
+
+if(gameName===""){
+alert("Enter game name ❌");
 return;
 }
 
-const prizeSnap = await getDoc(doc(db,"settings",room+"Prize"));
+const userRef=doc(db,"users",currentUser.uid);
+const roomRef=doc(db,"rooms",selectedRoom);
 
-if(!prizeSnap.exists()){
-alert("Prize not set by admin ❌");
+const userSnap=await getDoc(userRef);
+const roomSnap=await getDoc(roomRef);
+
+let userData=userSnap.data();
+
+let deposit=userData.balance||0;
+let win=userData.winningBalance||0;
+
+let total=deposit+win;
+
+if(total<selectedFee){
+alert("Insufficient balance ❌");
 return;
 }
 
-selectedRoom = room;
-selectedFee = prizeSnap.data().entry;
+let newDeposit=deposit;
+let newWin=win;
 
-document.getElementById("gameNameInput").value = "";
-document.getElementById("joinPopup").style.display = "flex";
-
-}window.confirmJoin = async function(){
-
-const gameName = document.getElementById("gameNameInput").value.trim();
-
-if(gameName === ""){
-alert("Please enter game name ❌");
-return;
-}
-
-const userRef = doc(db,"users",currentUser.uid);
-const roomRef = doc(db,"rooms",selectedRoom);
-
-const userSnap = await getDoc(userRef);
-const roomSnap = await getDoc(roomRef);
-
-if(!userSnap.exists() || !roomSnap.exists()) return;
-
-let userData = userSnap.data();
-if(userData.blocked){
-alert("You are blocked by admin ❌");
-closePopup();
-return;
-}
-let deposit = userData.balance || 0;
-let winning = userData.winningBalance || 0;
-
-let total = deposit + winning;
-let slot = roomSnap.data().slots || 0;
-
-if(userData.joinedRoom){
-alert("You already joined a match ❌");
-closePopup();
-return;
-}
-
-if(total < selectedFee){
-alert("Insufficient Balance ❌");
-return;
-}
-
-if(slot >= maxSlot){
-alert("Slot Full ❌");
-return;
-}
-
-let newDeposit = deposit;
-let newWinning = winning;
-
-// 🔥 Deduct logic
-if(winning >= selectedFee){
-
-newWinning = winning - selectedFee;
-
+if(win>=selectedFee){
+newWin-=selectedFee;
 }else{
-
-let remaining = selectedFee - winning;
-
-newWinning = 0;
-newDeposit = Math.max(0, deposit - remaining);
-
+let remain=selectedFee-win;
+newWin=0;
+newDeposit-=remain;
 }
 
 await updateDoc(userRef,{
-balance: newDeposit,
-winningBalance: newWinning,
-joinedRoom: selectedRoom,
-gameName: gameName
+balance:newDeposit,
+winningBalance:newWin,
+joinedRoom:selectedRoom,
+gameName:gameName
 });
 
 await updateDoc(roomRef,{
-slots: increment(1)
+slots:increment(1)
 });
 
-document.getElementById("btn_"+selectedRoom).disabled = true;
+showRoom(selectedRoom);
 
 closePopup();
-showRoom(selectedRoom);
-alert("Match Joined Successfully ✅");
-};
 
-window.closePopup = function(){
-document.getElementById("joinPopup").style.display = "none";
-};
-
-/* ================= SHOW ROOM ================= */
-
-async function showRoom(room){
-
-const box = document.getElementById(room);
-box.style.display = "block";
-
-const snap = await getDoc(doc(db,"rooms",room));
-
-if(snap.exists()){
-
-box.innerHTML =
-"<b>Room ID:</b> "+(snap.data().roomID || "Waiting...")+
-"<br><b>Password:</b> "+(snap.data().roomPASS || "Waiting...");
+alert("Match Joined ✅");
 
 }
 
+
+function closePopup(){
+document.getElementById("joinPopup").style.display="none";
 }
 
-window.openRules = function(){
+
+/* SHOW ROOM */
+
+function showRoom(room){
+
+const box=document.getElementById(room);
+
+box.style.display="block";
+
+onSnapshot(doc(db,"rooms",room),(snap)=>{
+
+if(!snap.exists()) return;
+
+box.innerHTML=
+"<b>Room ID:</b> "+(snap.data().roomID||"Waiting...")+
+"<br><b>Password:</b> "+(snap.data().roomPASS||"Waiting...");
+
+});
+
+}
+
+
+window.openRules=function(){
 document.getElementById("rulesPanel").style.right="0";
 }
 
-window.closeRules = function(){
-document.getElementById("rulesPanel").style.right="-100%";
-}
-</script>
-
-<script>
-function openProofs(){
+window.openProofs=function(){
 window.open("https://t.me/haribhaicompanyproofs","_blank");
 }
+
 </script>
 
+
 <!-- JOIN POPUP -->
+
 <div id="joinPopup" class="popup">
-  <div class="popup-content">
-    <h3>Enter Game Name</h3>
-    <input type="text" id="gameNameInput" placeholder="Enter Your Game Name">
-    <button onclick="confirmJoin()">Confirm Join</button>
-    <button class="cancel" onclick="closePopup()">Cancel</button>
-  </div>
+
+<div class="popup-content">
+
+<h3>Enter Game Name</h3>
+
+<input type="text" id="gameNameInput">
+
+<button onclick="confirmJoin()">Confirm Join</button>
+
+<button class="cancel" onclick="closePopup()">Cancel</button>
+
 </div>
-<script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
-}
-});
-</script>
+
+</div>
+
 </body>
 </html>
