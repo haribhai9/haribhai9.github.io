@@ -193,7 +193,7 @@ throw new Error("Blocked");
 </div>
 
 <div class="card">
-<h3>Players</h3>
+<h3>Players (Joined Only)</h3>
 <input id="searchUser" placeholder="Search Username">
 <button onclick="searchUser()">Search</button>
 <div id="users"></div>
@@ -208,7 +208,10 @@ throw new Error("Blocked");
 <h3>Withdrawals</h3>
 <div id="withdrawals"></div>
 </div>
-
+<div class="card">
+<h3>All Joined Users</h3>
+<div id="allUsers"></div>
+</div>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -222,9 +225,8 @@ updateDoc,
 setDoc,
 getDoc,
 getDocs,
-increment,
-query,
-where
+deleteDoc,
+increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -236,6 +238,7 @@ projectId:"ff-tournament-915ed"
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
+
 /* SAVE ROOM */
 
 window.saveRoom=async function(id){
@@ -244,8 +247,8 @@ let roomID=document.getElementById("roomID_"+id).value;
 let roomPASS=document.getElementById("roomPASS_"+id).value;
 
 await setDoc(doc(db,"rooms",id),{
-roomID:roomID,
-roomPASS:roomPASS,
+roomID,
+roomPASS,
 slots:0,
 over:false
 },{merge:true});
@@ -253,6 +256,7 @@ over:false
 alert("Room Saved");
 
 }
+
 
 /* RESET ROOM */
 
@@ -284,17 +288,19 @@ alert("Room Reset Done");
 
 }
 
+
 /* MATCH OVER */
 
-window.setRoomOver = async function(room){
+window.setRoomOver=async function(room){
 
 await updateDoc(doc(db,"rooms",room),{
 over:true
 });
 
-alert("Room Marked Over ❌");
+alert("Room Marked Over");
 
 }
+
 
 /* MATCH TIME */
 
@@ -303,13 +309,12 @@ window.updateMatchTime=async function(match){
 let number=match.replace("match","");
 let time=document.getElementById("matchTime"+number).value;
 
-await setDoc(doc(db,"settings",match),{
-time:time
-});
+await setDoc(doc(db,"settings",match),{time});
 
 alert("Time Updated");
 
 }
+
 
 /* ENTRY WIN */
 
@@ -329,16 +334,12 @@ alert("Prize Updated");
 
 }
 
-/* USERS LIST */
+
+/* PLAYERS (JOINED ONLY) */
 
 const usersDiv=document.getElementById("users");
 
-const joinedUsersQuery=query(
-collection(db,"users"),
-where("joinedRoom","!=","")
-);
-
-onSnapshot(joinedUsersQuery, async (snapshot)=>{
+onSnapshot(collection(db,"users"),async(snapshot)=>{
 
 usersDiv.innerHTML="";
 
@@ -347,8 +348,10 @@ for(const docSnap of snapshot.docs){
 const data=docSnap.data();
 const uid=docSnap.id;
 
-let room=data.joinedRoom || "-";
-let gameName=data.gameName || "-";
+if(!data.joinedRoom) continue;
+
+let room=data.joinedRoom;
+let gameName=data.gameName||"-";
 
 let deposit=data.balance||0;
 let winning=data.winningBalance||0;
@@ -356,19 +359,16 @@ let total=deposit+winning;
 
 let entry="...";
 
-if(room){
 const prizeSnap=await getDoc(doc(db,"settings",room+"Prize"));
-if(prizeSnap.exists()){
-entry=prizeSnap.data().entry;
-}
-}
+
+if(prizeSnap.exists()) entry=prizeSnap.data().entry;
 
 usersDiv.innerHTML+=`
 
 <div class="user-box">
 
 <b>UID:</b> ${uid}<br>
-<b>Username:</b> ${data.username || "-"}<br>
+<b>Username:</b> ${data.username||"-"}<br>
 <b>Game Name:</b> ${gameName}<br>
 <b>Room:</b> ${room}<br>
 <b>Entry Fee:</b> ₹${entry}<br>
@@ -394,57 +394,32 @@ usersDiv.innerHTML+=`
 
 });
 
-/* BLOCK USER */
 
-window.blockUser = async function(uid){
+/* ADD BALANCE (WINNING) */
 
-await updateDoc(doc(db,"users",uid),{
-blocked:true
-});
-
-alert("User Blocked");
-
-}
-
-/* UNBLOCK USER */
-
-window.unblockUser = async function(uid){
-
-await updateDoc(doc(db,"users",uid),{
-blocked:false
-});
-
-alert("User Unblocked");
-
-}
-
-/* ADD BALANCE */
-
-window.addBalance = async function(uid){
+window.addBalance=async function(uid){
 
 let amt=parseInt(document.getElementById("amt_"+uid).value);
-
-if(!amt || amt<=0) return;
+if(!amt) return;
 
 await updateDoc(doc(db,"users",uid),{
 winningBalance:increment(amt)
 });
 
-alert("Balance Added");
+alert("Winning Balance Added");
 
 }
 
-/* CUT BALANCE SAFE */
 
-window.cutBalance = async function(uid){
+/* CUT BALANCE */
+
+window.cutBalance=async function(uid){
 
 let amt=parseInt(document.getElementById("amt_"+uid).value);
-
-if(!amt || amt<=0) return;
+if(!amt) return;
 
 const ref=doc(db,"users",uid);
 const snap=await getDoc(ref);
-
 let data=snap.data();
 
 let deposit=data.balance||0;
@@ -453,30 +428,248 @@ let winning=data.winningBalance||0;
 let total=deposit+winning;
 
 if(amt>total){
-alert("User ke pass itna balance nahi hai ❌");
+alert("Not enough balance");
 return;
 }
 
-let newDeposit=deposit;
-let newWinning=winning;
-
-if(winning>=amt){
-newWinning=winning-amt;
-}else{
-let remaining=amt-winning;
-newWinning=0;
-newDeposit=Math.max(0,deposit-remaining);
-}
-
 await updateDoc(ref,{
-balance:newDeposit,
-winningBalance:newWinning
+winningBalance:increment(-amt)
 });
 
-alert("Balance Cut Done");
+alert("Balance Cut");
 
 }
 
+
+/* BLOCK */
+
+window.blockUser=async(uid)=>{
+await updateDoc(doc(db,"users",uid),{blocked:true})
+alert("User Blocked")
+}
+
+window.unblockUser=async(uid)=>{
+await updateDoc(doc(db,"users",uid),{blocked:false})
+alert("User Unblocked")
+}
+
+
+/* DEPOSITS */
+
+onSnapshot(collection(db,"deposits"),async(snapshot)=>{
+
+const div=document.getElementById("deposits");
+div.innerHTML="";
+
+for(const d of snapshot.docs){
+
+let data=d.data();
+let username=data.username;
+
+if(!username && data.uid){
+const u=await getDoc(doc(db,"users",data.uid));
+if(u.exists()) username=u.data().username;
+}
+
+div.innerHTML+=`
+
+<div class="user-box">
+
+<b>User:</b> ${username||"Unknown"}<br>
+<b>Amount:</b> ₹${data.amount}
+
+<button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount})">Approve</button>
+
+<button class="red" onclick="rejectDeposit('${d.id}')">Reject</button>
+
+</div>
+`;
+
+}
+
+});
+
+
+window.approveDeposit=async(id,uid,amt)=>{
+await updateDoc(doc(db,"users",uid),{balance:increment(amt)})
+await deleteDoc(doc(db,"deposits",id))
+alert("Deposit Approved")
+}
+
+window.rejectDeposit=async(id)=>{
+await deleteDoc(doc(db,"deposits",id))
+alert("Deposit Rejected")
+}
+
+
+/* WITHDRAWALS */
+
+onSnapshot(collection(db,"withdrawals"),async(snapshot)=>{
+
+const div=document.getElementById("withdrawals");
+div.innerHTML="";
+
+for(const d of snapshot.docs){
+
+let data=d.data();
+let username=data.username;
+
+if(!username && data.uid){
+const u=await getDoc(doc(db,"users",data.uid));
+if(u.exists()) username=u.data().username;
+}
+
+div.innerHTML+=`
+
+<div class="user-box">
+
+<b>User:</b> ${username||"Unknown"}<br>
+<b>Amount:</b> ₹${data.amount}
+
+<button class="green" onclick="approveWithdraw('${d.id}','${data.uid}',${data.amount})">Approve</button>
+
+<button class="red" onclick="rejectWithdraw('${d.id}')">Reject</button>
+
+</div>
+`;
+
+}
+
+});
+
+
+window.approveWithdraw=async(id,uid,amt)=>{
+
+await updateDoc(doc(db,"users",uid),{
+winningBalance:increment(amt)
+})
+
+await deleteDoc(doc(db,"withdrawals",id))
+
+alert("Withdrawal Approved")
+
+}
+
+window.rejectWithdraw=async(id)=>{
+
+await deleteDoc(doc(db,"withdrawals",id))
+
+alert("Withdrawal Rejected")
+
+}
+
+/* SEARCH USER */
+
+window.searchUser=async function(){
+
+let name=document.getElementById("searchUser").value.toLowerCase()
+
+const snap=await getDocs(collection(db,"users"))
+
+usersDiv.innerHTML=""
+
+snap.forEach(docSnap=>{
+
+const data=docSnap.data()
+const uid=docSnap.id
+
+if(!data.username || data.username.trim()==="") return
+
+if(data.username.toLowerCase().includes(name)){
+
+let deposit=data.balance||0
+let winning=data.winningBalance||0
+let total=deposit+winning
+
+usersDiv.innerHTML+=`
+
+<div class="user-box">
+
+<b>UID:</b> ${uid}<br>
+<b>Username:</b> ${data.username}<br>
+let game = data.gameName ? data.gameName : "-";
+let room = data.joinedRoom ? data.joinedRoom : "";
+
+usersDiv.innerHTML+=`
+
+<div class="user-box">
+
+<b>UID:</b> ${uid}<br>
+<b>Username:</b> ${data.username}<br>
+<b>Game Name:</b> ${game}<br>
+${room ? `<b>Room:</b> ${room}<br>` : ""}
+
+<b>Deposit:</b> ₹${deposit}<br>
+<b>Winning:</b> ₹${winning}<br>
+<b>Total:</b> ₹${total}
+
+<input type="number" id="amt_${uid}" placeholder="Amount">
+
+<button class="green" onclick="addBalance('${uid}')">Add</button>
+<button class="red" onclick="cutBalance('${uid}')">Cut</button>
+
+<button class="blue" onclick="blockUser('${uid}')">Block</button>
+<button class="blue" onclick="unblockUser('${uid}')">Unblock</button>
+
+</div>
+
+<hr>
+`;
+}
+
+})
+
+}
+
+/* ALL JOINED USERS */
+
+const allUsersDiv=document.getElementById("allUsers")
+
+onSnapshot(collection(db,"users"),(snapshot)=>{
+
+allUsersDiv.innerHTML=""
+
+snapshot.forEach(docSnap=>{
+
+const data=docSnap.data()
+const uid=docSnap.id
+
+if(!data.joinedRoom || data.joinedRoom==="") return
+
+let deposit=data.balance||0
+let winning=data.winningBalance||0
+let total=deposit+winning
+
+allUsersDiv.innerHTML+=`
+
+<div class="user-box">
+
+<b>UID:</b> ${uid}<br>
+<b>Username:</b> ${data.username}<br>
+<b>Game Name:</b> ${data.gameName || "-"}<br>
+<b>Room:</b> ${data.joinedRoom}<br>
+
+<b>Deposit:</b> ₹${deposit}<br>
+<b>Winning:</b> ₹${winning}<br>
+<b>Total:</b> ₹${total}
+
+<input type="number" id="amt_${uid}" placeholder="Amount">
+
+<button class="green" onclick="addBalance('${uid}')">Add</button>
+<button class="red" onclick="cutBalance('${uid}')">Cut</button>
+
+<button class="blue" onclick="blockUser('${uid}')">Block</button>
+<button class="blue" onclick="unblockUser('${uid}')">Unblock</button>
+
+</div>
+
+<hr>
+
+`
+
+})
+
+})
 </script>
 
 </body>
