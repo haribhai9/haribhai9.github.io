@@ -378,11 +378,23 @@ document.getElementById("balance").innerText=deposit+win;
 
 onSnapshot(doc(db,"rooms",room),(snap)=>{
 
-let slot=snap.data()?.slots||0;
+let data=snap.data();
+let slot=data?.slots||0;
 
 let slotText=document.getElementById("slot_"+room);
-
 slotText.innerText="Slot "+slot+" / "+maxSlot;
+
+/* JOIN BUTTON CONTROL */
+
+let btn=document.getElementById("btn_"+room);
+
+if(slot>=maxSlot){
+btn.disabled=true;
+btn.innerText="Room Full";
+}else{
+btn.disabled=false;
+btn.innerText="Join Now";
+}
 
 });
 
@@ -404,7 +416,50 @@ document.getElementById("win_"+room).innerText=data.win;
 });
 
 });
+/* MATCH TIME */
 
+["match1","match2","match3","match4"].forEach((match,index)=>{
+
+onSnapshot(doc(db,"settings",match),(snap)=>{
+
+let data=snap.data();
+
+if(!data) return;
+
+document.getElementById("time_room"+(index+1)).innerText=data.time;
+
+});
+
+});
+/* ROOM INFO */
+
+["room1","room2","room3","room4"].forEach(room=>{
+
+onSnapshot(doc(db,"rooms",room),(snap)=>{
+
+let data=snap.data();
+
+if(!data) return;
+
+let box=document.getElementById(room);
+
+if(data.roomID && data.roomPASS){
+
+box.style.display="block";
+
+box.innerHTML=
+"Room ID: "+data.roomID+
+"<br>Password: "+data.roomPASS;
+
+}else{
+
+box.style.display="none";
+
+}
+
+});
+
+});
 
 /* JOIN MATCH */
 
@@ -412,6 +467,16 @@ let selectedRoom;
 let selectedFee;
 
 window.joinMatch=async function(room){
+
+const userRef=doc(db,"users",currentUser.uid);
+const userSnap=await getDoc(userRef);
+
+let userData=userSnap.data();
+
+if(userData.blocked){
+alert("Your account is blocked ❌");
+return;
+}
 
 const prize=await getDoc(doc(db,"settings",room+"Prize"));
 
@@ -435,30 +500,72 @@ const userRef=doc(db,"users",currentUser.uid);
 const roomRef=doc(db,"rooms",selectedRoom);
 
 const userSnap=await getDoc(userRef);
+const roomSnap=await getDoc(roomRef);
 
 let userData=userSnap.data();
+let roomData=roomSnap.data();
 
 let deposit=userData.balance||0;
 let win=userData.winningBalance||0;
-
 let total=deposit+win;
+
+/* CHECK ALREADY JOINED */
+
+if(userData.joinedRoom){
+alert("You already joined a match ❌");
+return;
+}
+
+/* CHECK SLOT FULL */
+
+if((roomData.slots||0)>=maxSlot){
+alert("Room Full ❌");
+return;
+}
+
+/* CHECK BALANCE */
 
 if(total<selectedFee){
 alert("Insufficient balance ❌");
 return;
 }
 
+/* DEDUCT BALANCE */
+
+let newDeposit = deposit;
+let newWin = win;
+
+if(deposit >= selectedFee){
+
+    newDeposit = deposit - selectedFee;
+
+}else{
+
+    let remaining = selectedFee - deposit;
+
+    newDeposit = 0;
+    newWin = win - remaining;
+
+}
+
 await updateDoc(userRef,{
-balance:deposit-selectedFee,
+balance:newDeposit,
+winningBalance:newWin,
 joinedRoom:selectedRoom,
 gameName:gameName
 });
+
+/* ADD SLOT */
 
 await updateDoc(roomRef,{
 slots:increment(1)
 });
 
 alert("Match Joined ✅");
+
+/* RESET INPUT */
+
+document.getElementById("gameNameInput").value="";
 
 closePopup();
 
