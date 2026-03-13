@@ -6,19 +6,10 @@
 
 <meta name="theme-color" content="#0f172a">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
 <title>Play Tournaments</title>
 
 <style>
-
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
-}
 
 body{
 margin:0;
@@ -26,8 +17,6 @@ font-family:'Segoe UI',Arial;
 background:#0f172a;
 color:white;
 }
-
-/* HEADER */
 
 .header{
 display:flex;
@@ -43,8 +32,6 @@ padding:6px 14px;
 border-radius:20px;
 font-weight:bold;
 }
-
-/* TOURNAMENT CARD */
 
 .tournament{
 background:#1e293b;
@@ -89,7 +76,6 @@ cursor:pointer;
 
 .btn:disabled{
 background:gray;
-cursor:not-allowed;
 }
 
 .room-box{
@@ -131,19 +117,20 @@ border:none;
 border-radius:6px;
 }
 
-.popup-content button{
-width:100%;
-margin-top:10px;
-padding:10px;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-}
+/* RULES PANEL */
 
-.popup-content .cancel{
-background:#ef4444;
-color:white;
+.rules-panel{
+position:fixed;
+top:0;
+right:-100%;
+width:85%;
+max-width:320px;
+height:100%;
+background:#1e293b;
+padding:20px;
+transition:0.4s;
+z-index:999;
+overflow-y:auto;
 }
 
 </style>
@@ -159,29 +146,13 @@ Balance ₹<span id="balance">0</span>
 
 <div style="display:flex; gap:8px;">
 
-<button onclick="openProofs()" style="
-background:#38bdf8;
-border:none;
-padding:6px 12px;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-color:white;">
-Proofs
-</button>
+<button onclick="openProofs()" style="background:#38bdf8;border:none;padding:6px 12px;border-radius:6px;color:white;font-weight:bold;">Proofs</button>
 
-<button onclick="openRules()" style="
-background:#facc15;
-border:none;
-padding:6px 12px;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;">
-Rules
-</button>
+<button onclick="openRules()" style="background:#facc15;border:none;padding:6px 12px;border-radius:6px;font-weight:bold;">Rules</button>
 
 </div>
 </div>
+
 
 <!-- ROOM 1 -->
 
@@ -213,6 +184,7 @@ Join Now
 </div>
 </div>
 
+
 <!-- ROOM 2 -->
 
 <div class="tournament">
@@ -243,6 +215,7 @@ Join Now
 </div>
 </div>
 
+
 <!-- ROOM 3 -->
 
 <div class="tournament">
@@ -272,6 +245,7 @@ Join Now
 
 </div>
 </div>
+
 
 <!-- ROOM 4 -->
 
@@ -304,23 +278,57 @@ Join Now
 </div>
 
 
+<!-- JOIN POPUP -->
+
+<div id="joinPopup" class="popup">
+
+<div class="popup-content">
+
+<h3>Enter Game Name</h3>
+
+<input type="text" id="gameNameInput">
+
+<button onclick="confirmJoin()">Confirm Join</button>
+
+<button onclick="closePopup()">Cancel</button>
+
+</div>
+
+</div>
+
+
+<!-- RULES PANEL -->
+
+<div id="rulesPanel" class="rules-panel">
+
+<h2>📜 Tournament Rules</h2>
+
+<ul>
+
+<li>Don't use hack. It is strictly prohibited.</li>
+
+<li>If hack found your money will be deducted and you will be banned.</li>
+
+<li>Do screen record for better decision.</li>
+
+<li>Your money will automatically credited after win game.</li>
+
+</ul>
+
+<p>Thanks regarding Hari Team ❤️</p>
+
+<button onclick="closeRules()">Close</button>
+
+</div>
+
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
-import {
-getAuth,
-onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-import {
-getFirestore,
-doc,
-onSnapshot,
-getDoc,
-updateDoc,
-increment
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore,doc,onSnapshot,getDoc,updateDoc,increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig={
 apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
@@ -335,7 +343,7 @@ const db=getFirestore(app);
 let currentUser;
 const maxSlot=2;
 
-/* USER BALANCE */
+/* USER */
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -347,19 +355,17 @@ const userRef=doc(db,"users",user.uid);
 
 onSnapshot(userRef,(snap)=>{
 
-if(!snap.exists()) return;
-
 let data=snap.data();
+
+if(data.blocked){
+alert("Your account is blocked ❌");
+return;
+}
 
 let deposit=data.balance||0;
 let win=data.winningBalance||0;
 
 document.getElementById("balance").innerText=deposit+win;
-
-if(data.joinedRoom){
-showRoom(data.joinedRoom);
-document.getElementById("btn_"+data.joinedRoom).disabled=true;
-}
 
 });
 
@@ -372,30 +378,11 @@ document.getElementById("btn_"+data.joinedRoom).disabled=true;
 
 onSnapshot(doc(db,"rooms",room),(snap)=>{
 
+let slot=snap.data()?.slots||0;
+
 let slotText=document.getElementById("slot_"+room);
-let btn=document.getElementById("btn_"+room);
 
-if(!snap.exists()){
-slotText.innerText="Waiting Admin...";
-return;
-}
-
-let slot=snap.data().slots||0;
-let over=snap.data().over||false;
-
-if(over){
-slotText.innerText="MATCH OVER ❌";
-btn.disabled=true;
-return;
-}
-
-if(slot>=maxSlot){
-slotText.innerText="Slot FULL ❌";
-btn.disabled=true;
-}else{
 slotText.innerText="Slot "+slot+" / "+maxSlot;
-btn.disabled=false;
-}
 
 });
 
@@ -408,33 +395,15 @@ btn.disabled=false;
 
 onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
 
-if(!snap.exists()) return;
-
 let data=snap.data();
 
 document.getElementById("entry_"+room).innerText=data.entry;
+
 document.getElementById("win_"+room).innerText=data.win;
 
 });
 
 });
-
-
-/* MATCH TIME */
-
-for(let i=1;i<=4;i++){
-
-onSnapshot(doc(db,"settings","match"+i),(snap)=>{
-
-if(snap.exists()){
-
-document.getElementById("time_room"+i).innerText=snap.data().time;
-
-}
-
-});
-
-}
 
 
 /* JOIN MATCH */
@@ -453,7 +422,6 @@ document.getElementById("joinPopup").style.display="flex";
 
 }
 
-
 window.confirmJoin=async function(){
 
 let gameName=document.getElementById("gameNameInput").value.trim();
@@ -467,7 +435,6 @@ const userRef=doc(db,"users",currentUser.uid);
 const roomRef=doc(db,"rooms",selectedRoom);
 
 const userSnap=await getDoc(userRef);
-const roomSnap=await getDoc(roomRef);
 
 let userData=userSnap.data();
 
@@ -481,20 +448,8 @@ alert("Insufficient balance ❌");
 return;
 }
 
-let newDeposit=deposit;
-let newWin=win;
-
-if(win>=selectedFee){
-newWin-=selectedFee;
-}else{
-let remain=selectedFee-win;
-newWin=0;
-newDeposit-=remain;
-}
-
 await updateDoc(userRef,{
-balance:newDeposit,
-winningBalance:newWin,
+balance:deposit-selectedFee,
 joinedRoom:selectedRoom,
 gameName:gameName
 });
@@ -503,69 +458,29 @@ await updateDoc(roomRef,{
 slots:increment(1)
 });
 
-showRoom(selectedRoom);
+alert("Match Joined ✅");
 
 closePopup();
 
-alert("Match Joined ✅");
-
 }
-
 
 function closePopup(){
 document.getElementById("joinPopup").style.display="none";
 }
 
-
-/* SHOW ROOM */
-
-function showRoom(room){
-
-const box=document.getElementById(room);
-
-box.style.display="block";
-
-onSnapshot(doc(db,"rooms",room),(snap)=>{
-
-if(!snap.exists()) return;
-
-box.innerHTML=
-"<b>Room ID:</b> "+(snap.data().roomID||"Waiting...")+
-"<br><b>Password:</b> "+(snap.data().roomPASS||"Waiting...");
-
-});
-
-}
-
-
 window.openRules=function(){
 document.getElementById("rulesPanel").style.right="0";
 }
 
+window.closeRules=function(){
+document.getElementById("rulesPanel").style.right="-100%";
+}
+
 window.openProofs=function(){
-window.open("https://t.me/haribhaicompanyproofs","_blank");
+window.open("https://t.me/haribhaicompanyproofs");
 }
 
 </script>
-
-
-<!-- JOIN POPUP -->
-
-<div id="joinPopup" class="popup">
-
-<div class="popup-content">
-
-<h3>Enter Game Name</h3>
-
-<input type="text" id="gameNameInput">
-
-<button onclick="confirmJoin()">Confirm Join</button>
-
-<button class="cancel" onclick="closePopup()">Cancel</button>
-
-</div>
-
-</div>
 
 </body>
 </html>
