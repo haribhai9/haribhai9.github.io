@@ -560,43 +560,38 @@ alert("Withdrawal Rejected")
 
 /* SEARCH USER */
 
-window.searchUser=async function(){
+window.searchUser = async function(){
 
-let name=document.getElementById("searchUser").value.toLowerCase()
+let name = document.getElementById("searchUser").value.toLowerCase().trim()
 
-const snap=await getDocs(collection(db,"users"))
+const snap = await getDocs(collection(db,"users"))
 
 usersDiv.innerHTML=""
 
 snap.forEach(docSnap=>{
 
-const data=docSnap.data()
-const uid=docSnap.id
+const data = docSnap.data()
+const uid = docSnap.id
 
 if(!data.username || data.username.trim()==="") return
 
 if(data.username.toLowerCase().includes(name)){
 
-let deposit=data.balance||0
-let winning=data.winningBalance||0
-let total=deposit+winning
+let deposit = data.balance || 0
+let winning = data.winningBalance || 0
+let total = deposit + winning
 
-usersDiv.innerHTML+=`
+let game = data.gameName ? data.gameName : "-"
+let room = data.joinedRoom ? data.joinedRoom : ""
 
-<div class="user-box">
-
-<b>UID:</b> ${uid}<br>
-<b>Username:</b> ${data.username}<br>
-let game = data.gameName ? data.gameName : "-";
-let room = data.joinedRoom ? data.joinedRoom : "";
-
-usersDiv.innerHTML+=`
+usersDiv.innerHTML += `
 
 <div class="user-box">
 
 <b>UID:</b> ${uid}<br>
 <b>Username:</b> ${data.username}<br>
 <b>Game Name:</b> ${game}<br>
+
 ${room ? `<b>Room:</b> ${room}<br>` : ""}
 
 <b>Deposit:</b> ₹${deposit}<br>
@@ -614,7 +609,9 @@ ${room ? `<b>Room:</b> ${room}<br>` : ""}
 </div>
 
 <hr>
-`;
+
+`
+
 }
 
 })
