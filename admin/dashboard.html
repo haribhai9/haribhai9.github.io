@@ -193,7 +193,7 @@ throw new Error("Blocked");
 </div>
 
 <div class="card">
-<h3>Players (Joined Only)</h3>
+<h3>Players Registered</h3>
 <input id="searchUser" placeholder="Search Username">
 <button onclick="searchUser()">Search</button>
 <div id="users"></div>
@@ -464,6 +464,8 @@ div.innerHTML="";
 for(const d of snapshot.docs){
 
 let data=d.data();
+
+if(data.status && data.status !== "Pending") continue;
 let username=data.username;
 
 if(!username && data.uid){
@@ -479,7 +481,6 @@ div.innerHTML+=`
 <b>Amount:</b> ₹${data.amount}
 
 <button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount})">Approve</button>
-
 <button class="red" onclick="rejectDeposit('${d.id}')">Reject</button>
 
 </div>
@@ -491,14 +492,27 @@ div.innerHTML+=`
 
 
 window.approveDeposit=async(id,uid,amt)=>{
-await updateDoc(doc(db,"users",uid),{balance:increment(amt)})
-await deleteDoc(doc(db,"deposits",id))
+
+await updateDoc(doc(db,"users",uid),{
+balance:increment(amt)
+})
+
+await updateDoc(doc(db,"deposits",id),{
+status:"Approved"
+})
+
 alert("Deposit Approved")
+
 }
 
 window.rejectDeposit=async(id)=>{
-await deleteDoc(doc(db,"deposits",id))
+
+await updateDoc(doc(db,"deposits",id),{
+status:"Rejected"
+})
+
 alert("Deposit Rejected")
+
 }
 
 
@@ -512,6 +526,8 @@ div.innerHTML="";
 for(const d of snapshot.docs){
 
 let data=d.data();
+
+if(data.status && data.status !== "Pending") continue;
 let username=data.username;
 
 if(!username && data.uid){
@@ -526,7 +542,7 @@ div.innerHTML+=`
 <b>User:</b> ${username||"Unknown"}<br>
 <b>Amount:</b> ₹${data.amount}
 
-<button class="green" onclick="approveWithdraw('${d.id}','${data.uid}',${data.amount})">Approve</button>
+<button class="green" onclick="approveWithdraw('${d.id}')">Approve</button>
 
 <button class="red" onclick="rejectWithdraw('${d.id}')">Reject</button>
 
@@ -538,13 +554,11 @@ div.innerHTML+=`
 });
 
 
-window.approveWithdraw=async(id,uid,amt)=>{
+window.approveWithdraw=async(id)=>{
 
-await updateDoc(doc(db,"users",uid),{
-winningBalance:increment(amt)
+await updateDoc(doc(db,"withdrawals",id),{
+status:"Approved"
 })
-
-await deleteDoc(doc(db,"withdrawals",id))
 
 alert("Withdrawal Approved")
 
@@ -552,11 +566,14 @@ alert("Withdrawal Approved")
 
 window.rejectWithdraw=async(id)=>{
 
-await deleteDoc(doc(db,"withdrawals",id))
+await updateDoc(doc(db,"withdrawals",id),{
+status:"Rejected"
+})
 
 alert("Withdrawal Rejected")
 
 }
+
 
 /* SEARCH USER */
 
