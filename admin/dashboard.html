@@ -456,16 +456,19 @@ alert("User Unblocked")
 
 /* DEPOSITS */
 
-onSnapshot(collection(db,"deposits"),async(snapshot)=>{
+onSnapshot(collection(db,"deposits"), async (snapshot)=>{
 
 const div=document.getElementById("deposits");
 div.innerHTML="";
 
-for(const d of snapshot.docs){
+snapshot.forEach(async (d)=>{
 
 let data=d.data();
 
-if(data.status && data.status !== "Pending") continue;
+/* sirf pending dikhana */
+
+if(!data.status || data.status==="Pending"){
+
 let username=data.username;
 
 if(!username && data.uid){
@@ -480,13 +483,16 @@ div.innerHTML+=`
 <b>User:</b> ${username||"Unknown"}<br>
 <b>Amount:</b> ₹${data.amount}
 
-<button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount})">Approve</button>
+<button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount}')">Approve</button>
 <button class="red" onclick="rejectDeposit('${d.id}')">Reject</button>
 
 </div>
+
 `;
 
 }
+
+});
 
 });
 
@@ -518,16 +524,19 @@ alert("Deposit Rejected")
 
 /* WITHDRAWALS */
 
-onSnapshot(collection(db,"withdrawals"),async(snapshot)=>{
+onSnapshot(collection(db,"withdrawals"), async (snapshot)=>{
 
 const div=document.getElementById("withdrawals");
 div.innerHTML="";
 
-for(const d of snapshot.docs){
+snapshot.forEach(async (d)=>{
 
 let data=d.data();
 
-if(data.status && data.status !== "Pending") continue;
+/* sirf pending */
+
+if(!data.status || data.status==="Pending"){
+
 let username=data.username;
 
 if(!username && data.uid){
@@ -543,13 +552,15 @@ div.innerHTML+=`
 <b>Amount:</b> ₹${data.amount}
 
 <button class="green" onclick="approveWithdraw('${d.id}')">Approve</button>
-
 <button class="red" onclick="rejectWithdraw('${d.id}')">Reject</button>
 
 </div>
+
 `;
 
 }
+
+});
 
 });
 
