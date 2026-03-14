@@ -380,24 +380,43 @@ onSnapshot(doc(db,"rooms",room),(snap)=>{
 
 let data=snap.data();
 let slot=data?.slots||0;
+let over=data?.over||false;
 
 let slotText=document.getElementById("slot_"+room);
-slotText.innerText="Slot "+slot+" / "+maxSlot;
-
-/* JOIN BUTTON CONTROL */
-
 let btn=document.getElementById("btn_"+room);
 
+/* MATCH OVER */
+
+if(over){
+
+btn.disabled=true;
+btn.innerText="Match Over";
+
+slotText.style.display="none";
+
+return;
+
+}
+
+/* SLOT SHOW */
+
+slotText.style.display="block";
+slotText.innerText="Slot "+slot+" / "+maxSlot;
+
+/* ROOM FULL */
+
 if(slot>=maxSlot){
+
 btn.disabled=true;
 btn.innerText="Room Full";
+
 }else{
 
-/* agar user already join kar chuka hai to enable mat karo */
-
 if(btn.innerText!=="Joined"){
+
 btn.disabled=false;
 btn.innerText="Join Now";
+
 }
 
 }
