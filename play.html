@@ -435,21 +435,32 @@ document.getElementById("time_room"+(index+1)).innerText=data.time;
 
 ["room1","room2","room3","room4"].forEach(room=>{
 
-onSnapshot(doc(db,"rooms",room),(snap)=>{
+onSnapshot(doc(db,"rooms",room),async(snap)=>{
 
 let data=snap.data();
-
 if(!data) return;
 
 let box=document.getElementById(room);
 
-if(data.roomID && data.roomPASS){
+/* USER DATA CHECK */
+
+if(!currentUser) return;
+
+const userSnap = await getDoc(doc(db,"users",currentUser.uid));
+let userData = userSnap.data();
+
+/* AGAR USER NE YE ROOM JOIN KIYA HAI TABHI DIKHE */
+
+if(userData.joinedRoom === room){
 
 box.style.display="block";
 
-box.innerHTML=
-"Room ID: "+data.roomID+
-"<br>Password: "+data.roomPASS;
+let roomID = data.roomID ? data.roomID : "Waiting";
+let roomPASS = data.roomPASS ? data.roomPASS : "Waiting";
+
+box.innerHTML =
+"Room ID: "+roomID+
+"<br>Password: "+roomPASS;
 
 }else{
 
@@ -458,7 +469,6 @@ box.style.display="none";
 }
 
 });
-
 });
 
 /* JOIN MATCH */
@@ -563,6 +573,9 @@ slots:increment(1)
 
 alert("Match Joined ✅");
 
+document.getElementById("btn_"+selectedRoom).disabled = true;
+document.getElementById("btn_"+selectedRoom).innerText = "Joined";
+
 /* RESET INPUT */
 
 document.getElementById("gameNameInput").value="";
@@ -571,7 +584,7 @@ closePopup();
 
 }
 
-function closePopup(){
+window.closePopup = function(){
 document.getElementById("joinPopup").style.display="none";
 }
 
