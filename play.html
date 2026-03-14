@@ -392,8 +392,14 @@ if(slot>=maxSlot){
 btn.disabled=true;
 btn.innerText="Room Full";
 }else{
+
+/* agar user already join kar chuka hai to enable mat karo */
+
+if(btn.innerText!=="Joined"){
 btn.disabled=false;
 btn.innerText="Join Now";
+}
+
 }
 
 });
