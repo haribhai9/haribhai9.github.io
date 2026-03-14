@@ -248,9 +248,7 @@ let roomPASS=document.getElementById("roomPASS_"+id).value;
 
 await setDoc(doc(db,"rooms",id),{
 roomID,
-roomPASS,
-slots:0,
-over:false
+roomPASS
 },{merge:true});
 
 alert("Room Saved");
