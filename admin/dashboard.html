@@ -61,7 +61,7 @@ hr{border:1px solid #334155}
 <body>
 
 <script>
-const adminPassword="998877";
+const adminPassword="1122334455";
 let pass=prompt("Enter Admin Password");
 
 if(pass!==adminPassword){
@@ -425,15 +425,20 @@ let data=snap.data();
 let deposit=data.balance||0;
 let winning=data.winningBalance||0;
 
-let total=deposit+winning;
+let newDeposit=deposit;
+let newWinning=winning;
 
-if(amt>total){
-alert("Not enough balance");
-return;
+if(deposit>=amt){
+newDeposit=deposit-amt;
+}else{
+let remain=amt-deposit;
+newDeposit=0;
+newWinning=winning-remain;
 }
 
 await updateDoc(ref,{
-winningBalance:increment(-amt)
+balance:newDeposit,
+winningBalance:newWinning
 });
 
 alert("Balance Cut");
@@ -465,9 +470,7 @@ snapshot.forEach(async (d)=>{
 
 let data=d.data();
 
-/* sirf pending dikhana */
-
-if(!data.status || data.status==="Pending"){
+if(!data.status || data.status.toLowerCase()==="pending"){
 
 let username=data.username;
 
@@ -481,9 +484,10 @@ div.innerHTML+=`
 <div class="user-box">
 
 <b>User:</b> ${username||"Unknown"}<br>
-<b>Amount:</b> ₹${data.amount}
+<b>Amount:</b> ₹${data.amount}<br>
+<b>UTR:</b> ${data.utr || "-"}
 
-<button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount}')">Approve</button>
+<button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount})">Approve</button>
 <button class="red" onclick="rejectDeposit('${d.id}')">Reject</button>
 
 </div>
@@ -533,11 +537,9 @@ snapshot.forEach(async (d)=>{
 
 let data=d.data();
 
-/* sirf pending */
+if(!data.status || data.status.toLowerCase()==="pending"){
 
-if(!data.status || data.status==="Pending"){
-
-let username=data.username;
+let username=data.username || "Unknown"
 
 if(!username && data.uid){
 const u=await getDoc(doc(db,"users",data.uid));
@@ -549,7 +551,9 @@ div.innerHTML+=`
 <div class="user-box">
 
 <b>User:</b> ${username||"Unknown"}<br>
-<b>Amount:</b> ₹${data.amount}
+<b>Amount:</b> ₹${data.amount}<br>
+<b>Method:</b> ${data.method || "-"}<br>
+<b>Details:</b> ${data.details || "-"}
 
 <button class="green" onclick="approveWithdraw('${d.id}')">Approve</button>
 <button class="red" onclick="rejectWithdraw('${d.id}')">Reject</button>
