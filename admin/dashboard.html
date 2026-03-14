@@ -84,7 +84,7 @@ throw new Error("Blocked");
 
 <button class="green" onclick="saveRoom('room1')">Save</button>
 <button class="red" onclick="resetRoom('room1')">Reset</button>
-<button class="blue" onclick="setRoomOver('room1')">Match Over</button>
+<button class="blue" onclick="matchOver('room1')">Match Over</button>
 
 <hr>
 
@@ -96,7 +96,7 @@ throw new Error("Blocked");
 
 <button class="green" onclick="saveRoom('room2')">Save</button>
 <button class="red" onclick="resetRoom('room2')">Reset</button>
-<button class="blue" onclick="setRoomOver('room2')">Match Over</button>
+<button class="blue" onclick="matchOver('room2')">Match Over</button>
 
 <hr>
 
@@ -108,7 +108,7 @@ throw new Error("Blocked");
 
 <button class="green" onclick="saveRoom('room3')">Save</button>
 <button class="red" onclick="resetRoom('room3')">Reset</button>
-<button class="blue" onclick="setRoomOver('room3')">Match Over</button>
+<button class="blue" onclick="matchOver('room3')">Match Over</button>
 
 <hr>
 
@@ -120,7 +120,7 @@ throw new Error("Blocked");
 
 <button class="green" onclick="saveRoom('room4')">Save</button>
 <button class="red" onclick="resetRoom('room4')">Reset</button>
-<button class="blue" onclick="setRoomOver('room4')">Match Over</button>
+<button class="blue" onclick="matchOver('room4')">Match Over</button>
 
 </div>
 
@@ -289,15 +289,16 @@ alert("Room Reset Done");
 
 /* MATCH OVER */
 
-window.setRoomOver=async function(room){
+window.matchOver = async function(roomId){
 
-await updateDoc(doc(db,"rooms",room),{
+await updateDoc(doc(db,"rooms",roomId),{
 over:true
-});
+})
 
-alert("Room Marked Over");
+alert("Match marked as over")
 
 }
+
 
 
 /* MATCH TIME */
