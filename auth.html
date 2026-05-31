@@ -242,7 +242,8 @@ window.location.href="index.html";
 
 }catch(err){
 
-showPopup("❌ Incorrect email or password.<br>Please reset your password.");
+console.error(err);
+showPopup(err.code + "<br><br>" + err.message);
 
 }
 
@@ -278,7 +279,8 @@ window.location.href="index.html";
 
 }catch(err){
 
-showPopup("⚠️ Google login failed");
+console.error(err);
+showPopup(err.code + "<br><br>" + err.message);
 
 }
 
