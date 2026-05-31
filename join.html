@@ -240,6 +240,9 @@ await setDoc(doc(db,"users",user.uid),{
 username:generateUsername(),
 email:user.email,
 balance:0,
+winningBalance:0,
+joinedRoom:"",
+gameName:"",
 blocked:false,
 createdAt:new Date()
 });
@@ -268,6 +271,9 @@ await setDoc(doc(db,"users",user.uid),{
 username:generateUsername(),
 email:user.email,
 balance:0,
+winningBalance:0,
+joinedRoom:"",
+gameName:"",
 blocked:false,
 createdAt:new Date()
 },{merge:true});
@@ -280,7 +286,8 @@ window.location.href="index.html";
 
 }catch(err){
 
-showPopup("❌ Google login failed","error");
+console.error(err);
+showPopup(err.code + "<br><br>" + err.message,"error");
 
 }
 
