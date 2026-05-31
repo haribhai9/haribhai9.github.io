@@ -33,22 +33,36 @@ border-radius:20px;
 font-weight:bold;
 }
 
+.tournament-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+padding:12px;
+}
+
 .tournament{
-background:#1e293b;
-margin:20px;
-border-radius:12px;
+background:linear-gradient(180deg,#1e293b,#111827);
+border-radius:16px;
 overflow:hidden;
-box-shadow:0 0 15px rgba(0,0,0,0.6);
+box-shadow:0 0 20px rgba(0,255,255,.15);
+border:1px solid rgba(255,255,255,.08);
+margin:0;
 }
 
 .tournament img{
 width:100%;
-height:180px;
+height:140px;
 object-fit:cover;
+display:block;
 }
 
-.t-info{
-padding:15px;
+.t-info{padding:12px;}
+
+.mode{color:#38bdf8;font-weight:bold;font-size:13px;margin-top:4px;}
+
+@media(max-width:600px){
+.tournament-grid{grid-template-columns:repeat(2,1fr);}
+.tournament img{height:100px;}
 }
 
 .slot{
@@ -153,17 +167,17 @@ Balance ₹<span id="balance">0</span>
 </div>
 </div>
 
+<div class="tournament-grid">
 
 <!-- ROOM 1 -->
 
 <div class="tournament">
 
-<img src="new.png">
+<img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80">
 
 <div class="t-info">
 
-<h3>Free Fire Tournament</h3>
-<h3>Body Custom Room</h3>
+<h3>🔥 FREE FIRE TOURNAMENT</h3><div class="mode">BODY CUSTOM ROOM</div>
 
 <p>Entry ₹<span id="entry_room1">0</span></p>
 <p>Win ₹<span id="win_room1">0</span></p>
@@ -189,12 +203,11 @@ Join Now
 
 <div class="tournament">
 
-<img src="newi.png">
+<img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80">
 
 <div class="t-info">
 
-<h3>Free Fire Tournament</h3>
-<h3>Body Custom Room</h3>
+<h3>🔥 FREE FIRE TOURNAMENT</h3><div class="mode">BODY CUSTOM ROOM</div>
 
 <p>Entry ₹<span id="entry_room2">0</span></p>
 <p>Win ₹<span id="win_room2">0</span></p>
@@ -220,13 +233,12 @@ Join Now
 
 <div class="tournament">
 
-<img src="newii.png">
+<img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1200&q=80">
 
 <div class="t-info">
 
-<h3>Free Fire Tournament</h3>
-<h3>Only Head Custom Room</h3>
-
+<h3>🎯 FREE FIRE TOURNAMENT</h3><div class="mode">HEADSHOT ONLY ROOM</div>
+               Hacker allowed
 <p>Entry ₹<span id="entry_room3">0</span></p>
 <p>Win ₹<span id="win_room3">0</span></p>
 
@@ -251,13 +263,12 @@ Join Now
 
 <div class="tournament">
 
-<img src="newiii.png">
+<img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=1200&q=80">
 
 <div class="t-info">
 
-<h3>Free Fire Tournament</h3>
-<h3>Only Head Custom Room</h3>
-
+<h3>🎯 FREE FIRE TOURNAMENT</h3><div class="mode">HEADSHOT ONLY ROOM</div>
+               Hacker allowed 
 <p>Entry ₹<span id="entry_room4">0</span></p>
 <p>Win ₹<span id="win_room4">0</span></p>
 
@@ -277,6 +288,8 @@ Join Now
 </div>
 </div>
 
+
+</div>
 
 <!-- JOIN POPUP -->
 
