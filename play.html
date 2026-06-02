@@ -177,7 +177,8 @@ Balance ₹<span id="balance">0</span>
 
 <div class="t-info">
 
-<h3>🔥 FREE FIRE TOURNAMENT</h3><div class="mode">BODY CUSTOM ROOM</div>
+<h3>🔥 CLASH SQUAD TOURNAMENT</h3><div class="mode">BODY CUSTOM ROOM
+              HACKER vs HACKER </div>
 
 <p>Entry ₹<span id="entry_room1">0</span></p>
 <p>Win ₹<span id="win_room1">0</span></p>
@@ -207,7 +208,8 @@ Join Now
 
 <div class="t-info">
 
-<h3>🔥 FREE FIRE TOURNAMENT</h3><div class="mode">BODY CUSTOM ROOM</div>
+<h3>🔥 CLASH SQUAD TOURNAMENT</h3><div class="mode">BODY CUSTOM ROOM
+               HACKER vs HAKER</div>
 
 <p>Entry ₹<span id="entry_room2">0</span></p>
 <p>Win ₹<span id="win_room2">0</span></p>
@@ -237,8 +239,8 @@ Join Now
 
 <div class="t-info">
 
-<h3>🎯 FREE FIRE TOURNAMENT</h3><div class="mode">HEADSHOT ONLY ROOM</div>
-               Hacker allowed
+<h3>🎯 CLASH SQUAD TOURNAMENT</h3><div class="mode">HEAD CUSTOM ROOM
+               HACKER vs HACKER</div>
 <p>Entry ₹<span id="entry_room3">0</span></p>
 <p>Win ₹<span id="win_room3">0</span></p>
 
@@ -267,8 +269,8 @@ Join Now
 
 <div class="t-info">
 
-<h3>🎯 FREE FIRE TOURNAMENT</h3><div class="mode">HEADSHOT ONLY ROOM</div>
-               Hacker allowed 
+<h3>🎯 CLASH SQUAD TOURNAMENT</h3><div class="mode">HEAD CUSTOM ROOM
+               HACKER vs HACKER</div>
 <p>Entry ₹<span id="entry_room4">0</span></p>
 <p>Win ₹<span id="win_room4">0</span></p>
 
@@ -287,7 +289,132 @@ Join Now
 
 </div>
 </div>
+<!-- ROOM 5 -->
 
+<div class="tournament">
+
+<img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80">
+
+<div class="t-info">
+
+<h3>🔥 CLASH SQUAD TOURNAMENT</h3>
+<div class="mode">BODY CUSTOM ROOM
+                  HACKER vs HACKER</div>
+
+<p>Entry ₹<span id="entry_room5">0</span></p>
+<p>Win ₹<span id="win_room5">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room5">Waiting...</span>
+</p>
+
+<p class="slot" id="slot_room5">Loading...</p>
+
+<button class="btn" id="btn_room5" onclick="joinMatch('room5')">
+Join Now
+</button>
+
+<div class="room-box" id="room5"></div>
+
+</div>
+</div>
+
+
+<!-- ROOM 6 -->
+
+<div class="tournament">
+
+<img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80">
+
+<div class="t-info">
+
+<h3>🔥 CLASH SQAUD TOURNAMENT</h3>
+<div class="mode">BODY CUSTOM ROOM
+                  HACKER vs HACKER</div>
+
+<p>Entry ₹<span id="entry_room6">0</span></p>
+<p>Win ₹<span id="win_room6">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room6">Waiting...</span>
+</p>
+
+<p class="slot" id="slot_room6">Loading...</p>
+
+<button class="btn" id="btn_room6" onclick="joinMatch('room6')">
+Join Now
+</button>
+
+<div class="room-box" id="room6"></div>
+
+</div>
+</div>
+
+
+<!-- ROOM 7 -->
+
+<div class="tournament">
+
+<img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1200&q=80">
+
+<div class="t-info">
+
+<h3>🎯 CLASH SQUAD TOURNAMENT</h3>
+<div class="mode">HEAD CUSTOM ROOM
+                  NO HAKER ALLOW </div>
+
+<p>Entry ₹<span id="entry_room7">0</span></p>
+<p>Win ₹<span id="win_room7">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room7">Waiting...</span>
+</p>
+
+<p class="slot" id="slot_room7">Loading...</p>
+
+<button class="btn" id="btn_room7" onclick="joinMatch('room7')">
+Join Now
+</button>
+
+<div class="room-box" id="room7"></div>
+
+</div>
+</div>
+
+
+<!-- ROOM 8 -->
+
+<div class="tournament">
+
+<img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=1200&q=80">
+
+<div class="t-info">
+
+<h3>🎯 BERMUDA TOURNAMENT</h3>
+<div class="mode">BERMUDA CUSTOM
+                  NO HACKER ALLOW</div>
+
+<p>Entry ₹<span id="entry_room8">0</span></p>
+<p>Win ₹<span id="win_room8">0</span></p>
+
+<p class="time">
+Match Time:
+<span id="time_room8">Waiting...</span>
+</p>
+
+<p class="slot" id="slot_room8">Loading...</p>
+
+<button class="btn" id="btn_room8" onclick="joinMatch('room8')">
+Join Now
+</button>
+
+<div class="room-box" id="room8"></div>
+
+</div>
+</div>
 
 </div>
 
@@ -354,7 +481,16 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 
 let currentUser;
-const maxSlot=2;
+const roomSlots = {
+  room1: 2,
+  room2: 2,
+  room3: 2,
+  room4: 2,
+  room5: 2,
+  room6: 2,
+  room7: 2,
+  room8: 49
+};
 
 /* USER */
 
@@ -387,7 +523,7 @@ document.getElementById("balance").innerText=deposit+win;
 
 /* ROOM SLOT */
 
-["room1","room2","room3","room4"].forEach(room=>{
+["room1","room2","room3","room4","room5","room6","room7","room8"].forEach(room=>{
 
 onSnapshot(doc(db,"rooms",room),(snap)=>{
 
@@ -414,6 +550,7 @@ return;
 /* SLOT SHOW */
 
 slotText.style.display="block";
+let maxSlot = roomSlots[room] || 2;
 slotText.innerText="Slot "+slot+" / "+maxSlot;
 
 /* ROOM FULL */
@@ -441,7 +578,7 @@ btn.innerText="Join Now";
 
 /* ENTRY WIN */
 
-["room1","room2","room3","room4"].forEach(room=>{
+["room1","room2","room3","room4","room5","room6","room7","room8"].forEach(room=>{
 
 onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
 
@@ -456,7 +593,16 @@ document.getElementById("win_"+room).innerText=data.win;
 });
 /* MATCH TIME */
 
-["match1","match2","match3","match4"].forEach((match,index)=>{
+[
+"match1",
+"match2",
+"match3",
+"match4",
+"match5",
+"match6",
+"match7",
+"match8"
+].forEach((match,index)=>{
 
 onSnapshot(doc(db,"settings",match),(snap)=>{
 
@@ -471,7 +617,7 @@ document.getElementById("time_room"+(index+1)).innerText=data.time;
 });
 /* ROOM INFO */
 
-["room1","room2","room3","room4"].forEach(room=>{
+["room1","room2","room3","room4","room5","room6","room7","room8"].forEach(room=>{
 
 onSnapshot(doc(db,"rooms",room),async(snap)=>{
 
@@ -565,7 +711,7 @@ return;
 }
 
 /* CHECK SLOT FULL */
-
+let maxSlot = roomSlots[selectedRoom] || 2;
 if((roomData.slots||0)>=maxSlot){
 alert("Room Full ❌");
 return;
