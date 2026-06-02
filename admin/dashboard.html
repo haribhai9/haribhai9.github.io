@@ -121,7 +121,53 @@ throw new Error("Blocked");
 <button class="green" onclick="saveRoom('room4')">Save</button>
 <button class="red" onclick="resetRoom('room4')">Reset</button>
 <button class="blue" onclick="matchOver('room4')">Match Over</button>
+<hr>
 
+<label>Room5 ID</label>
+<input id="roomID_room5">
+
+<label>Room5 PASS</label>
+<input id="roomPASS_room5">
+
+<button class="green" onclick="saveRoom('room5')">Save</button>
+<button class="red" onclick="resetRoom('room5')">Reset</button>
+<button class="blue" onclick="matchOver('room5')">Match Over</button>
+
+<hr>
+
+<label>Room6 ID</label>
+<input id="roomID_room6">
+
+<label>Room6 PASS</label>
+<input id="roomPASS_room6">
+
+<button class="green" onclick="saveRoom('room6')">Save</button>
+<button class="red" onclick="resetRoom('room6')">Reset</button>
+<button class="blue" onclick="matchOver('room6')">Match Over</button>
+
+<hr>
+
+<label>Room7 ID</label>
+<input id="roomID_room7">
+
+<label>Room7 PASS</label>
+<input id="roomPASS_room7">
+
+<button class="green" onclick="saveRoom('room7')">Save</button>
+<button class="red" onclick="resetRoom('room7')">Reset</button>
+<button class="blue" onclick="matchOver('room7')">Match Over</button>
+
+<hr>
+
+<label>Room8 ID</label>
+<input id="roomID_room8">
+
+<label>Room8 PASS</label>
+<input id="roomPASS_room8">
+
+<button class="green" onclick="saveRoom('room8')">Save</button>
+<button class="red" onclick="resetRoom('room8')">Reset</button>
+<button class="blue" onclick="matchOver('room8')">Match Over</button>
 </div>
 
 <div class="card">
@@ -145,7 +191,25 @@ throw new Error("Blocked");
 
 <input id="matchTime4" placeholder="Match4 Time">
 <button class="green" onclick="updateMatchTime('match4')">Update</button>
+<hr>
 
+<input id="matchTime5" placeholder="Match5 Time">
+<button class="green" onclick="updateMatchTime('match5')">Update</button>
+
+<hr>
+
+<input id="matchTime6" placeholder="Match6 Time">
+<button class="green" onclick="updateMatchTime('match6')">Update</button>
+
+<hr>
+
+<input id="matchTime7" placeholder="Match7 Time">
+<button class="green" onclick="updateMatchTime('match7')">Update</button>
+
+<hr>
+
+<input id="matchTime8" placeholder="Match8 Time">
+<button class="green" onclick="updateMatchTime('match8')">Update</button>
 </div>
 
 <div class="card">
@@ -189,7 +253,45 @@ throw new Error("Blocked");
 <input id="win4" type="number">
 
 <button class="green" onclick="updatePrize('room4')">Update</button>
+<hr>
 
+<label>Room5 Entry</label>
+<input id="entry5" type="number">
+
+<label>Room5 Win</label>
+<input id="win5" type="number">
+
+<button class="green" onclick="updatePrize('room5')">Update</button>
+
+<hr>
+
+<label>Room6 Entry</label>
+<input id="entry6" type="number">
+
+<label>Room6 Win</label>
+<input id="win6" type="number">
+
+<button class="green" onclick="updatePrize('room6')">Update</button>
+
+<hr>
+
+<label>Room7 Entry</label>
+<input id="entry7" type="number">
+
+<label>Room7 Win</label>
+<input id="win7" type="number">
+
+<button class="green" onclick="updatePrize('room7')">Update</button>
+
+<hr>
+
+<label>Room8 Entry</label>
+<input id="entry8" type="number">
+
+<label>Room8 Win</label>
+<input id="win8" type="number">
+
+<button class="green" onclick="updatePrize('room8')">Update</button>
 </div>
 
 <div class="card">
@@ -291,15 +393,13 @@ alert("Room Reset Done");
 
 window.matchOver = async function(roomId){
 
-await updateDoc(doc(db,"rooms",roomId),{
+await setDoc(doc(db,"rooms",roomId),{
 over:true
-})
+},{merge:true})
 
 alert("Match marked as over")
 
 }
-
-
 
 /* MATCH TIME */
 
