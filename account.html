@@ -75,7 +75,25 @@ cursor:pointer;
 background:#ef4444;
 color:white;
 }
+.app-btn{
+background:white;
+color:#0f172a;
+border:none;
+padding:7px 14px;
+border-radius:25px;
+font-size:13px;
+font-weight:700;
+display:flex;
+align-items:center;
+gap:5px;
+cursor:pointer;
+box-shadow:0 2px 8px rgba(0,0,0,.25);
+transition:.3s;
+}
 
+.app-btn:hover{
+transform:scale(1.05);
+}
 .profile{
 text-align:center;
 margin-top:30px;
@@ -137,8 +155,20 @@ cursor:pointer;
 <body>
 
 <div class="header">
+
 <div>My Account</div>
+
+<div style="display:flex;align-items:center;gap:10px;">
+
+<button class="app-btn"
+onclick="window.location.href='https://files.appsgeyser.com/Hari%20Tournament_19871724.apk'">
+📥 App
+</button>
+
 <div class="menu-btn" onclick="openMenu()">⋮</div>
+
+</div>
+
 </div>
 
 <div class="sidebar" id="sidebar">
@@ -189,6 +219,10 @@ style="background:#ef4444; margin-top:10px;">
 Withdrawal History
 </button>
 
+<button onclick="window.open('https://t.me/Esportcustomersup','_blank')" 
+style="background:#dc2626; margin-top:10px;">
+Customer Support
+</button>
 </div>
 
 <script type="module">
