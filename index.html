@@ -1,847 +1,831 @@
-<!DOCTYPE html>  <html>  
-<head>  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<meta name="theme-color" content="#0f172a">  
-<meta name="apple-mobile-web-app-capable" content="yes">  
-<meta name="mobile-web-app-capable" content="yes">  
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">  
-<title>Hari Bhai Company</title>  <style>  
-html,body{  
-height:100%;  
-margin:0;  
-padding:0;  
-overflow-x:hidden;  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b14">
+<meta name="description" content="Hari Battle Arena — gaming tournament platform.">
+<title>Hari Battle Arena</title>
 
-body{  
-margin:0;  
-font-family:'Segoe UI',Arial;  
-background:linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#000000);  
-background-size:400% 400%;  
-animation:gradientBG 10s ease infinite;  
-scroll-behavior:smooth;  
-padding-bottom:90px;  
-}  
-  
-@keyframes gradientBG{  
-0%{background-position:0% 50%;}  
-50%{background-position:100% 50%;}  
-100%{background-position:0% 50%;}  
-}  
-  
-/* NAVBAR */  
-.navbar{  
-display:flex;  
-justify-content:space-between;  
-align-items:center;  
-padding:15px 25px;  
-background:#0f172a;  
-box-shadow:0 4px 20px rgba(0,0,0,0.6);  
-position:sticky;  
-top:0;  
-z-index:1000;  
-}  
-  
-.logo img{height:45px;}  
-  
-.nav-buttons{display:flex;gap:10px;}  
-  
-.signin,.join{  
-padding:8px 18px;  
-border-radius:25px;  
-font-weight:bold;  
-cursor:pointer;  
-transition:0.3s;  
-border:none;  
-}  
-  
-.signin{  
-border:2px solid #0a66c2;  
-background:white;  
-color:#0a66c2;  
-}  
-  
-.signin:hover{  
-background:#0a66c2;  
-color:white;  
-}  
-  
-.join{  
-background:#0a66c2;  
-color:white;  
-}  
-  
-.join:hover{background:#003366;}  
-  
-/* HERO */  
-.hero{  
-text-align:center;  
-padding:60px 15px 40px;  
-color:white;  
-background:linear-gradient(145deg,#1f2633,#121720);  
-  
-width:100%;  
-max-width:100%;  
-box-sizing:border-box;  
-  
-margin:0;  
-border-radius:0;  
-  
-position:relative;  
-overflow:hidden;  
-}  
-  
-.hero h1{  
-font-size:32px;  
-margin-bottom:10px;  
-animation:floatText 3s ease-in-out infinite;  
-}  
-  
-.hero p{  
-font-size:16px;  
-opacity:0.9;  
-}  
-  
-.hero::before{  
-content:"";  
-position:absolute;  
-top:0;  
-left:0;  
-width:100%;  
-height:100%;  
-background:radial-gradient(circle at 20% 30%,rgba(255,255,255,0.08),transparent),  
-radial-gradient(circle at 80% 70%,rgba(255,255,255,0.05),transparent);  
-pointer-events:none;  
-}  
-@keyframes floatText{  
-0%{transform:translateY(0px);}  
-50%{transform:translateY(-6px);}  
-100%{transform:translateY(0px);}  
-}  
-  
-.battle-banner{  
-position:relative;  
-text-align:center;  
-margin-top:20px;  
-width:100%;  
-}  
-  
-.battle-banner img{  
-width:100%;  
-max-height:420px;  
-object-fit:contain;  
-border-radius:12px;  
-box-shadow:0 6px 18px rgba(0,0,0,0.4);  
-background:black;  
-}  
-.battle-heading{  
-text-align:center;  
-font-size:36px;  
-font-weight:900;  
-margin-top:15px;  
-margin-bottom:10px;  
-letter-spacing:3px;  
-  
-/* Colorful Gradient */  
-background:linear-gradient(90deg,  
-#ff0000,  
-#ff7300,  
-#ffea00,  
-#00ffea,  
-#00ff00,  
-#0099ff,  
-#ff00c8);  
-  
-background-size:500%;  
-  
-/* Text Gradient */  
--webkit-background-clip:text;  
--webkit-text-fill-color:transparent;  
-  
-/* Animation */  
-animation:rainbowMove 6s linear infinite;  
-  
-/* Glow Effect */  
-text-shadow:  
-0 0 10px rgba(255,255,255,0.5),  
-0 0 20px rgba(255,0,0,0.5),  
-0 0 30px rgba(0,255,255,0.5);  
-  
-/* Slight 3D */  
-transform:perspective(500px) rotateX(8deg);  
-}  
-  
-@keyframes rainbowMove{  
-0%{background-position:0%;}  
-100%{background-position:500%;}  
-}  
-  
-.play-now-btn{  
-display:block;  
-width:200px;  
-margin:15px auto;  
-padding:12px;  
-background:#28a745;  
-color:white;  
-text-align:center;  
-font-weight:bold;  
-border-radius:30px;  
-text-decoration:none;  
-font-size:16px;  
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-transition:0.3s;  
-}  
-  
-.play-now-btn:hover{  
-background:#1e7e34;  
-transform:scale(1.05);  
-}  
-  
-@keyframes zoomIn{  
-from{transform:scale(1);}  
-to{transform:scale(1.05);}  
-}  
-/* TRUST */  
-.trust{  
-padding:40px 15px;  
-display:flex;  
-justify-content:center;  
-}  
-  
-.trust-box{  
-background:white;  
-padding:25px;  
-border-radius:18px;  
-box-shadow:0 6px 18px rgba(0,0,0,0.1);  
-text-align:center;  
-max-width:380px;  
-width:100%;  
-}  
-  
-.trust-img{  
-width:180px;  
-border-radius:15px;  
-margin-bottom:10px;  
-}  
-  
-.owner-title{  
-font-size:20px;  
-font-weight:bold;  
-background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);  
-background-size:400%;  
--webkit-background-clip:text;  
--webkit-text-fill-color:transparent;  
-animation:colorMove 6s linear infinite;  
-margin-bottom:10px;  
-}  
-  
-@keyframes colorMove{  
-0%{background-position:0%;}  
-100%{background-position:400%;}  
-}  
-  
-.main-btn{  
-display:inline-block;  
-padding:10px 22px;  
-background:#0088cc;  
-color:white;  
-border-radius:30px;  
-text-decoration:none;  
-font-weight:bold;  
-margin-bottom:10px;  
-}  
-  
-.details-btn{  
-display:block;  
-width:100%;  
-padding:8px;  
-background:#0a66c2;  
-color:white;  
-border:none;  
-border-radius:25px;  
-cursor:pointer;  
-margin-top:5px;  
-text-decoration:none;   /* 👈 Underline remove */  
-}  
-  
-.owner-details{  
-max-height:0;  
-overflow:hidden;  
-transition:max-height 0.5s ease;  
-text-align:left;  
-padding-left:10px;  
-}  
-  
-/* SERVICES */  
-.services{  
-padding:50px 20px;  
-text-align:center;  
-color:white;  
-background:transparent;  
-}  
-  
-.admin-heading{  
-text-align:center;  
-font-size:28px;  
-font-weight:bold;  
-margin-bottom:30px;  
-background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa,#f7971e,#00c9ff);  
-background-size:400%;  
--webkit-background-clip:text;  
--webkit-text-fill-color:transparent;  
-animation:colorMove 6s linear infinite;  
-}  
-  
-.service-box{  
-background:linear-gradient(145deg,#1f2633,#121720);  
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-transition:0.3s;  
-}  
-  
-.service-box:hover{  
-transform:translateY(-6px) scale(1.01);  
-box-shadow:0 10px 30px rgba(0,0,0,0.7);  
-}  
-  
-.tiger-title{  
-font-size:18px;  
-font-weight:bold;  
-color:#ff3d00;  
-margin-bottom:8px;  
-}  
-  
-.btn-row{  
-margin-top:12px;  
-display:flex;  
-gap:10px;  
-flex-wrap:wrap;  
-}  
-  
-.buy-btn,.order-btn{  
-padding:8px 18px;  
-border-radius:25px;  
-color:white;  
-text-decoration:none;  
-font-weight:bold;  
-cursor:pointer;  
-}  
-  
-.buy-btn{background:#28a745;}  
-.order-btn{background:#0a66c2;}  
-  
-.flash-img{  
-width:90px;  
-margin-bottom:10px;  
-}  
-  
-/* WHY */  
-.why{  
-background:linear-gradient(145deg,#1f2633,#121720);  
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-transition:0.3s;  
-}  
-  
-/* TESTIMONIAL */  
-.testimonial{  
-background:linear-gradient(145deg,#1f2633,#121720);  
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-transition:0.3s;  
-}  
-  
-.testimonial-box{  
-background:#242a33;  
-color:white;  
-padding:20px;  
-border-radius:12px;  
-margin-bottom:15px;  
-}  
-.faq{  
-background:linear-gradient(145deg,#1f2633,#121720);  
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-text-align:center;  
-}  
-  
-.faq p{  
-max-width:600px;  
-margin:10px auto;  
-line-height:1.6;  
-}  
-/* CONTACT */  
-.contact-form{  
-background:linear-gradient(145deg,#1f2633,#121720);
-
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-transition:0.3s;  
-}  
-  
-.contact-form input,  
-.contact-form textarea{  
-width:90%;  
-max-width:400px;  
-padding:10px;  
-margin:8px 0;  
-border-radius:8px;  
-border:1px solid #ccc;  
-}  
-  
-.contact-form button{  
-padding:10px 25px;  
-background:#0a66c2;  
-color:white;  
-border:none;  
-border-radius:25px;  
-cursor:pointer;  
-}  
-  
-/* ABOUT */  
-.about{  
-background:linear-gradient(145deg,#1f2633,#121720);  
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-text-align:center;  
-}  
-  
-/* FOOTER */  
-.footer{  
-background:black;  
-color:#aaa;  
-padding:40px 20px;  
-text-align:center;  
-}  
-  
-.footer-links{  
-margin-top:15px;  
-display:flex;  
-justify-content:center;  
-gap:20px;  
-flex-wrap:wrap;  
-}  
-  
-.footer-links a{  
-color:#0a66c2;  
-text-decoration:none;  
-}  
-  
-/* WhatsApp */  
-.whatsapp-float{  
-position:fixed;  
-bottom:130px;  
-right:20px;  
-background:#25D366;  
-color:white;  
-border-radius:50%;  
-width:60px;  
-height:60px;  
-display:flex;  
-justify-content:center;  
-align-items:center;  
-font-size:28px;  
-text-decoration:none;  
-box-shadow:0 4px 10px rgba(0,0,0,0.3);  
-z-index:9999;  
-}  
-/* BIG TOURNAMENT TEXT */  
-.banner-text{  
-position:absolute;  
-top:20px;  
-left:50%;  
-transform:translateX(-50%);  
-font-size:34px;  
-font-weight:900;  
-font-family:Impact, Arial Black, sans-serif;  
-text-transform:uppercase;  
-letter-spacing:2px;  
-text-align:center;  
-padding:8px 20px;  
-border-radius:10px;  
-  
-background:linear-gradient(90deg,#ff0000,#ff7300,#ffea00,#00ffea,#ff00c8);  
-background-size:400%;  
-  
--webkit-background-clip:text;  
--webkit-text-fill-color:transparent;  
-  
-animation:fireText 4s linear infinite;  
-  
-text-shadow:  
-0 0 10px red,  
-0 0 20px orange,  
-0 0 30px yellow;  
-}  
-  
-@keyframes fireText{  
-0%{background-position:0%;}  
-100%{background-position:400%;}  
-}  
-/* Bottom Action Bar */  
-.bottom-action-bar{  
-position:fixed;  
-bottom:0px;  
-left:0;  
-width:100%;  
-background:#0f172a;  
-display:flex;  
-justify-content:space-around;  
-align-items:center;  
-padding:12px 0;  
-box-shadow:0 -6px 25px rgba(0,0,0,0.8);  
-z-index:9998;  
-}  
-  
-.action-btn{  
-text-decoration:none;  
-font-weight:bold;  
-padding:10px 18px;  
-border-radius:30px;  
-color:white;  
-font-size:14px;  
-}  
-  
-.buy-main{  
-background:linear-gradient(45deg,#28a745,#00c851);  
-}  
-  
-.play-main{  
-background:linear-gradient(45deg,#ff512f,#dd2476);  
-padding:12px 24px;  
-font-size:16px;  
-box-shadow:0 4px 12px rgba(0,0,0,0.3);  
-}  
-  
-.account-main{  
-background:linear-gradient(45deg,#0a66c2,#003366);  
-}  
-.ff-highlights{  
-background:linear-gradient(145deg,#1f2633,#121720);  
-padding:25px;  
-margin-bottom:25px;  
-border-radius:14px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.5);  
-border:1px solid rgba(255,255,255,0.05);  
-color:white;  
-transition:0.3s;  
-}  
-.ff-title{  
-font-size:30px;  
-font-weight:900;  
-margin-bottom:25px;  
-background:linear-gradient(90deg,#ff512f,#dd2476,#1fa2ff,#12d8fa);  
--webkit-background-clip:text;  
--webkit-text-fill-color:transparent;  
-}  
-  
-.ff-row{  
-display:flex;  
-gap:20px;  
-overflow-x:auto;  
-padding-bottom:10px;  
-}  
-  
-.ff-card{  
-min-width:230px;  
-background:linear-gradient(145deg,#1f2633,#121720);  
-color:white;  
-border-radius:15px;  
-box-shadow:0 8px 25px rgba(0,0,0,0.6);  
-overflow:hidden;  
-transition:0.3s;  
-}  
-.ff-card:hover{  
-transform:translateY(-6px);  
-}  
-  
-.ff-card img{  
-width:100%;  
-height:140px;  
-object-fit:cover;  
-}  
-  
-.ff-text{  
-padding:12px;  
-}  
-  
-.ff-text h3{  
-margin:5px 0;  
-font-size:16px;
-
-}  
-  
-.ff-text p{  
-font-size:13px;  
-color:#bbb;  
-}  
-.download-apk-btn{
-display:inline-block;
-margin-top:10px;
-padding:8px 18px;
-border-radius:25px;
-font-weight:bold;
-cursor:pointer;
-border:2px solid #0a66c2;
-background:white;
-color:#0a66c2;
-text-decoration:none;
-
-animation:apkShake 1.5s infinite;
-transition:0.3s;
+<style>
+:root{
+  --bg:#070a12;
+  --panel:rgba(17,24,39,.72);
+  --panel2:#111827;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --pink:#ec4899;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 20px 60px rgba(0,0,0,.35);
 }
 
-.download-apk-btn:hover{
-background:#0a66c2;
-color:white;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 10%,rgba(34,211,238,.10),transparent 28%),
+    radial-gradient(circle at 90% 20%,rgba(236,72,153,.10),transparent 25%),
+    linear-gradient(135deg,#070a12,#0b1020 50%,#070a12);
+  overflow-x:hidden;
 }
 
-@keyframes apkShake{
-0%{transform:translateY(0px);}
-25%{transform:translateY(-3px);}
-50%{transform:translateY(0px);}
-75%{transform:translateY(3px);}
-100%{transform:translateY(0px);}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.18;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;
+  mask-image:linear-gradient(to bottom,#000,transparent 75%);
 }
-</style>  </head>  <body>  <!-- ===== ORIGINAL FULL CONTENT ===== -->  <div class="navbar">  
-<div class="logo"><img src="logo.png"></div>  
-<div class="nav-buttons">  
-<button class="signin" onclick="signInClick()">Sign in</button>  <button class="join" onclick="joinClick()">Join now</button>
 
-</div>  
-</div> 
-<div class="hero">  
-<h1>Welcome to Hari Bhai Company</h1>  
-<p>Trusted Business & Professional Services</p>  <h2 class="battle-heading">FREE FIRE PAID TOURNAMENT</h2>  <div class="battle-banner">  <img id="battleMedia" src="tournament.jpg">  </div>  
-<a href="play.html" class="play-now-btn">▶ PLAY NOW</a>  
-</div>  <div class="ff-highlights">  <h2 class="ff-title">🔥 Tournament Highlights 🔥</h2>  <div class="ff-row">  <div class="ff-card">  
-<img src="t1.jpg">  
-<div class="ff-text">  
-<h3>Daily Matches</h3>  
-<p>Play exciting Free Fire matches every day.</p>  
-</div>  
-</div>  <div class="ff-card">  
-<img src="t2.jpg">  
-<div class="ff-text">  
-<h3>Low Entry</h3>  
-<p>Join tournaments starting from ₹10.</p>  
-</div>  
-</div>  <div class="ff-card">  
-<img src="t3.jpg">  
-<div class="ff-text">  
-<h3>Win Cash</h3>  
-<p>Win real prize money instantly.</p>  
-</div>  
-</div>  <div class="ff-card">  
-<img src="t4.jpg">  
-<div class="ff-text">  
-<h3>Fast Results</h3>  
-<p>Room ID and results delivered fast.</p>  
-</div>  
-</div>  </div>  </div>  
-<div class="why">  
-<h2>Why Choose Us?</h2>  
-<p>✔ Fair Gameplay for all players</p>  
-<p>✔ Room ID shared before match</p>  
-<p>✔ Fast prize distribution</p>  
-<p>✔ Easy tournament joining</p>  
-</div>  <div class="testimonial">  
-<h2>Players Reviews</h2>  
-<div class="testimonial-box">  
-<p>"Bhai yeh tournament website bahut mast hai. Room ID time par mil jata hai aur prize bhi jaldi milta hai. Main 3 match jeet chuka hu." ⭐⭐⭐⭐⭐</p>  
-</div>  
-<div class="testimonial-box">  
-<p>"Sabse trusted tournament platform hai. Entry fee kam hai aur competition bhi achha hota hai. Main daily yahi match khelta hu." ⭐⭐⭐⭐⭐</p>  
-</div>  
-</div>  <div class="faq">  
-<h2>Frequently Asked Questions</h2>  
-<p><strong>What payment methods are accepted?</strong></p>  
-<p>UPI, Bank Transfer and International Transfer accepted.</p>  
-</div>  <div class="contact-form">  
-<h2>Quick Contact</h2>  
-<input type="text" placeholder="Your Name">  
-<input type="email" placeholder="Your Email">  
-<textarea placeholder="Your Message"></textarea>  
-<br>  
-<button>Send Message</button>  
-</div>  <div class="about">  
-<h2>About Hari Bhai Company</h2>  
-<p>  
-Hari Bhai Company is a trusted digital service provider delivering high quality gaming and promotional services.  
-We focus on fast delivery, secure transactions and 100% customer satisfaction.  
-Our goal is to provide affordable and premium level services without any delay.  
-</p>  
-<br>  
-<p>  
-✔ Professional Team Support <br>  
-✔ 24/7 Customer Assistance <br>  
-✔ Verified & Trusted Seller <br>  
-✔ Secure Payment System <br>  
-✔ Fast Response Time  
-</p>  
-<br>  
-<p>  
-We believe in building long term trust with our customers through transparency and reliable service.  
-</p>  
-</div>  <div class="footer">  
-© 2026 Hari Bhai Company | All Rights Reserved  
-<div class="footer-links">  <a href="terms.html" class="action-btn terms-main">Terms And Condition</a>
+a{color:inherit}
+button{font:inherit}
 
-<a href="about.html" class="action-btn about-main">About</a>
+#loader{
+  position:fixed;
+  inset:0;
+  display:grid;
+  place-items:center;
+  background:#070a12;
+  z-index:100000;
+  transition:.45s ease;
+}
+.loader-box{text-align:center}
+.spinner{
+  width:58px;height:58px;border-radius:50%;
+  border:4px solid rgba(255,255,255,.10);
+  border-top-color:var(--cyan);
+  border-right-color:var(--blue);
+  animation:spin .8s linear infinite;
+  margin:auto;
+}
+.loader-box p{color:var(--muted);font-size:13px;margin-top:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-<a href="blog.html" class="action-btn blog-main">Blog</a>
+.navbar{
+  position:sticky;
+  top:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:12px 18px;
+  background:rgba(7,10,18,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.logo img{
+  width:auto;
+  height:46px;
+  display:block;
+  object-fit:contain;
+}
+.nav-right{display:flex;align-items:center;gap:9px}
+.signin,.join,.menu-btn{
+  border:0;
+  cursor:pointer;
+  transition:.25s ease;
+}
+.signin,.join{
+  padding:11px 18px;
+  border-radius:999px;
+  font-weight:700;
+}
+.signin{
+  color:#0f172a;
+  background:#fff;
+}
+.join{
+  color:#fff;
+  background:linear-gradient(135deg,#2563eb,#06b6d4);
+  box-shadow:0 8px 24px rgba(37,99,235,.28);
+}
+.signin:hover,.join:hover{transform:translateY(-2px)}
+.menu-btn{
+  width:50px;height:50px;
+  border-radius:16px;
+  color:white;
+  font-size:25px;
+  background:rgba(255,255,255,.08);
+  border:1px solid var(--border);
+}
+.menu-btn:hover{background:rgba(34,211,238,.16)}
 
-<a href="contact.html" class="action-btn contact-main">Contact</a>
+.floating-menu{position:relative}
+.menu-content{
+  position:absolute;
+  right:0;top:60px;
+  width:205px;
+  display:none;
+  flex-direction:column;
+  gap:7px;
+  padding:10px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:rgba(10,15,27,.96);
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+  animation:menuIn .2s ease;
+}
+.menu-content a,.logout-btn{
+  display:block;
+  width:100%;
+  padding:12px 13px;
+  border-radius:12px;
+  border:0;
+  text-align:left;
+  text-decoration:none;
+  color:#e2e8f0;
+  background:rgba(255,255,255,.055);
+  cursor:pointer;
+}
+.menu-content a:hover{background:rgba(34,211,238,.12);transform:translateX(3px)}
+.logout-btn{background:rgba(239,68,68,.14);color:#fecaca}
+@keyframes menuIn{
+  from{opacity:0;transform:translateY(-8px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
-<a href="privacy.html" class="action-btn privacy-main">Privacy</a>
+.hero{
+  position:relative;
+  max-width:1100px;
+  margin:auto;
+  padding:72px 18px 55px;
+  text-align:center;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 13px;
+  border:1px solid rgba(34,211,238,.22);
+  border-radius:999px;
+  color:#a5f3fc;
+  background:rgba(34,211,238,.07);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.5px;
+}
+.badge span{
+  width:7px;height:7px;border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 14px #22c55e;
+}
+.hero h1{
+  margin:20px auto 12px;
+  max-width:850px;
+  font-size:clamp(40px,9vw,78px);
+  line-height:.98;
+  letter-spacing:-3px;
+  font-weight:900;
+  background:linear-gradient(100deg,#fff,#67e8f9 45%,#60a5fa 75%,#f0abfc);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.hero p{
+  max-width:680px;
+  margin:0 auto;
+  color:#cbd5e1;
+  font-size:clamp(15px,3vw,19px);
+  line-height:1.65;
+}
+.hero-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+.play-now-btn,.secondary-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:180px;
+  padding:14px 20px;
+  border-radius:15px;
+  text-decoration:none;
+  font-weight:800;
+  transition:.25s ease;
+}
+.play-now-btn{
+  color:#041016;
+  background:linear-gradient(135deg,#22d3ee,#34d399);
+  box-shadow:0 12px 35px rgba(34,211,238,.24);
+}
+.secondary-btn{
+  color:#e2e8f0;
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--border);
+}
+.play-now-btn:hover,.secondary-btn:hover{transform:translateY(-3px)}
 
-<a href="support.html" class="action-btn support-main">Support</a>
+.battle-banner{
+  max-width:920px;
+  margin:34px auto 0;
+  position:relative;
+}
+.battle-banner:after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  border-radius:22px;
+  box-shadow:0 0 70px rgba(34,211,238,.10);
+  pointer-events:none;
+}
+.battle-banner img{
+  width:100%;
+  max-height:470px;
+  display:block;
+  object-fit:cover;
+  border-radius:22px;
+  border:1px solid var(--border);
+  background:#0b1020;
+  box-shadow:var(--shadow);
+}
 
-</div>  
-</div>  <a href="https://wa.me/+84909018264" target="_blank" class="whatsapp-float">💬</a>
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:55px 18px;
+}
+.section-head{text-align:center;margin-bottom:28px}
+.section-kicker{
+  color:#67e8f9;
+  font-size:12px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:2px;
+}
+.section h2{
+  margin:8px 0;
+  font-size:clamp(28px,6vw,42px);
+}
+.section-head p{color:var(--muted);margin:0}
 
-<div class="bottom-action-bar">
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  max-width:850px;
+  margin:30px auto 0;
+}
+.stat{
+  padding:22px 15px;
+  text-align:center;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+  backdrop-filter:blur(14px);
+}
+.stat strong{display:block;font-size:25px}
+.stat span{display:block;color:var(--muted);font-size:12px;margin-top:5px}
 
-<a href="index.html" class="action-btn buy-main">🔥 Home</a>  
-<a href="play.html" class="action-btn play-main">▶ Play</a>  
-<a href="account.html" class="action-btn account-main">👤 Account</a>  
-</div>  
-<!-- POPUP -->  
-<div id="popup" class="popup">  
-  <div class="popup-box">  
-    <p id="popupText"></p>  
-    <button onclick="closePopup()">OK</button>  
-  </div>  
-</div>  <style>  
-.popup{  
-position:fixed;  
-top:0;left:0;  
-width:100%;height:100%;  
-background:rgba(0,0,0,0.6);  
-display:none;  
-justify-content:center;  
-align-items:center;  
-animation:fadeIn 0.3s ease;  
-z-index:99999;  
-}  
-.popup-box{  
-background:white;  
-color:black;  
-padding:20px;  
-border-radius:12px;  
-text-align:center;  
-width:80%;  
-max-width:300px;  
-animation:slideUp 0.3s ease;  
-}  
-.popup-box button{  
-margin-top:15px;  
-padding:8px 20px;  
-border:none;  
-background:#0a66c2;  
-color:white;  
-border-radius:6px;  
-cursor:pointer;  
-}  
-@keyframes fadeIn{  
-from{opacity:0}  
-to{opacity:1}  
-}  
-@keyframes slideUp{  
-from{transform:translateY(40px);opacity:0}  
-to{transform:translateY(0);opacity:1}  
-}  
-</style>  <script type="module">  
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";  
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";  
-  
-const firebaseConfig = {  
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",  
-authDomain: "ff-tournament-915ed.firebaseapp.com",  
-projectId: "ff-tournament-915ed",  
-};  
-  
-const app = initializeApp(firebaseConfig);  
-const auth = getAuth(app);  
-  
-let currentUser = null;  
-  
-onAuthStateChanged(auth,(user)=>{  
-currentUser = user;  
-});  
-  
-window.signInClick = function(){  
-if(currentUser){  
-showPopup("You are already Signed In ✅");  
-}else{  
-window.location.href="auth.html";  
-}  
-}  
-  
-window.joinClick = function(){  
-if(currentUser){  
-showPopup("You are already Registered ✅");  
-}else{  
-window.location.href="auth.html";  
-}  
-}  
-  
-function showPopup(msg){  
-document.getElementById("popupText").innerText = msg;  
-document.getElementById("popup").style.display="flex";  
-}  
-  
-window.closePopup = function(){  
-document.getElementById("popup").style.display="none";  
-}  
-window.addEventListener("load", function(){  
-  
-const media = document.getElementById("battleMedia");  
-  
-const photo = "tournament.jpg";  
-const gif = "battle1.gif";  
-  
-let showPhoto = true;  
-  
-setInterval(()=>{  
-if(showPhoto){  
-media.src = gif;  
-}else{  
-media.src = photo;  
-}  
-showPhoto = !showPhoto;  
-},3000);  
-  
-});  
-</script>  <script>  
-window.addEventListener("load",function(){  
-if(document.documentElement.requestFullscreen){  
-document.documentElement.requestFullscreen();  
-}  
-});  
-</script>  </body>  
+.cards{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.card{
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:linear-gradient(145deg,rgba(31,41,55,.75),rgba(10,15,27,.82));
+  box-shadow:0 15px 40px rgba(0,0,0,.18);
+  transition:.3s ease;
+}
+.card:hover{transform:translateY(-5px);border-color:rgba(34,211,238,.28)}
+.card img{
+  width:100%;height:150px;
+  display:block;
+  object-fit:cover;
+  background:#0b1020;
+}
+.card-body{padding:16px}
+.card h3{margin:0 0 7px;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+}
+.why{
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+}
+.why strong{font-size:17px}
+.why p{color:var(--muted);line-height:1.6;margin-bottom:0}
+
+.reviews{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.review{
+  padding:20px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  background:rgba(255,255,255,.045);
+}
+.review p{line-height:1.65;color:#cbd5e1;margin:0}
+.stars{margin-top:12px;letter-spacing:2px}
+
+.faq-list{max-width:780px;margin:auto}
+details{
+  margin-bottom:10px;
+  padding:16px 18px;
+  border:1px solid var(--border);
+  border-radius:15px;
+  background:rgba(255,255,255,.045);
+}
+summary{cursor:pointer;font-weight:700}
+details p{color:var(--muted);line-height:1.6;margin-bottom:0}
+
+.about-box{
+  padding:25px;
+  border:1px solid var(--border);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(34,211,238,.10),transparent 30%),
+    rgba(255,255,255,.045);
+}
+.about-box p{color:#cbd5e1;line-height:1.75}
+
+.contact-form{
+  max-width:620px;
+  margin:auto;
+  padding:24px;
+  border:1px solid var(--border);
+  border-radius:22px;
+  background:rgba(255,255,255,.045);
+}
+.contact-form input,.contact-form textarea{
+  width:100%;
+  padding:13px 14px;
+  margin:7px 0;
+  border:1px solid var(--border);
+  border-radius:12px;
+  outline:none;
+  color:white;
+  background:rgba(0,0,0,.22);
+}
+.contact-form textarea{min-height:120px;resize:vertical}
+.contact-form button{
+  margin-top:8px;
+  padding:12px 22px;
+  border:0;
+  border-radius:999px;
+  color:#041016;
+  font-weight:800;
+  background:linear-gradient(135deg,#22d3ee,#34d399);
+  cursor:pointer;
+}
+
+.footer{
+  padding:35px 18px 110px;
+  text-align:center;
+  border-top:1px solid var(--border);
+  color:var(--muted);
+}
+.footer-links{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+.footer-links a{
+  padding:9px 12px;
+  color:#cbd5e1;
+  text-decoration:none;
+  border:1px solid var(--border);
+  border-radius:10px;
+}
+.footer-links a:hover{background:rgba(255,255,255,.06)}
+
+.floating{
+  position:fixed;
+  right:18px;
+  bottom:22px;
+  z-index:9998;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.float-btn{
+  width:54px;height:54px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  text-decoration:none;
+  font-size:23px;
+  border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  transition:.25s;
+}
+.float-btn:hover{transform:translateY(-3px) scale(1.04)}
+.telegram-float{background:#229ed9}
+.whatsapp-float{background:#22c55e}
+
+.popup{
+  position:fixed;
+  inset:0;
+  display:none;
+  place-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(8px);
+  z-index:100001;
+}
+.popup-box{
+  width:min(360px,100%);
+  padding:24px;
+  text-align:center;
+  border:1px solid var(--border);
+  border-radius:20px;
+  background:#111827;
+  box-shadow:var(--shadow);
+}
+.popup-box p{line-height:1.55}
+.popup-box button{
+  padding:10px 24px;
+  border:0;
+  border-radius:999px;
+  background:#fff;
+  color:#0f172a;
+  font-weight:700;
+  cursor:pointer;
+}
+
+@media(max-width:800px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .stats{grid-template-columns:1fr}
+  .hero{padding-top:55px}
+}
+@media(max-width:560px){
+  .navbar{padding:10px 12px}
+  .logo img{height:40px}
+  .signin{display:none}
+  .join{padding:10px 14px}
+  .menu-btn{width:46px;height:46px}
+  .hero h1{letter-spacing:-1.8px}
+  .cards,.why-grid,.reviews{grid-template-columns:1fr}
+  .section{padding:42px 14px}
+  .battle-banner img{border-radius:16px}
+  .floating{right:12px;bottom:15px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader">
+  <div class="loader-box">
+    <div class="spinner"></div>
+    <p>Loading Hari Battle Arena…</p>
+  </div>
+</div>
+
+<header class="navbar">
+  <a class="logo" href="index.html" aria-label="Hari Battle Arena home">
+    <img src="logo.png" alt="Hari Bhai Company logo">
+  </a>
+
+  <div class="nav-right">
+    <button class="signin" onclick="signInClick()">Sign In</button>
+    <button class="join" onclick="joinClick()">Join Now</button>
+
+    <div class="floating-menu">
+      <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+
+      <nav class="menu-content" id="menuContent">
+        <a href="index.html">🏠 Home</a>
+        <a href="play.html">🎮 Play</a>
+        <a href="account.html">👤 Account</a>
+        <button id="logoutBtn" class="logout-btn" onclick="logoutUser()">🚪 Logout</button>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="badge"><span></span> HARI BATTLE ARENA</div>
+
+  <h1>Battle. Play. Compete.</h1>
+
+  <p>
+    A modern gaming tournament platform built for players who want
+    clean competition, quick updates and a smooth mobile experience.
+  </p>
+
+  <div class="hero-actions">
+    <a href="play.html" class="play-now-btn">▶ PLAY NOW</a>
+    <a href="#highlights" class="secondary-btn">Explore Arena</a>
+  </div>
+
+  <div class="battle-banner">
+    <img id="battleMedia" src="tournament.jpg" alt="Tournament banner">
+  </div>
+
+  <div class="stats">
+    <div class="stat"><strong>100+</strong><span>Players</span></div>
+    <div class="stat"><strong>50+</strong><span>Matches</span></div>
+    <div class="stat"><strong>Active</strong><span>Tournament Updates</span></div>
+  </div>
+</section>
+
+<section class="section" id="highlights">
+  <div class="section-head">
+    <div class="section-kicker">Arena Features</div>
+    <h2>Tournament Highlights</h2>
+    <p>Everything important, presented in one clean dashboard-style experience.</p>
+  </div>
+
+  <div class="cards">
+    <article class="card">
+      <img src="t1.jpg" alt="Daily matches">
+      <div class="card-body">
+        <h3>Daily Matches</h3>
+        <p>Stay updated with upcoming matches and tournament activity.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <img src="t2.jpg" alt="Tournament events">
+      <div class="card-body">
+        <h3>Regular Events</h3>
+        <p>Discover new events and keep track of your competition.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <img src="t3.jpg" alt="Competitive gaming">
+      <div class="card-body">
+        <h3>Competitive Play</h3>
+        <p>A focused gaming experience with clear match information.</p>
+      </div>
+    </article>
+
+    <article class="card">
+      <img src="t4.jpg" alt="Fast updates">
+      <div class="card-body">
+        <h3>Fast Updates</h3>
+        <p>Get important tournament announcements in one place.</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="section-kicker">Why Hari Arena</div>
+    <h2>Built for a Better Experience</h2>
+  </div>
+
+  <div class="why-grid">
+    <div class="why">
+      <strong>⚡ Fast & Simple</strong>
+      <p>Clean navigation designed for quick access on mobile devices.</p>
+    </div>
+    <div class="why">
+      <strong>🎮 Player First</strong>
+      <p>Important match information stays easy to find and understand.</p>
+    </div>
+    <div class="why">
+      <strong>📢 Live Updates</strong>
+      <p>Use the platform's official channels for announcements and support.</p>
+    </div>
+    <div class="why">
+      <strong>🔐 Account Security</strong>
+      <p>Authentication is handled through Firebase rather than storing passwords in this page.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="section-kicker">Community</div>
+    <h2>Player Reviews</h2>
+  </div>
+
+  <div class="reviews">
+    <article class="review">
+      <p>“Clean interface and tournament information is easy to find.”</p>
+      <div class="stars">★★★★★</div>
+    </article>
+    <article class="review">
+      <p>“The mobile layout makes it simple to check updates quickly.”</p>
+      <div class="stars">★★★★★</div>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="section-kicker">Help Center</div>
+    <h2>Frequently Asked Questions</h2>
+  </div>
+
+  <div class="faq-list">
+    <details>
+      <summary>How do I create an account?</summary>
+      <p>Tap Sign In or Join Now and use the authentication page.</p>
+    </details>
+    <details>
+      <summary>Where can I find tournament updates?</summary>
+      <p>Check the Play section and the official support/community channels.</p>
+    </details>
+    <details>
+      <summary>How do I contact support?</summary>
+      <p>Use the support links in the footer or the official contact channel.</p>
+    </details>
+  </div>
+</section>
+
+<section class="section">
+  <div class="about-box">
+    <div class="section-kicker">About</div>
+    <h2>Hari Bhai Company</h2>
+    <p>
+      Hari Bhai Company is building a modern digital gaming experience
+      focused on clear information, responsive design and reliable account
+      access.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="section-head">
+    <div class="section-kicker">Support</div>
+    <h2>Quick Contact</h2>
+    <p>Send your message through your configured support system.</p>
+  </div>
+
+  <form class="contact-form" onsubmit="submitContact(event)">
+    <input type="text" placeholder="Your Name" required>
+    <input type="email" placeholder="Your Email" required>
+    <textarea placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+</section>
+
+</main>
+
+<footer class="footer">
+  © 2026 Hari Bhai Company · All Rights Reserved
+
+  <div class="footer-links">
+    <a href="terms.html">Terms</a>
+    <a href="about.html">About</a>
+    <a href="blog.html">Blog</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="support.html">Support</a>
+  </div>
+</footer>
+
+<div class="floating">
+  <a href="https://t.me/Esportcustomersupport" target="_blank" rel="noopener noreferrer"
+     class="float-btn telegram-float" aria-label="Telegram">➤</a>
+
+  <a href="https://wa.me/+84909018264" target="_blank" rel="noopener noreferrer"
+     class="float-btn whatsapp-float" aria-label="WhatsApp">💬</a>
+</div>
+
+<div id="popup" class="popup">
+  <div class="popup-box">
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+/*
+  Keep Firebase web configuration here only.
+  IMPORTANT: Firebase API keys are identifiers, not passwords.
+  Protect your project with Firebase Authentication + Security Rules.
+*/
+const firebaseConfig = {
+  apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain: "ff-tournament-915ed.firebaseapp.com",
+  projectId: "ff-tournament-915ed"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.style.display = user ? "block" : "none";
+});
+
+window.signInClick = function(){
+  if(currentUser){
+    showPopup("You are already signed in ✅");
+  }else{
+    window.location.href = "auth.html";
+  }
+};
+
+window.joinClick = function(){
+  if(currentUser){
+    showPopup("You are already registered ✅");
+  }else{
+    window.location.href = "auth.html";
+  }
+};
+
+window.logoutUser = async function(){
+  try{
+    await signOut(auth);
+    showPopup("Logged out successfully ✅");
+    setTimeout(() => window.location.href = "auth.html", 1000);
+  }catch(error){
+    showPopup("Logout failed. Please try again.");
+  }
+};
+
+function showPopup(message){
+  document.getElementById("popupText").textContent = message;
+  document.getElementById("popup").style.display = "grid";
+}
+
+window.closePopup = function(){
+  document.getElementById("popup").style.display = "none";
+};
+</script>
+
+<script>
+function toggleMenu(){
+  const menu = document.getElementById("menuContent");
+  menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+}
+
+document.addEventListener("click", function(e){
+  const menu = document.getElementById("menuContent");
+  const btn = document.querySelector(".menu-btn");
+
+  if(!menu.contains(e.target) && !btn.contains(e.target)){
+    menu.style.display = "none";
+  }
+});
+
+window.addEventListener("load", () => {
+  const media = document.getElementById("battleMedia");
+  const photo = "tournament.jpg";
+  const gif = "battle1.gif";
+
+  let showPhoto = true;
+
+  setInterval(() => {
+    showPhoto = !showPhoto;
+    media.src = showPhoto ? photo : gif;
+  }, 5000);
+
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    loader.style.opacity = "0";
+    setTimeout(() => loader.remove(), 450);
+  }, 700);
+});
+
+function submitContact(event){
+  event.preventDefault();
+  document.getElementById("popupText").textContent =
+    "Contact form is ready. Connect it to your backend/email service before using it in production.";
+  document.getElementById("popup").style.display = "grid";
+}
+</script>
+
+</body>
 </html>
