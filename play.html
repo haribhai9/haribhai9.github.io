@@ -1,479 +1,499 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Play • Hari Battle Arena</title>
 
-<title>Play Tournaments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
+:root{
+  --bg:#070a12;
+  --panel:rgba(17,24,39,.82);
+  --panel2:#111827;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --yellow:#facc15;
+  --red:#ef4444;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 18px 50px rgba(0,0,0,.32);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
-margin:0;
-font-family:'Segoe UI',Arial;
-background:#0f172a;
-color:white;
+  margin:0;
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(34,211,238,.12),transparent 28%),
+    radial-gradient(circle at 100% 25%,rgba(59,130,246,.10),transparent 25%),
+    linear-gradient(135deg,#070a12,#0b1020 52%,#070a12);
+  min-height:100vh;
 }
-
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;opacity:.15;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;
+  mask-image:linear-gradient(to bottom,#000,transparent 80%);
+}
+button{font:inherit}
 .header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:#1e293b;
+  position:sticky;top:0;z-index:5000;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;padding:12px 16px;
+  background:rgba(7,10,18,.82);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
 }
-
+.brand{
+  display:flex;align-items:center;gap:10px;
+  min-width:0;
+}
+.brand-icon{
+  width:42px;height:42px;border-radius:13px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,#22d3ee,#2563eb);
+  box-shadow:0 8px 25px rgba(34,211,238,.18);
+  font-size:21px;
+}
+.brand-text strong{display:block;font-size:14px}
+.brand-text span{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.header-actions{display:flex;align-items:center;gap:7px}
 .balance{
-background:#22c55e;
-padding:6px 14px;
-border-radius:20px;
-font-weight:bold;
+  display:flex;align-items:center;gap:6px;
+  padding:9px 12px;border-radius:999px;
+  background:rgba(34,197,94,.10);
+  border:1px solid rgba(34,197,94,.25);
+  color:#bbf7d0;font-weight:800;font-size:12px;
 }
+.header-btn{
+  border:1px solid var(--border);
+  color:white;background:rgba(255,255,255,.06);
+  padding:9px 11px;border-radius:11px;
+  font-weight:700;font-size:12px;cursor:pointer;
+}
+.header-btn:hover{background:rgba(255,255,255,.11)}
+.proof-btn{color:#a5f3fc}
+.rule-btn{color:#fde68a}
+
+.hero{
+  max-width:1100px;margin:auto;
+  padding:35px 16px 18px;
+  text-align:center;
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 11px;border-radius:999px;
+  color:#a5f3fc;background:rgba(34,211,238,.07);
+  border:1px solid rgba(34,211,238,.20);
+  font-size:10px;font-weight:800;letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+.kicker i{
+  width:6px;height:6px;border-radius:50%;background:#22c55e;
+  box-shadow:0 0 12px #22c55e;
+}
+.hero h1{
+  margin:15px 0 7px;
+  font-size:clamp(30px,8vw,54px);
+  line-height:1;
+  letter-spacing:-2px;
+  background:linear-gradient(100deg,#fff,#67e8f9 45%,#60a5fa);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{margin:0 auto;color:var(--muted);font-size:13px;line-height:1.6;max-width:620px}
 
 .tournament-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-padding:12px;
+  width:min(1100px,100%);
+  margin:0 auto;
+  padding:18px 16px 50px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
 }
-
 .tournament{
-background:linear-gradient(180deg,#1e293b,#111827);
-border-radius:16px;
-overflow:hidden;
-box-shadow:0 0 20px rgba(0,255,255,.15);
-border:1px solid rgba(255,255,255,.08);
-margin:0;
+  position:relative;overflow:hidden;
+  background:linear-gradient(150deg,rgba(30,41,59,.88),rgba(8,12,22,.94));
+  border-radius:22px;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  transition:.28s ease;
 }
-
+.tournament:hover{
+  transform:translateY(-4px);
+  border-color:rgba(34,211,238,.28);
+  box-shadow:0 22px 55px rgba(0,0,0,.42);
+}
+.tournament:after{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(120deg,rgba(34,211,238,.07),transparent 35%,rgba(59,130,246,.05));
+}
 .tournament img{
-width:100%;
-height:140px;
-object-fit:cover;
-display:block;
+  width:100%;height:185px;display:block;object-fit:cover;
+  background:#0b1020;
 }
-
-.t-info{padding:12px;}
-
-.mode{color:#38bdf8;font-weight:bold;font-size:13px;margin-top:4px;}
-
-@media(max-width:600px){
-.tournament-grid{grid-template-columns:repeat(2,1fr);}
-.tournament img{height:100px;}
+.t-info{position:relative;z-index:1;padding:17px}
+.card-top{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:8px;
 }
-
+.t-info h3{margin:0;font-size:15px;line-height:1.35}
+.mode{
+  display:inline-block;
+  margin-top:8px;padding:5px 8px;
+  border-radius:8px;
+  color:#a5f3fc;background:rgba(34,211,238,.08);
+  border:1px solid rgba(34,211,238,.12);
+  font-weight:700;font-size:10px;
+}
+.info-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:9px;margin-top:14px;
+}
+.info-box{
+  padding:10px 11px;border-radius:12px;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.06);
+}
+.info-box small{display:block;color:var(--muted);font-size:9px;margin-bottom:4px}
+.info-box strong{font-size:14px}
+.time-box{
+  margin-top:9px;padding:10px 11px;border-radius:12px;
+  color:#fde68a;background:rgba(250,204,21,.06);
+  border:1px solid rgba(250,204,21,.12);
+  font-size:11px;font-weight:700;
+}
 .slot{
-font-weight:bold;
-margin-top:5px;
+  margin:10px 0 0;color:#cbd5e1;
+  font-size:11px;font-weight:800;
 }
-
-.time{
-color:#facc15;
-font-weight:bold;
-margin-top:5px;
-}
-
 .btn{
-width:100%;
-padding:12px;
-margin-top:12px;
-background:linear-gradient(45deg,#3b82f6,#06b6d4);
-border:none;
-color:white;
-font-weight:bold;
-border-radius:8px;
-cursor:pointer;
+  width:100%;padding:12px;margin-top:13px;
+  border:0;border-radius:13px;
+  color:#041016;font-weight:900;font-size:13px;
+  cursor:pointer;
+  background:linear-gradient(135deg,#22d3ee,#34d399);
+  box-shadow:0 10px 24px rgba(34,211,238,.18);
+  transition:.25s;
 }
-
-.btn:disabled{
-background:gray;
-}
-
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 13px 30px rgba(34,211,238,.27)}
+.btn:disabled{cursor:not-allowed;background:#334155;color:#94a3b8;box-shadow:none}
 .room-box{
-margin-top:10px;
-background:#0ea5e9;
-padding:10px;
-border-radius:6px;
-display:none;
+  margin-top:10px;padding:11px;border-radius:12px;
+  display:none;text-align:center;
+  color:#cffafe;background:rgba(14,165,233,.10);
+  border:1px solid rgba(34,211,238,.20);
+  font-size:11px;line-height:1.7;font-weight:700;
 }
 
-/* POPUP */
-
+/* popup */
 .popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.7);
-display:none;
-justify-content:center;
-align-items:center;
+  position:fixed;inset:0;z-index:9000;
+  display:none;justify-content:center;align-items:center;
+  padding:20px;background:rgba(0,0,0,.70);
+  backdrop-filter:blur(8px);
 }
-
 .popup-content{
-background:linear-gradient(45deg,#3b82f6,#06b6d4);
-padding:25px;
-border-radius:15px;
-width:85%;
-max-width:320px;
-text-align:center;
+  width:min(370px,100%);
+  padding:23px;border-radius:22px;
+  border:1px solid var(--border);
+  background:#111827;box-shadow:var(--shadow);
+  animation:pop .22s ease;
 }
-
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:none}}
+.popup-content h3{margin:0 0 6px}
+.popup-content p{color:var(--muted);font-size:12px;line-height:1.5}
 .popup-content input{
-width:100%;
-padding:10px;
-margin-top:10px;
-border:none;
-border-radius:6px;
+  width:100%;padding:13px;margin:10px 0;
+  border:1px solid var(--border);border-radius:12px;
+  outline:none;background:#0b1020;color:white;
 }
+.popup-content input:focus{border-color:rgba(34,211,238,.5)}
+.popup-actions{display:flex;gap:8px}
+.popup-actions button{
+  flex:1;padding:11px;border:0;border-radius:11px;
+  font-weight:800;cursor:pointer;
+}
+.confirm{background:linear-gradient(135deg,#22d3ee,#34d399);color:#041016}
+.cancel{background:#263244;color:#e2e8f0}
 
-/* RULES PANEL */
-
+/* rules */
 .rules-panel{
-position:fixed;
-top:0;
-right:-100%;
-width:85%;
-max-width:320px;
-height:100%;
-background:#1e293b;
-padding:20px;
-transition:0.4s;
-z-index:999;
-overflow-y:auto;
+  position:fixed;top:0;right:-100%;z-index:8000;
+  width:min(390px,92vw);height:100%;
+  padding:22px;overflow-y:auto;
+  background:rgba(10,15,27,.97);
+  border-left:1px solid var(--border);
+  box-shadow:-20px 0 60px rgba(0,0,0,.35);
+  transition:.4s ease;
+}
+.rules-panel h2{margin-top:5px}
+.rules-panel li{
+  color:#cbd5e1;line-height:1.6;font-size:13px;
+  margin:13px 0;
+}
+.rules-panel button{
+  width:100%;padding:12px;border:0;border-radius:12px;
+  color:#041016;font-weight:800;
+  background:#fff;cursor:pointer;
 }
 
+/* toast */
+.toast{
+  position:fixed;left:50%;bottom:25px;z-index:10000;
+  transform:translate(-50%,20px);
+  opacity:0;pointer-events:none;
+  width:min(360px,90%);
+  padding:13px 15px;text-align:center;
+  border-radius:14px;
+  color:white;background:#111827;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  transition:.3s;
+  font-size:12px;font-weight:700;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:700px){
+  .tournament-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px 10px 40px}
+  .tournament{border-radius:17px}
+  .tournament img{height:112px}
+  .t-info{padding:11px}
+  .t-info h3{font-size:12px}
+  .mode{font-size:8px;padding:4px 6px}
+  .info-grid{gap:6px;margin-top:10px}
+  .info-box{padding:8px}
+  .info-box small{font-size:8px}
+  .info-box strong{font-size:12px}
+  .time-box{padding:8px;font-size:9px}
+  .slot{font-size:9px}
+  .btn{padding:10px 6px;font-size:11px;margin-top:9px}
+  .room-box{font-size:9px;padding:8px}
+}
+@media(max-width:390px){
+  .brand-text{display:none}
+  .balance{padding:8px 9px;font-size:10px}
+  .header-btn{padding:8px;font-size:10px}
+  .hero{padding-top:28px}
+  .hero h1{font-size:29px}
+}
 </style>
 </head>
 
 <body>
 
-<div class="header">
+<header class="header">
+  <div class="brand">
+    <div class="brand-icon">🎮</div>
+    <div class="brand-text">
+      <strong>Hari Battle Arena</strong>
+      <span>TOURNAMENT HUB</span>
+    </div>
+  </div>
 
-<div class="balance">
-Balance ₹<span id="balance">0</span>
-</div>
+  <div class="header-actions">
+    <div class="balance">💰 ₹<span id="balance">0</span></div>
+    <button class="header-btn proof-btn" onclick="openProofs()">Proofs</button>
+    <button class="header-btn rule-btn" onclick="openRules()">Rules</button>
+  </div>
+</header>
 
-<div style="display:flex; gap:8px;">
-
-<button onclick="openProofs()" style="background:#38bdf8;border:none;padding:6px 12px;border-radius:6px;color:white;font-weight:bold;">Proofs</button>
-
-<button onclick="openRules()" style="background:#facc15;border:none;padding:6px 12px;border-radius:6px;font-weight:bold;">Rules</button>
-
-</div>
-</div>
+<section class="hero">
+  <div class="kicker"><i></i> Live Tournament Arena</div>
+  <h1>Choose Your Battle</h1>
+  <p>Pick a tournament, check the entry and prize details, then join your match in a few taps.</p>
+</section>
 
 <div class="tournament-grid">
 
 <!-- ROOM 1 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🔥 CLASH SQUAD TOURNAMENT</h3><div class="mode">HEAD CUSTOM ROOM
-              HACKER IS ALLOW </div>
-
-<p>Entry ₹<span id="entry_room1">0</span></p>
-<p>Win ₹<span id="win_room1">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room1">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🔥 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">BODY CUSTOM ROOM • HACKER vs HACKER</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room1">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room1">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room1">Waiting...</span></div>
 <p class="slot" id="slot_room1">Loading...</p>
-
-<button class="btn" id="btn_room1" onclick="joinMatch('room1')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room1" onclick="joinMatch('room1')">JOIN NOW</button>
 <div class="room-box" id="room1"></div>
-
 </div>
 </div>
-
 
 <!-- ROOM 2 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🔥 CLASH SQUAD TOURNAMENT</h3><div class="mode">HEAD CUSTOM ROOM
-               NO HACKER ALLOW</div>
-
-<p>Entry ₹<span id="entry_room2">0</span></p>
-<p>Win ₹<span id="win_room2">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room2">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🔥 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">BODY CUSTOM ROOM • HACKER vs HACKER</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room2">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room2">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room2">Waiting...</span></div>
 <p class="slot" id="slot_room2">Loading...</p>
-
-<button class="btn" id="btn_room2" onclick="joinMatch('room2')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room2" onclick="joinMatch('room2')">JOIN NOW</button>
 <div class="room-box" id="room2"></div>
-
 </div>
 </div>
-
 
 <!-- ROOM 3 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🎯 CLASH SQUAD TOURNAMENT</h3><div class="mode">HEAD CUSTOM ROOM
-               HACKER IS ALLOW</div>
-<p>Entry ₹<span id="entry_room3">0</span></p>
-<p>Win ₹<span id="win_room3">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room3">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🎯 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">HEAD CUSTOM ROOM • HACKER vs HACKER</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room3">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room3">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room3">Waiting...</span></div>
 <p class="slot" id="slot_room3">Loading...</p>
-
-<button class="btn" id="btn_room3" onclick="joinMatch('room3')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room3" onclick="joinMatch('room3')">JOIN NOW</button>
 <div class="room-box" id="room3"></div>
-
 </div>
 </div>
-
 
 <!-- ROOM 4 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🎯 CLASH SQUAD TOURNAMENT</h3><div class="mode">HEAD CUSTOM ROOM
-               NO HACKER ALLOW</div>
-<p>Entry ₹<span id="entry_room4">0</span></p>
-<p>Win ₹<span id="win_room4">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room4">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🎯 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">HEAD CUSTOM ROOM • HACKER vs HACKER</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room4">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room4">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room4">Waiting...</span></div>
 <p class="slot" id="slot_room4">Loading...</p>
-
-<button class="btn" id="btn_room4" onclick="joinMatch('room4')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room4" onclick="joinMatch('room4')">JOIN NOW</button>
 <div class="room-box" id="room4"></div>
+</div>
+</div>
 
-</div>
-</div>
 <!-- ROOM 5 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🔥 CLASH SQUAD TOURNAMENT</h3>
-<div class="mode">BODY CUSTOM ROOM
-                  HACKER IS ALLOW</div>
-
-<p>Entry ₹<span id="entry_room5">0</span></p>
-<p>Win ₹<span id="win_room5">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room5">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🔥 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">BODY CUSTOM ROOM • HACKER vs HACKER</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room5">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room5">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room5">Waiting...</span></div>
 <p class="slot" id="slot_room5">Loading...</p>
-
-<button class="btn" id="btn_room5" onclick="joinMatch('room5')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room5" onclick="joinMatch('room5')">JOIN NOW</button>
 <div class="room-box" id="room5"></div>
-
 </div>
 </div>
-
 
 <!-- ROOM 6 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🔥 CLASH SQUAD TOURNAMENT</h3>
-<div class="mode">BODY CUSTOM ROOM
-                  NO HACKER ALLOW</div>
-
-<p>Entry ₹<span id="entry_room6">0</span></p>
-<p>Win ₹<span id="win_room6">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room6">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🔥 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">BODY CUSTOM ROOM • HACKER vs HACKER</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room6">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room6">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room6">Waiting...</span></div>
 <p class="slot" id="slot_room6">Loading...</p>
-
-<button class="btn" id="btn_room6" onclick="joinMatch('room6')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room6" onclick="joinMatch('room6')">JOIN NOW</button>
 <div class="room-box" id="room6"></div>
-
 </div>
 </div>
-
 
 <!-- ROOM 7 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1493711662062-fa541adb3fc8?auto=format&fit=crop&w=1200&q=80" alt="Clash Squad Tournament">
 <div class="t-info">
-
-<h3>🎯 CLASH SQUAD TOURNAMENT</h3>
-<div class="mode">BODY CUSTOM ROOM
-                  NO HACKER ALLOW </div>
-
-<p>Entry ₹<span id="entry_room7">0</span></p>
-<p>Win ₹<span id="win_room7">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room7">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🎯 CLASH SQUAD TOURNAMENT</h3></div>
+<div class="mode">HEAD CUSTOM ROOM • NO HACKER ALLOW</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room7">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room7">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room7">Waiting...</span></div>
 <p class="slot" id="slot_room7">Loading...</p>
-
-<button class="btn" id="btn_room7" onclick="joinMatch('room7')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room7" onclick="joinMatch('room7')">JOIN NOW</button>
 <div class="room-box" id="room7"></div>
-
 </div>
 </div>
-
 
 <!-- ROOM 8 -->
-
 <div class="tournament">
-
-<img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=1200&q=80">
-
+<img src="https://images.unsplash.com/photo-1560253023-3ec5d502959f?auto=format&fit=crop&w=1200&q=80" alt="Bermuda Tournament">
 <div class="t-info">
-
-<h3>🎯 BERMUDA TOURNAMENT</h3>
-<div class="mode">BERMUDA CUSTOM
-                  NO HACKER ALLOW</div>
-
-<p>Entry ₹<span id="entry_room8">0</span></p>
-<p>Win ₹<span id="win_room8">0</span></p>
-
-<p class="time">
-Match Time:
-<span id="time_room8">Waiting...</span>
-</p>
-
+<div class="card-top"><h3>🎯 BERMUDA TOURNAMENT</h3></div>
+<div class="mode">BERMUDA CUSTOM • NO HACKER ALLOW</div>
+<div class="info-grid">
+<div class="info-box"><small>ENTRY</small><strong>₹<span id="entry_room8">0</span></strong></div>
+<div class="info-box"><small>WIN</small><strong>₹<span id="win_room8">0</span></strong></div>
+</div>
+<div class="time-box">🕒 Match Time: <span id="time_room8">Waiting...</span></div>
 <p class="slot" id="slot_room8">Loading...</p>
-
-<button class="btn" id="btn_room8" onclick="joinMatch('room8')">
-Join Now
-</button>
-
+<button class="btn" id="btn_room8" onclick="joinMatch('room8')">JOIN NOW</button>
 <div class="room-box" id="room8"></div>
-
 </div>
 </div>
 
 </div>
 
 <!-- JOIN POPUP -->
-
 <div id="joinPopup" class="popup">
-
 <div class="popup-content">
-
-<h3>Enter Game Name</h3>
-
-<input type="text" id="gameNameInput">
-
-<button onclick="confirmJoin()">Confirm Join</button>
-
-<button onclick="closePopup()">Cancel</button>
-
+<h3>🎮 Enter Game Name</h3>
+<p>Your in-game name will be saved with this tournament entry.</p>
+<input type="text" id="gameNameInput" maxlength="40" autocomplete="off" placeholder="Enter game name">
+<div class="popup-actions">
+<button class="confirm" onclick="confirmJoin()">Confirm Join</button>
+<button class="cancel" onclick="closePopup()">Cancel</button>
 </div>
-
 </div>
-
+</div>
 
 <!-- RULES PANEL -->
-
 <div id="rulesPanel" class="rules-panel">
-
 <h2>📜 Tournament Rules</h2>
-
 <ul>
-
-<li>Use hack only in hacker slots. It is strictly prohibited in fair game slots.</li>
-
-<li>If hack found in fair custom room your money will be deducted and you will be banned.</li>
-
-<li>Do screen record for better decision.</li>
-
-<li>Your money will automatically credited after win game.</li>
-
+<li>Hacks and unfair play are strictly prohibited.</li>
+<li>Players may be disqualified for rule violations according to tournament policy.</li>
+<li>Keep relevant screen recordings when requested for match verification.</li>
+<li>Prize processing follows the tournament's published result and payout rules.</li>
+<li>Always check the official tournament information before joining.</li>
 </ul>
-
-<p>Thanks regarding Hari Team ❤️</p>
-
-<button onclick="closeRules()">Close</button>
-
+<p style="color:#94a3b8;font-size:12px;line-height:1.6;">Thanks for supporting Hari Team ❤️</p>
+<button onclick="closeRules()">Close Rules</button>
 </div>
 
+<div class="toast" id="toast"></div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
 import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
 import { getFirestore,doc,onSnapshot,getDoc,updateDoc,increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig={
-apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain:"ff-tournament-915ed.firebaseapp.com",
-projectId:"ff-tournament-915ed"
+  apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain:"ff-tournament-915ed.firebaseapp.com",
+  projectId:"ff-tournament-915ed"
 };
 
 const app=initializeApp(firebaseConfig);
@@ -481,309 +501,258 @@ const auth=getAuth(app);
 const db=getFirestore(app);
 
 let currentUser;
-const roomSlots = {
-  room1: 2,
-  room2: 2,
-  room3: 4,
-  room4: 4,
-  room5: 2,
-  room6: 2,
-  room7: 4,
-  room8: 48
+const roomSlots={
+  room1:2,room2:2,room3:2,room4:2,
+  room5:2,room6:2,room7:2,room8:49
 };
 
-/* USER */
-
+/* USER — original Firebase connection retained */
 onAuthStateChanged(auth,(user)=>{
+  currentUser=user;
 
-currentUser=user;
+  if(!user) return;
 
-if(!user) return;
+  const userRef=doc(db,"users",user.uid);
 
-const userRef=doc(db,"users",user.uid);
+  onSnapshot(userRef,(snap)=>{
+    let data=snap.data() || {};
 
-onSnapshot(userRef,(snap)=>{
+    if(data.blocked){
+      showToast("Your account is blocked ❌");
+      return;
+    }
 
-let data=snap.data();
+    let deposit=data.balance||0;
+    let win=data.winningBalance||0;
 
-if(data.blocked){
-alert("Your account is blocked ❌");
-return;
-}
-
-let deposit=data.balance||0;
-let win=data.winningBalance||0;
-
-document.getElementById("balance").innerText=deposit+win;
-
+    document.getElementById("balance").innerText=deposit+win;
+  });
 });
 
-});
-
-
-/* ROOM SLOT */
-
+/* ROOM SLOT — original room documents retained */
 ["room1","room2","room3","room4","room5","room6","room7","room8"].forEach(room=>{
+  onSnapshot(doc(db,"rooms",room),(snap)=>{
+    let data=snap.data() || {};
+    let slot=data.slots||0;
+    let over=data.over||false;
 
-onSnapshot(doc(db,"rooms",room),(snap)=>{
+    let slotText=document.getElementById("slot_"+room);
+    let btn=document.getElementById("btn_"+room);
 
-let data=snap.data();
-let slot=data?.slots||0;
-let over=data?.over||false;
+    if(over){
+      btn.disabled=true;
+      btn.innerText="MATCH OVER";
+      slotText.style.display="none";
+      return;
+    }
 
-let slotText=document.getElementById("slot_"+room);
-let btn=document.getElementById("btn_"+room);
+    slotText.style.display="block";
+    let maxSlot=roomSlots[room]||2;
+    slotText.innerText="👥 Slot "+slot+" / "+maxSlot;
 
-/* MATCH OVER */
-
-if(over){
-
-btn.disabled=true;
-btn.innerText="Match Over";
-
-slotText.style.display="none";
-
-return;
-
-}
-
-/* SLOT SHOW */
-
-slotText.style.display="block";
-let maxSlot = roomSlots[room] || 2;
-slotText.innerText="Slot "+slot+" / "+maxSlot;
-
-/* ROOM FULL */
-
-if(slot>=maxSlot){
-
-btn.disabled=true;
-btn.innerText="Room Full";
-
-}else{
-
-if(btn.innerText!=="Joined"){
-
-btn.disabled=false;
-btn.innerText="Join Now";
-
-}
-
-}
-
+    if(slot>=maxSlot){
+      btn.disabled=true;
+      btn.innerText="ROOM FULL";
+    }else{
+      if(btn.innerText!=="Joined"){
+        btn.disabled=false;
+        btn.innerText="JOIN NOW";
+      }
+    }
+  });
 });
 
-});
-
-
-/* ENTRY WIN */
-
+/* ENTRY / WIN — original settings documents retained */
 ["room1","room2","room3","room4","room5","room6","room7","room8"].forEach(room=>{
-
-onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
-
-let data=snap.data();
-
-document.getElementById("entry_"+room).innerText=data.entry;
-
-document.getElementById("win_"+room).innerText=data.win;
-
+  onSnapshot(doc(db,"settings",room+"Prize"),(snap)=>{
+    let data=snap.data() || {};
+    document.getElementById("entry_"+room).innerText=data.entry ?? 0;
+    document.getElementById("win_"+room).innerText=data.win ?? 0;
+  });
 });
 
-});
-/* MATCH TIME */
-
-[
-"match1",
-"match2",
-"match3",
-"match4",
-"match5",
-"match6",
-"match7",
-"match8"
-].forEach((match,index)=>{
-
-onSnapshot(doc(db,"settings",match),(snap)=>{
-
-let data=snap.data();
-
-if(!data) return;
-
-document.getElementById("time_room"+(index+1)).innerText=data.time;
-
+/* MATCH TIME — original settings documents retained */
+["match1","match2","match3","match4","match5","match6","match7","match8"].forEach((match,index)=>{
+  onSnapshot(doc(db,"settings",match),(snap)=>{
+    let data=snap.data();
+    if(!data) return;
+    document.getElementById("time_room"+(index+1)).innerText=data.time ?? "Waiting...";
+  });
 });
 
-});
-/* ROOM INFO */
-
+/* ROOM INFO — original room/user connection retained */
 ["room1","room2","room3","room4","room5","room6","room7","room8"].forEach(room=>{
+  onSnapshot(doc(db,"rooms",room),async(snap)=>{
+    let data=snap.data();
+    if(!data || !currentUser) return;
 
-onSnapshot(doc(db,"rooms",room),async(snap)=>{
+    const userSnap=await getDoc(doc(db,"users",currentUser.uid));
+    let userData=userSnap.data() || {};
 
-let data=snap.data();
-if(!data) return;
+    if(userData.joinedRoom===room){
+      let box=document.getElementById(room);
+      box.style.display="block";
 
-let box=document.getElementById(room);
+      let roomID=data.roomID ? data.roomID : "Waiting";
+      let roomPASS=data.roomPASS ? data.roomPASS : "Waiting";
 
-/* USER DATA CHECK */
-
-if(!currentUser) return;
-
-const userSnap = await getDoc(doc(db,"users",currentUser.uid));
-let userData = userSnap.data();
-
-/* AGAR USER NE YE ROOM JOIN KIYA HAI TABHI DIKHE */
-
-if(userData.joinedRoom === room){
-
-box.style.display="block";
-
-let roomID = data.roomID ? data.roomID : "Waiting";
-let roomPASS = data.roomPASS ? data.roomPASS : "Waiting";
-
-box.innerHTML =
-"Room ID: "+roomID+
-"<br>Password: "+roomPASS;
-
-}else{
-
-box.style.display="none";
-
-}
-
-});
+      box.innerHTML="Room ID: "+escapeHtml(roomID)+"<br>Password: "+escapeHtml(roomPASS);
+    }else{
+      document.getElementById(room).style.display="none";
+    }
+  });
 });
 
-/* JOIN MATCH */
-
+/* JOIN MATCH — same Firebase documents/fields and original flow */
 let selectedRoom;
 let selectedFee;
 
 window.joinMatch=async function(room){
+  if(!currentUser){
+    showToast("Please sign in first ❌");
+    setTimeout(()=>window.location.href="auth.html",700);
+    return;
+  }
 
-const userRef=doc(db,"users",currentUser.uid);
-const userSnap=await getDoc(userRef);
+  const userRef=doc(db,"users",currentUser.uid);
+  const userSnap=await getDoc(userRef);
+  let userData=userSnap.data() || {};
 
-let userData=userSnap.data();
+  if(userData.blocked){
+    showToast("Your account is blocked ❌");
+    return;
+  }
 
-if(userData.blocked){
-alert("Your account is blocked ❌");
-return;
-}
+  const prize=await getDoc(doc(db,"settings",room+"Prize"));
+  let prizeData=prize.data() || {};
 
-const prize=await getDoc(doc(db,"settings",room+"Prize"));
+  selectedRoom=room;
+  selectedFee=Number(prizeData.entry||0);
 
-selectedRoom=room;
-selectedFee=prize.data().entry;
-
-document.getElementById("joinPopup").style.display="flex";
-
-}
+  document.getElementById("gameNameInput").value="";
+  document.getElementById("joinPopup").style.display="flex";
+  setTimeout(()=>document.getElementById("gameNameInput").focus(),100);
+};
 
 window.confirmJoin=async function(){
+  let gameName=document.getElementById("gameNameInput").value.trim();
 
-let gameName=document.getElementById("gameNameInput").value.trim();
+  if(gameName===""){
+    showToast("Enter game name ❌");
+    return;
+  }
 
-if(gameName===""){
-alert("Enter game name ❌");
-return;
-}
+  if(!currentUser){
+    showToast("Please sign in first ❌");
+    return;
+  }
 
-const userRef=doc(db,"users",currentUser.uid);
-const roomRef=doc(db,"rooms",selectedRoom);
+  try{
+    const userRef=doc(db,"users",currentUser.uid);
+    const roomRef=doc(db,"rooms",selectedRoom);
 
-const userSnap=await getDoc(userRef);
-const roomSnap=await getDoc(roomRef);
+    const userSnap=await getDoc(userRef);
+    const roomSnap=await getDoc(roomRef);
 
-let userData=userSnap.data();
-let roomData=roomSnap.data();
+    let userData=userSnap.data() || {};
+    let roomData=roomSnap.data() || {};
 
-let deposit=userData.balance||0;
-let win=userData.winningBalance||0;
-let total=deposit+win;
+    if(userData.blocked){
+      showToast("Your account is blocked ❌");
+      return;
+    }
 
-/* CHECK ALREADY JOINED */
+    let deposit=Number(userData.balance||0);
+    let win=Number(userData.winningBalance||0);
+    let total=deposit+win;
 
-if(userData.joinedRoom){
-alert("You already joined a match ❌");
-return;
-}
+    if(userData.joinedRoom){
+      showToast("You already joined a match ❌");
+      return;
+    }
 
-/* CHECK SLOT FULL */
-let maxSlot = roomSlots[selectedRoom] || 2;
-if((roomData.slots||0)>=maxSlot){
-alert("Room Full ❌");
-return;
-}
+    let maxSlot=roomSlots[selectedRoom]||2;
 
-/* CHECK BALANCE */
+    if((roomData.slots||0)>=maxSlot){
+      showToast("Room Full ❌");
+      return;
+    }
 
-if(total<selectedFee){
-alert("Insufficient balance ❌");
-return;
-}
+    if(total<selectedFee){
+      showToast("Insufficient balance ❌");
+      return;
+    }
 
-/* DEDUCT BALANCE */
+    let newDeposit=deposit;
+    let newWin=win;
 
-let newDeposit = deposit;
-let newWin = win;
+    if(deposit>=selectedFee){
+      newDeposit=deposit-selectedFee;
+    }else{
+      let remaining=selectedFee-deposit;
+      newDeposit=0;
+      newWin=win-remaining;
+    }
 
-if(deposit >= selectedFee){
+    await updateDoc(userRef,{
+      balance:newDeposit,
+      winningBalance:newWin,
+      joinedRoom:selectedRoom,
+      gameName:gameName
+    });
 
-    newDeposit = deposit - selectedFee;
+    await updateDoc(roomRef,{
+      slots:increment(1)
+    });
 
-}else{
+    showToast("Match Joined Successfully ✅");
+    document.getElementById("btn_"+selectedRoom).disabled=true;
+    document.getElementById("btn_"+selectedRoom).innerText="JOINED";
+    document.getElementById("gameNameInput").value="";
+    closePopup();
 
-    let remaining = selectedFee - deposit;
+  }catch(error){
+    console.error(error);
+    showToast("Unable to join right now. Please try again.");
+  }
+};
 
-    newDeposit = 0;
-    newWin = win - remaining;
-
-}
-
-await updateDoc(userRef,{
-balance:newDeposit,
-winningBalance:newWin,
-joinedRoom:selectedRoom,
-gameName:gameName
-});
-
-/* ADD SLOT */
-
-await updateDoc(roomRef,{
-slots:increment(1)
-});
-
-alert("Match Joined ✅");
-
-document.getElementById("btn_"+selectedRoom).disabled = true;
-document.getElementById("btn_"+selectedRoom).innerText = "Joined";
-
-/* RESET INPUT */
-
-document.getElementById("gameNameInput").value="";
-
-closePopup();
-
-}
-
-window.closePopup = function(){
-document.getElementById("joinPopup").style.display="none";
-}
+window.closePopup=function(){
+  document.getElementById("joinPopup").style.display="none";
+};
 
 window.openRules=function(){
-document.getElementById("rulesPanel").style.right="0";
-}
+  document.getElementById("rulesPanel").style.right="0";
+};
 
 window.closeRules=function(){
-document.getElementById("rulesPanel").style.right="-100%";
-}
+  document.getElementById("rulesPanel").style.right="-100%";
+};
 
 window.openProofs=function(){
-window.open("https://t.me/haribhaicompanyproofs");
+  window.open("https://t.me/haribhaicompanyproofs","_blank","noopener,noreferrer");
+};
+
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
 }
 
+function escapeHtml(value){
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+document.getElementById("joinPopup").addEventListener("click",(e)=>{
+  if(e.target.id==="joinPopup") closePopup();
+});
 </script>
 
 </body>
