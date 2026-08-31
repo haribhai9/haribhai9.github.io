@@ -1,321 +1,547 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Hari Bhai Company - Login</title>
+<title>Login • Hari Battle Arena</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
+:root{
+  --bg:#070a12;
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
+  --green:#34d399;
+  --orange:#f59e0b;
+  --red:#ef4444;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 24px 70px rgba(0,0,0,.42);
 }
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
 body{
-margin:0;
-font-family:'Segoe UI',sans-serif;
-background:linear-gradient(-45deg,#1e3c72,#2a5298,#0f2027,#203a43);
-background-size:400% 400%;
-animation:bgmove 8s ease infinite;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 12% 4%,rgba(34,211,238,.14),transparent 30%),
+    radial-gradient(circle at 90% 90%,rgba(59,130,246,.13),transparent 32%),
+    linear-gradient(135deg,#070a12,#0b1020 55%,#070a12);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  overflow-x:hidden;
 }
-
-@keyframes bgmove{
-0%{background-position:0% 50%;}
-50%{background-position:100% 50%;}
-100%{background-position:0% 50%;}
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.14;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;
 }
-
-.container{
-width:320px;
-background:#fff;
-border-radius:14px;
-padding:20px;
-box-shadow:0 20px 50px rgba(0,0,0,0.4);
-text-align:center;
+button,input{font:inherit}
+.shell{width:min(420px,100%);position:relative}
+.card{
+  position:relative;
+  overflow:hidden;
+  padding:27px 20px 23px;
+  border:1px solid var(--border);
+  border-radius:25px;
+  background:rgba(17,24,39,.84);
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
 }
-
-.company{
-font-size:16px;
-font-weight:bold;
-color:white;
-background:#0a66c2;
-padding:6px;
-border-radius:6px;
-margin-bottom:5px;
+.card:before{
+  content:"";
+  position:absolute;
+  width:230px;height:230px;
+  top:-155px;left:50%;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:rgba(34,211,238,.13);
+  filter:blur(15px);
 }
-
-.tagline{
-font-size:11px;
-color:gray;
-margin-bottom:15px;
+.brand{position:relative;text-align:center}
+.logo-mark{
+  width:58px;height:58px;
+  display:grid;place-items:center;
+  margin:0 auto 12px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#22d3ee,#2563eb);
+  box-shadow:0 12px 35px rgba(34,211,238,.22);
+  font-size:27px;
 }
-
-h2{
-margin:10px 0;
-color:#0a66c2;
-font-size:16px;
+.brand h1{
+  margin:0;
+  font-size:24px;
+  letter-spacing:-.8px;
 }
-
-input{
-width:100%;
-padding:8px;
-margin:6px 0;
-border-radius:6px;
-border:1px solid #ccc;
-font-size:13px;
+.brand p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:11px;
 }
-
-button{
-width:100%;
-padding:8px;
-margin-top:8px;
-background:#0a66c2;
-color:white;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-font-size:13px;
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  margin:20px auto 0;
+  padding:7px 11px;
+  border-radius:999px;
+  color:#a5f3fc;
+  background:rgba(34,211,238,.07);
+  border:1px solid rgba(34,211,238,.18);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.3px;
+  text-transform:uppercase;
 }
-
-button:hover{
-background:#003366;
+.badge i{
+  width:6px;height:6px;
+  border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 12px #22c55e;
 }
-
+.form-title{
+  margin:25px 0 6px;
+  text-align:center;
+  font-size:19px;
+}
+.form-sub{
+  margin:0 0 18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+.field{margin-top:11px}
+.field label{
+  display:block;
+  margin:0 0 6px 2px;
+  color:#cbd5e1;
+  font-size:10px;
+  font-weight:700;
+}
+.field input{
+  width:100%;
+  padding:13px;
+  color:white;
+  background:#0b1020;
+  border:1px solid var(--border);
+  border-radius:13px;
+  outline:none;
+  transition:.25s;
+}
+.field input:focus{
+  border-color:rgba(34,211,238,.55);
+  box-shadow:0 0 0 3px rgba(34,211,238,.07);
+}
+.field input::placeholder{color:#64748b}
+.password-wrap{position:relative}
+.password-wrap input{padding-right:70px}
+.toggle-pass{
+  position:absolute;
+  right:8px;
+  bottom:7px;
+  padding:7px 9px;
+  border:0;
+  border-radius:9px;
+  color:#94a3b8;
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+  font-size:10px;
+  font-weight:700;
+}
+.row{
+  display:flex;
+  justify-content:flex-end;
+  margin-top:9px;
+}
+.forgot{
+  border:0;
+  padding:0;
+  color:#67e8f9;
+  background:none;
+  font-size:10px;
+  font-weight:700;
+  cursor:pointer;
+}
+.primary{
+  width:100%;
+  margin-top:16px;
+  padding:13px;
+  border:0;
+  border-radius:13px;
+  color:#041016;
+  background:linear-gradient(135deg,#22d3ee,#34d399);
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 12px 30px rgba(34,211,238,.18);
+  transition:.25s;
+}
+.primary:hover{transform:translateY(-2px)}
+.primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.divider{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:18px 0;
+  color:#64748b;
+  font-size:9px;
+}
+.divider:before,.divider:after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:var(--border);
+}
+.google{
+  width:100%;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:13px;
+  color:white;
+  background:rgba(255,255,255,.06);
+  font-weight:800;
+  cursor:pointer;
+  transition:.25s;
+}
+.google:hover{background:rgba(255,255,255,.10);transform:translateY(-1px)}
 .switch{
-margin-top:10px;
-font-size:11px;
+  margin-top:18px;
+  text-align:center;
+  color:var(--muted);
+  font-size:11px;
 }
-
-.switch span{
-color:#0a66c2;
-cursor:pointer;
-font-weight:bold;
+.switch a{color:#67e8f9;font-weight:800}
+.note{
+  margin-top:17px;
+  padding:11px;
+  border-radius:12px;
+  color:#94a3b8;
+  background:rgba(255,255,255,.035);
+  border:1px solid var(--border);
+  text-align:center;
+  font-size:9px;
+  line-height:1.5;
 }
-
-/* Popup */
-
+.back{
+  display:block;
+  margin:15px auto 0;
+  text-align:center;
+  color:#64748b;
+  font-size:10px;
+}
 .popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.6);
-display:none;
-align-items:center;
-justify-content:center;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(8px);
 }
-
 .popup-box{
-background:white;
-padding:20px;
-border-radius:12px;
-text-align:center;
-width:260px;
+  width:min(350px,100%);
+  padding:24px;
+  border-radius:20px;
+  text-align:center;
+  background:#111827;
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  animation:pop .22s ease;
 }
-
+.popup-icon{font-size:34px;margin-bottom:7px}
+.popup-box p{
+  margin:8px 0 16px;
+  color:#cbd5e1;
+  font-size:12px;
+  line-height:1.6;
+  white-space:pre-line;
+}
 .popup-box button{
-background:#0a66c2;
-color:white;
-border:none;
-padding:7px 20px;
-border-radius:6px;
-cursor:pointer;
+  padding:10px 24px;
+  border:0;
+  border-radius:999px;
+  background:white;
+  color:#0f172a;
+  font-weight:800;
+  cursor:pointer;
 }
-
+.loading{
+  display:inline-block;
+  width:15px;height:15px;
+  margin-right:7px;
+  vertical-align:-3px;
+  border:2px solid rgba(4,16,22,.25);
+  border-top-color:#041016;
+  border-radius:50%;
+  animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{
+  from{opacity:0;transform:scale(.95) translateY(8px)}
+  to{opacity:1;transform:none}
+}
+@media(max-width:380px){
+  body{padding:10px}
+  .card{padding:22px 15px}
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<main class="shell">
+<section class="card">
 
-<div class="company">Hari Bhai Company</div>
-<div class="tagline">Trusted & Professional Digital Services</div>
+  <div class="brand">
+    <div class="logo-mark">🎮</div>
+    <h1>Hari Bhai Company</h1>
+    <p>Secure access to Hari Battle Arena</p>
+    <div class="badge"><i></i> Secure Player Login</div>
+  </div>
 
-<h2>Login</h2>
+  <h2 class="form-title">Welcome Back</h2>
+  <p class="form-sub">Sign in to continue to your tournament account.</p>
 
-<input type="email" id="email" placeholder="Enter Email">
-<input type="password" id="pass" placeholder="Enter Password">
+  <form id="loginForm" onsubmit="login(event)">
 
-<button onclick="login()">Login</button>
+    <div class="field">
+      <label for="email">EMAIL ADDRESS</label>
+      <input type="email" id="email" autocomplete="email" placeholder="Enter your email" required>
+    </div>
 
-<button onclick="googleLogin()" style="background:#db4437;margin-top:8px;">
-Login with Google
-</button>
+    <div class="field">
+      <label for="pass">PASSWORD</label>
+      <div class="password-wrap">
+        <input type="password" id="pass" autocomplete="current-password" placeholder="Enter your password" required>
+        <button type="button" class="toggle-pass" onclick="togglePassword()">SHOW</button>
+      </div>
+    </div>
 
-<button onclick="resetPassword()" style="background:#ff9800;margin-top:8px;">
-Forgot Password
-</button>
+    <div class="row">
+      <button type="button" class="forgot" onclick="resetPassword()">Forgot password?</button>
+    </div>
 
-<div class="switch">
-Don't have account? <span onclick="window.location.href='join.html'">Register</span>
-</div>
+    <button class="primary" id="loginBtn" type="submit">LOGIN</button>
+  </form>
 
-</div>
+  <div class="divider">OR</div>
+
+  <button class="google" id="googleBtn" onclick="googleLogin()">
+    🔵 Continue with Google
+  </button>
+
+  <div class="switch">
+    Don't have an account?
+    <a href="join.html">Create Account</a>
+  </div>
+
+  <div class="note">
+    🔐 Your login is handled by Firebase Authentication.
+  </div>
+
+  <a class="back" href="index.html">← Back to Hari Battle Arena</a>
+
+</section>
+</main>
 
 <div id="popup" class="popup">
-<div class="popup-box">
-<p id="popupText">Message</p>
-<button onclick="closePopup()">OK</button>
-</div>
+  <div class="popup-box">
+    <div class="popup-icon" id="popupIcon">ℹ️</div>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
 import {
-getAuth,
-signInWithEmailAndPassword,
-GoogleAuthProvider,
-signInWithPopup,
-sendPasswordResetEmail
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  sendPasswordResetEmail
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 import {
-getFirestore,
-doc,
-getDoc,
-setDoc
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+  apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain:"ff-tournament-915ed.firebaseapp.com",
+  projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const provider = new GoogleAuthProvider();
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const provider=new GoogleAuthProvider();
 
-function showPopup(msg){
-document.getElementById("popupText").innerHTML = msg;
-document.getElementById("popup").style.display = "flex";
+function showPopup(message,type="info"){
+  document.getElementById("popupIcon").textContent =
+    type==="success" ? "✅" : type==="error" ? "❌" : "ℹ️";
+
+  document.getElementById("popupText").textContent=message;
+  document.getElementById("popup").style.display="flex";
 }
 
-window.closePopup = function(){
-document.getElementById("popup").style.display = "none";
+window.closePopup=function(){
+  document.getElementById("popup").style.display="none";
+};
+
+function setLoading(button,loading,text){
+  button.disabled=loading;
+  button.innerHTML=loading ? '<span class="loading"></span>Please wait…' : text;
 }
 
-window.login = async function(){
+window.login=async function(event){
+  event.preventDefault();
 
-const email = document.getElementById('email').value.trim().toLowerCase();
-const pass = document.getElementById('pass').value.trim();
+  const email=document.getElementById("email").value.trim().toLowerCase();
+  const pass=document.getElementById("pass").value;
 
-if(!email || !pass){
-showPopup("⚠️ Please enter email and password");
-return;
+  if(!email || !pass){
+    showPopup("Please enter your email and password.","error");
+    return;
+  }
+
+  const btn=document.getElementById("loginBtn");
+  setLoading(btn,true,"LOGIN");
+
+  try{
+    const result=await signInWithEmailAndPassword(auth,email,pass);
+    const user=result.user;
+
+    if(!user.emailVerified){
+      showPopup("Your email is not verified.\nPlease check your Inbox or Spam folder.","info");
+      return;
+    }
+
+    showPopup("Login successful. Opening Hari Battle Arena…","success");
+
+    setTimeout(()=>{
+      window.location.href="index.html";
+    },1200);
+
+  }catch(err){
+    console.error(err);
+    showPopup(getFriendlyError(err.code),"error");
+  }finally{
+    setLoading(btn,false,"LOGIN");
+  }
+};
+
+window.googleLogin=async function(){
+  const btn=document.getElementById("googleBtn");
+  setLoading(btn,true,"Continue with Google");
+
+  try{
+    const result=await signInWithPopup(auth,provider);
+    const user=result.user;
+    const userRef=doc(db,"users",user.uid);
+    const docSnap=await getDoc(userRef);
+
+    if(!docSnap.exists()){
+      await setDoc(userRef,{
+        username:"HB"+Math.floor(100000+Math.random()*900000),
+        email:user.email,
+        balance:0,
+        winningBalance:0,
+        joinedRoom:"",
+        gameName:"",
+        blocked:false,
+        createdAt:new Date()
+      });
+    }
+
+    showPopup("Login successful. Opening Hari Battle Arena…","success");
+
+    setTimeout(()=>{
+      window.location.href="index.html";
+    },1200);
+
+  }catch(err){
+    console.error(err);
+    showPopup(getFriendlyError(err.code),"error");
+  }finally{
+    setLoading(btn,false,"Continue with Google");
+  }
+};
+
+window.resetPassword=async function(){
+  const email=document.getElementById("email").value.trim().toLowerCase();
+
+  if(!email){
+    showPopup("Enter your email address first.","info");
+    return;
+  }
+
+  try{
+    await sendPasswordResetEmail(auth,email);
+    showPopup("Password reset link sent.\nPlease check your Inbox or Spam folder.","success");
+  }catch(err){
+    console.error(err);
+    showPopup(getFriendlyError(err.code),"error");
+  }
+};
+
+function getFriendlyError(code){
+  const errors={
+    "auth/invalid-email":"Please enter a valid email address.",
+    "auth/user-not-found":"No account was found with this email.",
+    "auth/wrong-password":"Incorrect email or password.",
+    "auth/invalid-credential":"Incorrect email or password.",
+    "auth/too-many-requests":"Too many attempts. Please try again later.",
+    "auth/user-disabled":"This account has been disabled.",
+    "auth/popup-closed-by-user":"Google login was cancelled.",
+    "auth/popup-blocked":"Your browser blocked the Google login popup.",
+    "auth/network-request-failed":"Network error. Please check your internet connection."
+  };
+
+  return errors[code] || "Something went wrong. Please try again.";
 }
-
-try{
-
-const result = await signInWithEmailAndPassword(auth,email,pass);
-const user = result.user;
-
-if(!user.emailVerified){
-
-showPopup("📧 Your email is not verified.<br>Please check your email inbox or spam folder.");
-
-}else{
-
-showPopup("✅ Login Successful");
-
-setTimeout(()=>{
-window.location.href="index.html";
-},1500);
-
-}
-
-}catch(err){
-
-console.error(err);
-showPopup(err.code + "<br><br>" + err.message);
-
-}
-
-}
-
-window.googleLogin = async function(){
-
-try{
-
-const result = await signInWithPopup(auth, provider);
-const user = result.user;
-
-const userRef = doc(db,"users",user.uid);
-const docSnap = await getDoc(userRef);
-
-if(!docSnap.exists()){
-
-await setDoc(userRef,{
-username:"HB"+Math.floor(100000+Math.random()*900000),
-email:user.email,
-balance:0,
-blocked:false,
-createdAt:new Date()
-});
-
-}
-
-showPopup("✅ Login Successful");
-
-setTimeout(()=>{
-window.location.href="index.html";
-},1500);
-
-}catch(err){
-
-console.error(err);
-showPopup(err.code + "<br><br>" + err.message);
-
-}
-
-}
-
-window.resetPassword = async function(){
-
-const email = document.getElementById('email').value.trim();
-
-if(!email){
-showPopup("⚠️ Enter your email first");
-return;
-}
-
-try{
-
-await sendPasswordResetEmail(auth,email);
-
-showPopup("📧 Reset link sent!<br>Check your Inbox or Spam Mail folder.");
-
-}catch(err){
-
-showPopup("❌ Unable to send reset link");
-
-}
-
-}
-
 </script>
+
 <script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
+function togglePassword(){
+  const input=document.getElementById("pass");
+  const btn=document.querySelector(".toggle-pass");
+
+  if(input.type==="password"){
+    input.type="text";
+    btn.textContent="HIDE";
+  }else{
+    input.type="password";
+    btn.textContent="SHOW";
+  }
 }
+
+document.getElementById("popup").addEventListener("click",function(e){
+  if(e.target.id==="popup") closePopup();
 });
 </script>
+
 </body>
 </html>
