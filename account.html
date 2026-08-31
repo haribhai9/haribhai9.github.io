@@ -1,413 +1,240 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>My Account</title>
+<title>My Account • Hari Battle Arena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
-}
-body{
-margin:0;
-font-family:'Segoe UI',Arial;
-background:#0f172a;
-color:white;
-}
+:root{--bg:#070a12;--panel:rgba(17,24,39,.82);--text:#f8fafc;--muted:#94a3b8;--cyan:#22d3ee;--blue:#3b82f6;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.09);--shadow:0 20px 60px rgba(0,0,0,.34)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 8% 0%,rgba(34,211,238,.12),transparent 28%),radial-gradient(circle at 95% 18%,rgba(59,130,246,.10),transparent 26%),linear-gradient(135deg,#070a12,#0b1020 52%,#070a12);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:38px 38px;mask-image:linear-gradient(to bottom,#000,transparent 80%)}
+button{font:inherit}a{text-decoration:none;color:inherit}
 
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:#1e293b;
-font-weight:bold;
-}
+.header{position:sticky;top:0;z-index:5000;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 15px;background:rgba(7,10,18,.82);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#22d3ee,#2563eb);box-shadow:0 8px 25px rgba(34,211,238,.18);font-size:21px}
+.brand-text strong{display:block;font-size:13px}.brand-text span{display:block;margin-top:2px;color:var(--muted);font-size:9px;letter-spacing:1px}
+.header-actions{display:flex;align-items:center;gap:7px}
+.app-btn{display:inline-flex;align-items:center;gap:5px;padding:9px 12px;border:1px solid rgba(255,255,255,.13);border-radius:999px;background:#fff;color:#0f172a;font-size:11px;font-weight:800;cursor:pointer;transition:.25s}
+.app-btn:hover{transform:translateY(-2px)}
+.menu-btn{width:43px;height:43px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.06);color:#fff;font-size:22px;cursor:pointer}.menu-btn:hover{background:rgba(34,211,238,.12)}
 
-.menu-btn{
-font-size:20px;
-cursor:pointer;
-}
+.sidebar{position:fixed;top:0;right:-340px;z-index:7000;width:min(320px,88vw);height:100%;padding:78px 18px 25px;background:rgba(10,15,27,.97);backdrop-filter:blur(20px);border-left:1px solid var(--border);box-shadow:-20px 0 60px rgba(0,0,0,.42);transition:.4s ease}
+.close-btn{position:absolute;top:18px;right:18px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--border);border-radius:11px;background:rgba(255,255,255,.06);color:#fff;cursor:pointer}
+.side-title{margin:0 0 16px;font-size:20px}
+.sidebar .info{padding:15px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.045);color:#cbd5e1;font-size:12px;line-height:1.7}
+.sidebar .info b{color:white}
+.sidebar button.logout{width:100%;margin-top:14px;padding:12px;border:1px solid rgba(239,68,68,.18);border-radius:13px;color:#fecaca;background:rgba(239,68,68,.13);font-weight:800;cursor:pointer}
 
-.sidebar{
-position:fixed;
-right:-220px;
-top:0;
-width:220px;
-height:100%;
-background:#1e293b;
-transition:0.3s;
-padding-top:50px;
-box-shadow:-2px 0 10px rgba(0,0,0,0.5);
-}
+.container{width:min(900px,100%);margin:auto;padding:35px 15px 90px}
+.profile-card{position:relative;overflow:hidden;padding:28px 18px 24px;text-align:center;border:1px solid var(--border);border-radius:25px;background:radial-gradient(circle at 50% 0%,rgba(34,211,238,.13),transparent 34%),rgba(17,24,39,.72);box-shadow:var(--shadow)}
+.profile-card:before{content:"";position:absolute;width:190px;height:190px;top:-125px;left:50%;transform:translateX(-50%);border-radius:50%;background:rgba(34,211,238,.12);filter:blur(18px)}
+.profile{position:relative}
+.profile-badge{display:inline-flex;padding:6px 10px;margin-bottom:13px;border-radius:999px;color:#a5f3fc;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.18);font-size:9px;font-weight:800;letter-spacing:1.3px;text-transform:uppercase}
+.profile img{width:104px;height:104px;border-radius:50%;border:3px solid rgba(34,211,238,.75);padding:3px;object-fit:cover;background:#0b1020;cursor:pointer;box-shadow:0 0 0 7px rgba(34,211,238,.05),0 15px 35px rgba(0,0,0,.3);transition:.25s}
+.profile img:hover{transform:scale(1.03)}
+.profile h3{margin:14px 0 4px;font-size:21px}.profile-sub{color:var(--muted);font-size:11px}
+.wallets{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:22px}
+.wallet{padding:14px 8px;border-radius:15px;border:1px solid var(--border);background:rgba(255,255,255,.045)}
+.wallet small{display:block;margin-bottom:5px;color:var(--muted);font-size:9px}.wallet strong{font-size:17px}
+.wallet.win{border-color:rgba(34,197,94,.18)}.wallet.win strong{color:#86efac}
+.wallet.dep{border-color:rgba(59,130,246,.18)}.wallet.dep strong{color:#93c5fd}
+.wallet.total{border-color:rgba(245,158,11,.18)}.wallet.total strong{color:#fcd34d}
 
-.close-btn{
-position:absolute;
-top:10px;
-right:15px;
-font-size:18px;
-cursor:pointer;
-}
+.section-title{margin:28px 2px 12px;font-size:16px}
+.action-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+.action-card{display:flex;align-items:center;gap:12px;padding:15px;border:1px solid var(--border);border-radius:17px;background:rgba(255,255,255,.045);transition:.25s}
+.action-card:hover{transform:translateY(-2px);border-color:rgba(34,211,238,.22);background:rgba(255,255,255,.06)}
+.action-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;font-size:19px;background:rgba(34,211,238,.10)}
+.action-card strong{display:block;font-size:12px}.action-card span{display:block;color:var(--muted);font-size:9px;margin-top:4px}.arrow{margin-left:auto;color:#64748b;font-size:18px}
 
-.sidebar .info{
-padding:12px;
-font-size:13px;
-border-bottom:1px solid #334155;
-}
+.support{margin-top:22px;padding:19px;border:1px solid rgba(34,211,238,.14);border-radius:20px;background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(59,130,246,.05)),rgba(255,255,255,.035)}
+.support h3{margin:0 0 5px;font-size:15px}.support p{margin:0 0 14px;color:var(--muted);font-size:11px;line-height:1.5}
+.support a{display:inline-flex;padding:10px 14px;border-radius:11px;color:#041016;background:linear-gradient(135deg,#22d3ee,#34d399);font-size:11px;font-weight:800}
+.footer{margin-top:25px;text-align:center;color:#64748b;font-size:9px}
 
-.sidebar button{
-display:block;
-margin:15px;
-padding:6px 10px;
-border:none;
-border-radius:5px;
-font-size:12px;
-cursor:pointer;
-background:#ef4444;
-color:white;
-}
-.app-btn{
-background:white;
-color:#0f172a;
-border:none;
-padding:7px 14px;
-border-radius:25px;
-font-size:13px;
-font-weight:700;
-display:flex;
-align-items:center;
-gap:5px;
-cursor:pointer;
-box-shadow:0 2px 8px rgba(0,0,0,.25);
-transition:.3s;
-}
+.toast{position:fixed;left:50%;bottom:22px;z-index:10000;width:min(360px,90%);padding:13px 15px;text-align:center;border:1px solid var(--border);border-radius:14px;color:#fff;background:#111827;box-shadow:var(--shadow);transform:translate(-50%,20px);opacity:0;pointer-events:none;transition:.3s;font-size:11px;font-weight:700}
+.toast.show{opacity:1;transform:translate(-50%,0)}
 
-.app-btn:hover{
-transform:scale(1.05);
-}
-.profile{
-text-align:center;
-margin-top:30px;
-}
-
-.profile img{
-width:110px;
-height:110px;
-border-radius:50%;
-border:3px solid #3b82f6;
-object-fit:cover;
-cursor:pointer;
-}
-
-.profile h3{
-margin:10px 0 5px;
-font-size:18px;
-}
-
-.wallets{
-display:flex;
-justify-content:center;
-gap:10px;
-margin-top:10px;
-}
-
-.wallet{
-padding:6px 10px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-}
-
-.win{background:#22c55e;}
-.dep{background:#3b82f6;}
-.total{background:#f59e0b;}
-
-.card{
-background:#1e293b;
-margin:25px 20px;
-padding:15px;
-border-radius:10px;
-}
-
-.card button{
-width:100%;
-padding:8px;
-margin-top:8px;
-background:#3b82f6;
-border:none;
-border-radius:6px;
-color:white;
-font-size:13px;
-cursor:pointer;
-}
+@media(max-width:560px){.brand-text{display:none}.header{padding:10px 12px}.app-btn{padding:8px 10px}.container{padding:24px 12px 80px}.wallets{gap:7px}.wallet{padding:12px 5px}.wallet strong{font-size:15px}.action-grid{grid-template-columns:1fr}}
 </style>
 </head>
 
 <body>
+<header class="header">
+  <a class="brand" href="index.html" aria-label="Hari Battle Arena home">
+    <div class="brand-icon">🎮</div>
+    <div class="brand-text"><strong>Hari Battle Arena</strong><span>PLAYER ACCOUNT</span></div>
+  </a>
+  <div class="header-actions">
+    <button class="app-btn" onclick="window.location.href='https://files.appsgeyser.com/Hari%20Tournament_19871724.apk'">📥 App</button>
+    <button class="menu-btn" onclick="openMenu()" aria-label="Open account menu">⋮</button>
+  </div>
+</header>
 
-<div class="header">
+<aside class="sidebar" id="sidebar">
+  <button class="close-btn" onclick="closeMenu()" aria-label="Close menu">✕</button>
+  <h2 class="side-title">Account Menu</h2>
+  <div class="info"><b>Username</b><br><span id="sideUsername">Loading...</span></div>
+  <button class="logout" onclick="logout()">🚪 Logout</button>
+</aside>
 
-<div>My Account</div>
+<main class="container">
+<section class="profile-card">
+  <div class="profile">
+    <div class="profile-badge">● Account Center</div>
+    <img src="https://i.imgur.com/6VBx3io.png" id="profilePic" onclick="openGallery()" alt="Profile picture">
+    <input type="file" id="fileInput" accept="image/*" style="display:none">
+    <h3 id="username">Loading...</h3>
+    <div class="profile-sub">Tap your profile picture to change it</div>
+    <div class="wallets">
+      <div class="wallet win"><small>WINNING</small><strong>₹<span id="winning">0</span></strong></div>
+      <div class="wallet dep"><small>DEPOSIT</small><strong>₹<span id="deposit">0</span></strong></div>
+      <div class="wallet total"><small>TOTAL</small><strong>₹<span id="balance">0</span></strong></div>
+    </div>
+  </div>
+</section>
 
-<div style="display:flex;align-items:center;gap:10px;">
+<h2 class="section-title">💳 Wallet & History</h2>
+<section class="action-grid">
+  <a class="action-card" href="deposit.html"><div class="action-icon">➕</div><div><strong>Deposit</strong><span>Add funds to your account</span></div><div class="arrow">›</div></a>
+  <a class="action-card" href="withdrawal.html"><div class="action-icon">💸</div><div><strong>Withdrawal</strong><span>Request a withdrawal</span></div><div class="arrow">›</div></a>
+  <a class="action-card" href="deposithistory.html"><div class="action-icon">📥</div><div><strong>Deposit History</strong><span>View your deposit records</span></div><div class="arrow">›</div></a>
+  <a class="action-card" href="withdrawalhistory.html"><div class="action-icon">📤</div><div><strong>Withdrawal History</strong><span>View withdrawal records</span></div><div class="arrow">›</div></a>
+</section>
 
-<button class="app-btn"
-onclick="window.location.href='https://files.appsgeyser.com/Hari%20Tournament_19871724.apk'">
-📥 App
-</button>
+<section class="support">
+  <h3>💬 Need Help?</h3>
+  <p>For account or tournament support, contact the configured customer-support channel.</p>
+  <a href="https://t.me/Esportcustomersup" target="_blank" rel="noopener noreferrer">Contact Support</a>
+</section>
+<div class="footer">Hari Battle Arena · Account Center</div>
+</main>
 
-<div class="menu-btn" onclick="openMenu()">⋮</div>
-
-</div>
-
-</div>
-
-<div class="sidebar" id="sidebar">
-<div class="close-btn" onclick="closeMenu()">✖</div>
-<div class="info"><b>Username:</b> <span id="sideUsername">Loading...</span></div>
-<button onclick="logout()">Logout</button>
-</div>
-
-<div class="profile">
-<img src="https://i.imgur.com/6VBx3io.png" id="profilePic" onclick="openGallery()">
-
-<input type="file" id="fileInput" accept="image/*" style="display:none">
-<h3 id="username">Loading...</h3>
-<div class="wallets">
-
-<div class="wallet win">
-Winning ₹<span id="winning">0</span>
-</div>
-
-<div class="wallet dep">
-Deposit ₹<span id="deposit">0</span>
-</div>
-
-<div class="wallet total">
-Total ₹<span id="balance">0</span>
-</div>
-
-</div>
-
-<div class="card">
-<h3 style="margin-top:0;">Deposit Coins</h3>
-
-<button onclick="location.href='deposit.html'">
-Go To Deposit
-</button>
-
-<button onclick="location.href='withdrawal.html'" 
-style="background:#22c55e; margin-top:10px;">
-Go To Withdrawal
-</button>
-<button onclick="location.href='deposithistory.html'" 
-style="background:#f59e0b; margin-top:10px;">
-Deposit History
-</button>
-
-<button onclick="location.href='withdrawalhistory.html'" 
-style="background:#ef4444; margin-top:10px;">
-Withdrawal History
-</button>
-
-<button onclick="window.open('https://t.me/Esportcustomersup','_blank')" 
-style="background:#dc2626; margin-top:10px;">
-Customer Support
-</button>
-</div>
+<div class="toast" id="toast"></div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-import { 
-getFirestore, 
-doc, 
-onSnapshot,
-collection,
-query,
-where
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+  apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain:"ff-tournament-915ed.firebaseapp.com",
+  projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-let currentUserId = null;
-onAuthStateChanged(auth, (user) => {
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+let currentUserId=null;
+let unsubscribeUser=null;
 
-if(user){
-currentUserId = user.uid;
-const docRef = doc(db,"users",user.uid);
+onAuthStateChanged(auth,(user)=>{
+  if(!user){
+    window.location.href="auth.html";
+    return;
+  }
 
-// REAL TIME LISTENER 🔥
-onSnapshot(docRef, (docSnap)=>{
+  currentUserId=user.uid;
+  if(unsubscribeUser) unsubscribeUser();
 
-if(docSnap.exists()){
+  const docRef=doc(db,"users",user.uid);
+  unsubscribeUser=onSnapshot(docRef,(docSnap)=>{
+    if(!docSnap.exists()){
+      showToast("Account data not found.");
+      return;
+    }
 
-const data = docSnap.data();
+    const data=docSnap.data();
+    const username=data.username || "Player";
+    const depositBal=Number(data.balance || 0);
+    const winningBal=Number(data.winningBalance || 0);
 
-document.getElementById("username").innerText = data.username;
-document.getElementById("sideUsername").innerText = data.username;
-let depositBal = data.balance || 0;
-let winningBal = data.winningBalance || 0;
+    document.getElementById("username").textContent=username;
+    document.getElementById("sideUsername").textContent=username;
+    document.getElementById("deposit").textContent=depositBal;
+    document.getElementById("winning").textContent=winningBal;
+    document.getElementById("balance").textContent=depositBal+winningBal;
 
-let total = depositBal + winningBal;
-
-document.getElementById("deposit").innerText = depositBal;
-document.getElementById("winning").innerText = winningBal;
-document.getElementById("balance").innerText = total;
-
-}
-
+    if(data.blocked) showToast("Your account is blocked ❌");
+  });
 });
 
-}else{
-window.location.href="auth.html";
-}
+window.logout=async function(){
+  try{
+    await signOut(auth);
+    window.location.href="auth.html";
+  }catch(error){
+    showToast("Logout failed. Please try again.");
+  }
+};
 
-});
-
-window.logout = function(){
-signOut(auth).then(()=>{
-window.location.href="auth.html";
-});
-}
-window.showDepositHistory = function(){
-
-document.getElementById("historyCard").style.display="block";
-document.getElementById("historyTitle").innerText="Deposit History";
-
-const q = query(
-collection(db,"deposits"),
-where("uid","==",currentUserId)
-);
-
-onSnapshot(q,(snapshot)=>{
-
-let html="";
-
-snapshot.forEach((docSnap)=>{
-const d=docSnap.data();
-
-html+=`
-<div style="background:#111827;padding:8px;margin-bottom:8px;border-radius:6px;">
-Amount: ₹${d.amount}<br>
-UTR: ${d.utr}<br>
-Status: ${d.status ? d.status : "Pending"}
-</div>
-`;
-});
-
-document.getElementById("historyData").innerHTML=html || "No Deposit History";
-
-});
-
-}
-window.showWithdrawHistory = function(){
-
-document.getElementById("historyCard").style.display="block";
-document.getElementById("historyTitle").innerText="Withdrawal History";
-
-const q = query(
-collection(db,"withdrawals"),
-where("uid","==",currentUserId)
-);
-
-onSnapshot(q,(snapshot)=>{
-
-let html="";
-
-snapshot.forEach((docSnap)=>{
-const w=docSnap.data();
-
-html+=`
-<div style="background:#111827;padding:8px;margin-bottom:8px;border-radius:6px;">
-Amount: ₹${w.amount}<br>
-Method: ${w.method}<br>
-Status: ${w.status}
-</div>
-`;
-});
-
-document.getElementById("historyData").innerHTML=html || "No Withdrawal History";
-
-});
-
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
 }
 </script>
 
 <script>
-function openMenu(){
-document.getElementById("sidebar").style.right="0px";
-}
+function openMenu(){document.getElementById("sidebar").style.right="0";}
+function closeMenu(){document.getElementById("sidebar").style.right="-340px";}
+function openGallery(){document.getElementById("fileInput").click();}
 
-function closeMenu(){
-document.getElementById("sidebar").style.right="-220px";
-}
+document.addEventListener("DOMContentLoaded",function(){
+  const fileInput=document.getElementById("fileInput");
+  const profilePic=document.getElementById("profilePic");
 
-function openGallery(){
-document.getElementById("fileInput").click();
-}
+  fileInput.addEventListener("change",function(){
+    const file=this.files[0];
+    if(!file)return;
 
-document.addEventListener("DOMContentLoaded", function(){
+    if(!file.type.startsWith("image/")){
+      showLocalToast("Please choose an image file.");
+      return;
+    }
 
-document.getElementById("fileInput").addEventListener("change",function(){
+    if(file.size>2000000){
+      showLocalToast("Image size must be under 2MB.");
+      return;
+    }
 
-const file = this.files[0];
+    const reader=new FileReader();
+    reader.onload=function(e){
+      profilePic.src=e.target.result;
+      localStorage.setItem("profileImage",e.target.result);
+      showLocalToast("Profile picture updated on this device ✅");
+    };
+    reader.readAsDataURL(file);
+  });
 
-if(!file) return;
-
-if(file.size > 2000000){
-alert("Image size must be under 2MB");
-return;
-}
-
-const reader = new FileReader();
-
-reader.onload = function(e){
-
-document.getElementById("profilePic").src = e.target.result;
-
-// save image
-localStorage.setItem("profileImage",e.target.result);
-
-}
-
-reader.readAsDataURL(file);
-
+  const savedImage=localStorage.getItem("profileImage");
+  if(savedImage)profilePic.src=savedImage;
 });
 
-// reload image after refresh
-const savedImage = localStorage.getItem("profileImage");
-
-if(savedImage){
-document.getElementById("profilePic").src = savedImage;
+function showLocalToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  clearTimeout(window.__localToastTimer);
+  window.__localToastTimer=setTimeout(()=>toast.classList.remove("show"),2600);
 }
 
-});
-
-</script>
-<script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
-}
+document.addEventListener("click",function(e){
+  const sidebar=document.getElementById("sidebar");
+  const menuBtn=document.querySelector(".menu-btn");
+  if(sidebar.style.right==="0px" && !sidebar.contains(e.target) && !menuBtn.contains(e.target)) closeMenu();
 });
 </script>
 </body>
