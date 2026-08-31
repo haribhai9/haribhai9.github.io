@@ -383,7 +383,13 @@ input:focus{border-color:rgba(34,211,238,.5);box-shadow:0 0 0 3px rgba(34,211,23
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
+
+ import {
+ getAuth,
+ onAuthStateChanged,
+ signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+ import {
  getFirestore,collection,doc,onSnapshot,updateDoc,setDoc,getDoc,getDocs,increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -394,6 +400,33 @@ const firebaseConfig={
 };
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
+const auth=getAuth(app);
+
+async function checkAdmin(user){
+  if(!user) return false;
+
+  try{
+    const snap=await getDoc(doc(db,"users",user.uid));
+    return snap.exists() && snap.data()?.admin === true;
+  }catch(error){
+    console.error(error);
+    return false;
+  }
+}
+
+onAuthStateChanged(auth,async(user)=>{
+  if(!user){
+    location.replace("index.html");
+    return;
+  }
+
+  const allowed=await checkAdmin(user);
+
+  if(!allowed){
+    await signOut(auth);
+    location.replace("index.html");
+  }
+}); 
 
 window.saveRoom=async function(id){
  const roomID=document.getElementById("roomID_"+id).value;
