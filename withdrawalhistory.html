@@ -1,212 +1,244 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Withdrawal History</title>
+<title>Withdrawal History • Hari Battle Arena</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
+:root{
+ --bg:#070a12;--panel:rgba(17,24,39,.84);--text:#f8fafc;--muted:#94a3b8;
+ --cyan:#22d3ee;--blue:#3b82f6;--green:#22c55e;--yellow:#f59e0b;--red:#ef4444;
+ --border:rgba(255,255,255,.09);--shadow:0 24px 70px rgba(0,0,0,.42)
 }
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
 body{
-margin:0;
-font-family:'Segoe UI',Arial;
-background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-color:white;
-overflow-x:hidden;
+ font-family:Inter,Arial,sans-serif;color:var(--text);
+ background:radial-gradient(circle at 10% 0%,rgba(34,211,238,.14),transparent 30%),
+ radial-gradient(circle at 90% 90%,rgba(59,130,246,.12),transparent 30%),
+ linear-gradient(135deg,#070a12,#0b1020 55%,#070a12);overflow-x:hidden
 }
-
-.container{
-max-width:500px;
-margin:30px auto;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(10px);
-padding:20px;
-border-radius:15px;
-box-shadow:0 0 20px rgba(0,0,0,0.4);
-animation:fadeIn 0.6s ease-in-out;
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;
+ background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+ background-size:38px 38px
 }
-
-h2{
-text-align:center;
-margin-bottom:20px;
+.header{
+ position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;
+ padding:12px 15px;background:rgba(7,10,18,.84);backdrop-filter:blur(18px);
+ border-bottom:1px solid var(--border)
 }
-
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.brand-icon{
+ width:42px;height:42px;display:grid;place-items:center;border-radius:13px;
+ background:linear-gradient(135deg,#22d3ee,#2563eb);box-shadow:0 8px 25px rgba(34,211,238,.18);font-size:20px
+}
+.brand strong{font-size:13px}.brand span{display:block;color:var(--muted);font-size:9px;margin-top:2px;letter-spacing:1px}
+.back{
+ padding:9px 12px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.05);
+ color:#cbd5e1;font-size:10px;font-weight:800;text-decoration:none
+}
+.container{width:min(520px,100%);margin:auto;padding:28px 15px 70px}
 .card{
-background:rgba(17,24,39,0.9);
-padding:12px;
-margin-bottom:12px;
-border-radius:10px;
-transition:0.3s;
-animation:slideUp 0.5s ease forwards;
+ position:relative;overflow:hidden;padding:23px 17px;border:1px solid var(--border);border-radius:25px;
+ background:var(--panel);backdrop-filter:blur(20px);box-shadow:var(--shadow)
 }
-
-.card:hover{
-transform:scale(1.03);
-box-shadow:0 0 15px rgba(255,255,255,0.2);
+.card:before{
+ content:"";position:absolute;width:220px;height:220px;top:-155px;left:50%;transform:translateX(-50%);
+ border-radius:50%;background:rgba(34,211,238,.12);filter:blur(15px)
 }
-
-.pending{
-color:orange;
-font-weight:bold;
-animation:pulseOrange 1.5s infinite;
+.hero{position:relative;text-align:center}
+.icon{
+ width:60px;height:60px;display:grid;place-items:center;margin:0 auto 12px;border-radius:19px;
+ background:linear-gradient(135deg,#22c55e,#0ea5e9);box-shadow:0 12px 35px rgba(34,197,94,.18);font-size:28px
 }
-
-.approved{
-color:#00ff88;
-font-weight:bold;
-animation:pulseGreen 1.2s infinite;
+.hero h1{margin:0;font-size:23px;letter-spacing:-.7px}
+.hero p{margin:6px 0 0;color:var(--muted);font-size:11px}
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:20px}
+.summary-box{
+ padding:13px;border:1px solid var(--border);border-radius:15px;background:rgba(255,255,255,.04)
 }
-
-.rejected{
-color:#ff3b3b;
-font-weight:bold;
-animation:shake 0.5s ease;
+.summary-box small{display:block;color:var(--muted);font-size:8px;font-weight:700;letter-spacing:.7px}
+.summary-box strong{display:block;margin-top:5px;font-size:18px}
+.section-title{margin:23px 0 11px;font-size:14px}
+.history-list{display:grid;gap:10px}
+.withdrawal{
+ padding:15px;border:1px solid var(--border);border-radius:16px;background:rgba(255,255,255,.045);
+ animation:slideUp .3s ease
 }
-
-@keyframes fadeIn{
-from{opacity:0;}
-to{opacity:1;}
+.withdrawal-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.amount{font-size:17px;font-weight:900}
+.status{
+ padding:5px 9px;border-radius:999px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.6px
 }
-
-@keyframes slideUp{
-from{opacity:0; transform:translateY(20px);}
-to{opacity:1; transform:translateY(0);}
+.pending{color:#fbbf24;background:rgba(245,158,11,.11);border:1px solid rgba(245,158,11,.2)}
+.approved{color:#4ade80;background:rgba(34,197,94,.11);border:1px solid rgba(34,197,94,.2)}
+.rejected{color:#f87171;background:rgba(239,68,68,.11);border:1px solid rgba(239,68,68,.2)}
+.info-grid{display:grid;gap:7px;margin-top:12px}
+.info-row{display:flex;justify-content:space-between;gap:10px;color:#94a3b8;font-size:9px}
+.info-row b{color:#cbd5e1;font-weight:600;text-align:right;overflow-wrap:anywhere}
+.empty{
+ padding:28px 15px;text-align:center;border:1px dashed rgba(255,255,255,.12);
+ border-radius:16px;color:#64748b;font-size:11px
 }
-
-@keyframes pulseGreen{
-0%{text-shadow:0 0 5px #00ff88;}
-50%{text-shadow:0 0 15px #00ff88;}
-100%{text-shadow:0 0 5px #00ff88;}
-}
-
-@keyframes pulseOrange{
-0%{text-shadow:0 0 5px orange;}
-50%{text-shadow:0 0 15px orange;}
-100%{text-shadow:0 0 5px orange;}
-}
-
-@keyframes shake{
-0%{transform:translateX(0);}
-25%{transform:translateX(-5px);}
-50%{transform:translateX(5px);}
-75%{transform:translateX(-5px);}
-100%{transform:translateX(0);}
-}
-
-button{
-margin-top:15px;
-padding:10px;
-width:100%;
-border:none;
-border-radius:8px;
-background:linear-gradient(45deg,#3b82f6,#06b6d4);
-color:white;
-font-weight:bold;
-cursor:pointer;
-transition:0.3s;
-}
-
-button:hover{
-transform:scale(1.05);
-box-shadow:0 0 15px #3b82f6;
-}
+.loading{text-align:center;color:#94a3b8;font-size:10px;padding:20px}
+.footer-note{margin-top:15px;text-align:center;color:#64748b;font-size:9px;line-height:1.5}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(max-width:380px){.brand span{display:none}.container{padding:20px 10px 60px}.card{padding:20px 14px}}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-<h2>Withdrawal History</h2>
-<div id="historyData">Loading...</div>
-<button onclick="history.back()">Back</button>
-</div>
+<header class="header">
+ <a class="brand" href="account.html">
+  <div class="brand-icon">🎮</div>
+  <div><strong>Hari Battle Arena</strong><span>PLAYER WALLET</span></div>
+ </a>
+ <a class="back" href="account.html">← Account</a>
+</header>
+
+<main class="container">
+<section class="card">
+
+ <div class="hero">
+  <div class="icon">💸</div>
+  <h1>Withdrawal History</h1>
+  <p>Track your withdrawal requests and their status</p>
+ </div>
+
+ <div class="summary">
+  <div class="summary-box">
+   <small>TOTAL REQUESTS</small>
+   <strong id="totalCount">0</strong>
+  </div>
+  <div class="summary-box">
+   <small>TOTAL REQUESTED</small>
+   <strong>₹<span id="totalAmount">0</span></strong>
+  </div>
+ </div>
+
+ <h2 class="section-title">Recent Withdrawals</h2>
+ <div id="historyData" class="history-list">
+  <div class="loading">Loading withdrawal history…</div>
+ </div>
+
+ <div class="footer-note">
+  Pending requests are reviewed before completion. Contact support if you need help with a transaction.
+ </div>
+
+</section>
+</main>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged }
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-getFirestore,
-collection,
-query,
-where,
-orderBy,
-onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore,collection,query,where,onSnapshot }
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+ apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+ authDomain:"ff-tournament-915ed.firebaseapp.com",
+ projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+function escapeHTML(value){
+ return String(value ?? "").replace(/[&<>"']/g,m=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+ }[m]));
+}
+
+function formatDate(value){
+ if(!value)return "—";
+ try{
+  if(typeof value.toDate==="function"){
+   return value.toDate().toLocaleString();
+  }
+  const date=new Date(value);
+  return Number.isNaN(date.getTime()) ? "—" : date.toLocaleString();
+ }catch{
+  return "—";
+ }
+}
 
 onAuthStateChanged(auth,(user)=>{
+ if(!user){
+  window.location.href="auth.html";
+  return;
+ }
 
-if(!user){
-window.location.href="auth.html";
-return;
-}
+ const q=query(collection(db,"withdrawals"),where("uid","==",user.uid));
 
-const q = query(
-collection(db,"withdrawals"),
-where("uid","==",user.uid)
-);
+ onSnapshot(q,(snapshot)=>{
+  const items=[];
 
-onSnapshot(q,(snapshot)=>{
+  snapshot.forEach(docSnap=>{
+   const w=docSnap.data();
+   items.push({id:docSnap.id,...w});
+  });
 
-let html="";
+  items.sort((a,b)=>{
+   const ta=a.createdAt?.toMillis ? a.createdAt.toMillis() : Number(a.createdAt||0);
+   const tb=b.createdAt?.toMillis ? b.createdAt.toMillis() : Number(b.createdAt||0);
+   return tb-ta;
+  });
 
-snapshot.forEach((docSnap)=>{
+  document.getElementById("totalCount").textContent=items.length;
 
-const w = docSnap.data();
-let statusClass = w.status || "pending";
+  const total=items.reduce((sum,item)=>{
+   const n=Number(item.amount||0);
+   return sum+(Number.isFinite(n)?n:0);
+  },0);
 
-let date = "";
-if(w.createdAt){
-const t = w.createdAt.toDate();
-date = t.toLocaleString();
-}
+  document.getElementById("totalAmount").textContent=total;
 
-html += `
-<div class="card">
-Amount: ₹${w.amount} <br>
-Method: ${w.method} <br>
-Date: ${date} <br>
-Status: <span class="${statusClass}">${w.status}</span>
-</div>
-`;
+  if(!items.length){
+   document.getElementById("historyData").innerHTML=
+    '<div class="empty">📭<br><br>No withdrawal history yet.</div>';
+   return;
+  }
 
+  document.getElementById("historyData").innerHTML=items.map(w=>{
+   const rawStatus=String(w.status||"pending").toLowerCase();
+   const statusClass=["pending","approved","rejected"].includes(rawStatus)
+    ? rawStatus : "pending";
+
+   const statusText=rawStatus.charAt(0).toUpperCase()+rawStatus.slice(1);
+
+   return `
+    <article class="withdrawal">
+     <div class="withdrawal-top">
+      <div class="amount">₹${escapeHTML(w.amount)}</div>
+      <span class="status ${statusClass}">${escapeHTML(statusText)}</span>
+     </div>
+     <div class="info-grid">
+      <div class="info-row"><span>Method</span><b>${escapeHTML(w.method||"—")}</b></div>
+      <div class="info-row"><span>Payment Details</span><b>${escapeHTML(w.details||"—")}</b></div>
+      <div class="info-row"><span>Date</span><b>${escapeHTML(formatDate(w.createdAt))}</b></div>
+     </div>
+    </article>
+   `;
+  }).join("");
+
+ },(error)=>{
+  console.error(error);
+  document.getElementById("historyData").innerHTML=
+   '<div class="empty">Unable to load withdrawal history.<br>Please try again later.</div>';
+ });
 });
-
-document.getElementById("historyData").innerHTML =
-html || "No Withdrawal History";
-
-});
-
-});
-
 </script>
-<script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
-}
-});
-</script>
+
 </body>
 </html>
