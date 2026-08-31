@@ -1,198 +1,424 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Withdraw</title>
+<title>Withdraw • Hari Battle Arena</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
+:root{
+  --bg:#070a12;
+  --panel:rgba(17,24,39,.84);
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --yellow:#f59e0b;
+  --red:#ef4444;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 24px 70px rgba(0,0,0,.42);
 }
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
 body{
-margin:0;
-font-family:'Segoe UI',Arial;
-background:#0f172a;
-color:white;
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(34,211,238,.14),transparent 30%),
+    radial-gradient(circle at 90% 90%,rgba(59,130,246,.12),transparent 30%),
+    linear-gradient(135deg,#070a12,#0b1020 55%,#070a12);
+  overflow-x:hidden;
 }
-
-.container{
-margin:20px;
-background:#1e293b;
-padding:20px;
-border-radius:10px;
+body:before{
+  content:"";
+  position:fixed;inset:0;pointer-events:none;opacity:.14;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;
 }
-
+button,input,select{font:inherit}
+.header{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 15px;
+  background:rgba(7,10,18,.84);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{
+  width:42px;height:42px;display:grid;place-items:center;
+  border-radius:13px;
+  background:linear-gradient(135deg,#22d3ee,#2563eb);
+  box-shadow:0 8px 25px rgba(34,211,238,.18);
+  font-size:20px;
+}
+.brand strong{font-size:13px}.brand span{display:block;color:var(--muted);font-size:9px;margin-top:2px;letter-spacing:1px}
+.back{
+  padding:9px 12px;border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.05);
+  color:#cbd5e1;font-size:10px;font-weight:800;
+}
+.container{width:min(470px,100%);margin:auto;padding:30px 15px 70px}
+.card{
+  position:relative;overflow:hidden;
+  padding:24px 19px;
+  border:1px solid var(--border);
+  border-radius:25px;
+  background:var(--panel);
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+}
+.card:before{
+  content:"";position:absolute;width:220px;height:220px;
+  top:-155px;left:50%;transform:translateX(-50%);
+  border-radius:50%;background:rgba(34,211,238,.12);filter:blur(15px);
+}
+.hero{position:relative;text-align:center}
+.icon{
+  width:60px;height:60px;display:grid;place-items:center;
+  margin:0 auto 12px;border-radius:19px;
+  background:linear-gradient(135deg,#22c55e,#0ea5e9);
+  box-shadow:0 12px 35px rgba(34,197,94,.18);
+  font-size:28px;
+}
+.hero h1{margin:0;font-size:23px;letter-spacing:-.7px}
+.hero p{margin:6px 0 0;color:var(--muted);font-size:11px}
+.balance-card{
+  position:relative;margin-top:21px;padding:17px;
+  border:1px solid rgba(34,197,94,.16);
+  border-radius:17px;
+  background:linear-gradient(135deg,rgba(34,197,94,.09),rgba(34,211,238,.05));
+}
+.balance-card small{display:block;color:var(--muted);font-size:9px;font-weight:700;letter-spacing:.8px}
+.balance-card strong{display:block;margin-top:6px;font-size:27px;color:#86efac}
+.balance-card span{font-size:13px;color:#94a3b8}
+.section-title{margin:24px 0 12px;font-size:15px}
+.field{margin-top:12px}
+label{display:block;margin:0 0 6px 2px;color:#cbd5e1;font-size:10px;font-weight:700}
 input,select{
-width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:6px;
-border:none;
+  width:100%;padding:13px;color:white;
+  background:#0b1020;border:1px solid var(--border);
+  border-radius:13px;outline:none;
 }
-
-button{
-width:100%;
-padding:12px;
-margin-top:12px;
-border:none;
-border-radius:6px;
-background:#22c55e;
-color:white;
-font-weight:bold;
-cursor:pointer;
+input:focus,select:focus{
+  border-color:rgba(34,211,238,.55);
+  box-shadow:0 0 0 3px rgba(34,211,238,.07);
 }
-
-.balance{
-margin-bottom:10px;
-font-weight:bold;
+input::placeholder{color:#64748b}
+select{appearance:auto}
+select option{background:#111827;color:white}
+.hint{margin:6px 2px 0;color:#64748b;font-size:9px;line-height:1.5}
+.details-hint{
+  margin-top:8px;padding:10px 11px;
+  border-radius:11px;background:rgba(255,255,255,.035);
+  color:#94a3b8;border:1px solid var(--border);
+  font-size:9px;line-height:1.5;
 }
-
-.request-box{
-margin-top:15px;
-background:#0ea5e9;
-padding:10px;
-border-radius:6px;
+.primary{
+  width:100%;margin-top:18px;padding:14px;
+  border:0;border-radius:13px;
+  color:#041016;
+  background:linear-gradient(135deg,#22c55e,#22d3ee);
+  font-weight:900;cursor:pointer;
+  box-shadow:0 12px 30px rgba(34,197,94,.17);
+  transition:.25s;
+}
+.primary:hover{transform:translateY(-2px)}
+.primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.footer-note{
+  margin-top:15px;text-align:center;color:#64748b;
+  font-size:9px;line-height:1.5;
+}
+.status{
+  display:none;margin-top:17px;padding:13px;
+  border-radius:14px;border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  font-size:10px;line-height:1.5;
+}
+.popup{
+  position:fixed;inset:0;z-index:9999;
+  display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(0,0,0,.72);
+  backdrop-filter:blur(8px);
+}
+.popup-box{
+  width:min(350px,100%);padding:24px;border-radius:20px;
+  text-align:center;background:#111827;border:1px solid var(--border);
+  box-shadow:var(--shadow);animation:pop .22s ease;
+}
+.popup-icon{font-size:34px}
+.popup-box p{color:#cbd5e1;font-size:12px;line-height:1.6;margin:10px 0 17px;white-space:pre-line}
+.popup-box button{
+  padding:10px 24px;border:0;border-radius:999px;
+  background:white;color:#0f172a;font-weight:800;cursor:pointer;
+}
+.loading{
+  display:inline-block;width:15px;height:15px;margin-right:7px;
+  vertical-align:-3px;border:2px solid rgba(4,16,22,.25);
+  border-top-color:#041016;border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:380px){
+  .brand span{display:none}.container{padding:20px 10px 60px}.card{padding:21px 15px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header class="header">
+  <a class="brand" href="account.html">
+    <div class="brand-icon">🎮</div>
+    <div>
+      <strong>Hari Battle Arena</strong>
+      <span>PLAYER WALLET</span>
+    </div>
+  </a>
+  <a class="back" href="account.html">← Account</a>
+</header>
 
-<h2>Withdraw Money</h2>
+<main class="container">
+<section class="card">
 
-<div class="balance">
-Available Balance: ₹<span id="balance">0</span>
-</div>
+  <div class="hero">
+    <div class="icon">💸</div>
+    <h1>Withdraw Money</h1>
+    <p>Request a withdrawal from your winning balance</p>
+  </div>
 
-<input type="number" id="amount" placeholder="Enter Amount (Min ₹10)">
+  <div class="balance-card">
+    <small>AVAILABLE WINNING BALANCE</small>
+    <strong>₹<span id="balance">0</span></strong>
+  </div>
 
-<select id="method">
-<option value="upi">UPI</option>
-<option value="bank">Bank Account</option>
-</select>
+  <h2 class="section-title">Withdrawal Details</h2>
 
-<input type="text" id="details" placeholder="Enter UPI ID or Bank Number and Ifsc Number">
+  <div class="field">
+    <label for="amount">AMOUNT</label>
+    <input type="number" id="amount" min="10" step="1"
+           inputmode="numeric" placeholder="Enter amount (minimum ₹10)">
+    <div class="hint">Minimum withdrawal amount: ₹10</div>
+  </div>
 
-<button onclick="requestWithdraw()">Request Withdrawal</button>
+  <div class="field">
+    <label for="method">PAYMENT METHOD</label>
+    <select id="method">
+      <option value="upi">UPI</option>
+      <option value="bank">Bank Account</option>
+    </select>
+  </div>
 
-<div id="statusBox"></div>
+  <div class="field">
+    <label for="details">PAYMENT DETAILS</label>
+    <input type="text" id="details"
+           placeholder="UPI ID or Bank A/C + IFSC">
+    <div class="details-hint">
+      🔒 Enter only the payment details required to receive your withdrawal.
+      Never enter your password, OTP or PIN here.
+    </div>
+  </div>
 
+  <button class="primary" id="withdrawBtn" onclick="requestWithdraw()">
+    REQUEST WITHDRAWAL
+  </button>
+
+  <div class="status" id="statusBox"></div>
+
+  <div class="footer-note">
+    Your withdrawal request will be sent for processing. The amount is locked from your winning balance when the request is created.
+  </div>
+
+</section>
+</main>
+
+<div id="popup" class="popup">
+  <div class="popup-box">
+    <div class="popup-icon" id="popupIcon">ℹ️</div>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
-getFirestore,
-doc,
-getDoc,
-updateDoc,
-onSnapshot,
-addDoc,
-collection,
-serverTimestamp,
-increment
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  onSnapshot,
+  addDoc,
+  collection,
+  serverTimestamp,
+  increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+  apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain:"ff-tournament-915ed.firebaseapp.com",
+  projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-let currentUser;
+let currentUser=null;
+let unsubscribeBalance=null;
+let submitting=false;
 
 onAuthStateChanged(auth,(user)=>{
+  if(!user){
+    window.location.href="auth.html";
+    return;
+  }
 
-if(!user){
-window.location.href="auth.html";
-return;
-}
+  currentUser=user;
 
-currentUser = user;
+  if(unsubscribeBalance) unsubscribeBalance();
 
-// Live balance
-onSnapshot(doc(db,"users",user.uid),(snap)=>{
-if(snap.exists()){
-document.getElementById("balance").innerText = snap.data().winningBalance || 0;
-}
+  unsubscribeBalance=onSnapshot(doc(db,"users",user.uid),(snap)=>{
+    if(!snap.exists()) return;
+
+    const data=snap.data();
+    const balance=Number(data.winningBalance||0);
+
+    document.getElementById("balance").textContent=balance;
+  });
 });
 
-});
+window.requestWithdraw=async function(){
 
-window.requestWithdraw = async function(){
+  if(submitting) return;
 
-let amount = Number(document.getElementById("amount").value);
-let method = document.getElementById("method").value;
-let details = document.getElementById("details").value;
+  if(!currentUser){
+    showPopup("Please login again and try.","error");
+    return;
+  }
 
-if(amount < 10){
-alert("Minimum withdrawal ₹10");
-return;
-}
+  const amount=Number(document.getElementById("amount").value);
+  const method=document.getElementById("method").value;
+  const details=document.getElementById("details").value.trim();
 
-if(!details){
-alert("Enter payment details");
-return;
-}
+  if(!Number.isFinite(amount) || amount<10){
+    showPopup("Minimum withdrawal amount is ₹10.","error");
+    return;
+  }
 
-const userRef = doc(db,"users",currentUser.uid);
-const userSnap = await getDoc(userRef);
+  if(!details){
+    showPopup("Please enter your payment details.","error");
+    return;
+  }
 
-let username = userSnap.data().username;
+  if(details.length>200){
+    showPopup("Payment details are too long.","error");
+    return;
+  }
 
-let balance = userSnap.data().winningBalance || 0;
+  const btn=document.getElementById("withdrawBtn");
+  submitting=true;
+  btn.disabled=true;
+  btn.innerHTML='<span class="loading"></span>PROCESSING…';
 
-if(amount > balance){
-alert("Insufficient balance");
-return;
-}
+  try{
+    const userRef=doc(db,"users",currentUser.uid);
+    const userSnap=await getDoc(userRef);
 
-// 🔥 Balance immediately deduct
-await updateDoc(userRef,{
-winningBalance: increment(-amount)
-});
+    if(!userSnap.exists()){
+      showPopup("Account data was not found.","error");
+      return;
+    }
 
-// Save withdrawal request
-await addDoc(collection(db,"withdrawals"),{
-uid: currentUser.uid,
-username: username,
-amount: amount,
-method: method,
-details: details,
-status: "pending",
-createdAt: serverTimestamp()
-});
-alert("Withdrawal Request Sent & Balance Locked ✅");
+    const userData=userSnap.data();
 
-document.getElementById("amount").value="";
-document.getElementById("details").value="";
+    if(userData.blocked){
+      showPopup("Your account is blocked. Please contact support.","error");
+      return;
+    }
 
+    const username=userData.username || "Player";
+    const balance=Number(userData.winningBalance||0);
+
+    if(amount>balance){
+      showPopup("Insufficient winning balance.","error");
+      return;
+    }
+
+    /*
+      Keep the existing Firebase data flow:
+      1. deduct winningBalance
+      2. create withdrawal request
+    */
+    await updateDoc(userRef,{
+      winningBalance:increment(-amount)
+    });
+
+    await addDoc(collection(db,"withdrawals"),{
+      uid:currentUser.uid,
+      username:username,
+      amount:amount,
+      method:method,
+      details:details,
+      status:"pending",
+      createdAt:serverTimestamp()
+    });
+
+    document.getElementById("amount").value="";
+    document.getElementById("details").value="";
+
+    showStatus("Withdrawal request submitted successfully. Status: Pending.");
+    showPopup("Withdrawal request sent successfully.\n₹"+amount+" has been locked for processing.","success");
+
+  }catch(error){
+    console.error(error);
+    showPopup("Unable to submit withdrawal right now.\nPlease try again.","error");
+  }finally{
+    submitting=false;
+    btn.disabled=false;
+    btn.textContent="REQUEST WITHDRAWAL";
+  }
 };
 
-</script>
-<script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
+function showPopup(message,type="info"){
+  document.getElementById("popupIcon").textContent=
+    type==="success" ? "✅" : type==="error" ? "❌" : "ℹ️";
+
+  document.getElementById("popupText").textContent=message;
+  document.getElementById("popup").style.display="flex";
 }
+
+function showStatus(message){
+  const box=document.getElementById("statusBox");
+  box.textContent=message;
+  box.style.display="block";
+}
+
+window.closePopup=function(){
+  document.getElementById("popup").style.display="none";
+};
+</script>
+
+<script>
+document.getElementById("popup").addEventListener("click",function(e){
+  if(e.target.id==="popup") closePopup();
+});
+
+document.getElementById("amount").addEventListener("input",function(){
+  if(Number(this.value)<0) this.value="";
 });
 </script>
+
 </body>
 </html>
