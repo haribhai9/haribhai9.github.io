@@ -1,207 +1,434 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#070a12">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Deposit</title>
+<title>Deposit • Hari Battle Arena</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-html,body{
-height:100%;
-margin:0;
-padding:0;
-overflow-x:hidden;
+:root{
+  --bg:#070a12;
+  --panel:rgba(17,24,39,.84);
+  --text:#f8fafc;
+  --muted:#94a3b8;
+  --cyan:#22d3ee;
+  --blue:#3b82f6;
+  --green:#22c55e;
+  --yellow:#f59e0b;
+  --red:#ef4444;
+  --border:rgba(255,255,255,.09);
+  --shadow:0 24px 70px rgba(0,0,0,.42);
 }
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
 body{
-margin:0;
-font-family:'Segoe UI',Arial;
-background:#0f172a;
-color:white;
-text-align:center;
+  font-family:Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(34,211,238,.14),transparent 30%),
+    radial-gradient(circle at 90% 90%,rgba(59,130,246,.12),transparent 30%),
+    linear-gradient(135deg,#070a12,#0b1020 55%,#070a12);
+  overflow-x:hidden;
 }
-
-.container{
-margin:20px;
-background:#1e293b;
-padding:20px;
-border-radius:10px;
-max-width:400px;
-margin:auto;
-margin-top:40px;
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;opacity:.14;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:38px 38px;
 }
-
-img{
-width:100%;
-max-width:300px;
-border-radius:10px;
-margin-bottom:15px;
+button,input{font:inherit}
+.header{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 15px;
+  background:rgba(7,10,18,.84);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
 }
-
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.brand-icon{
+  width:42px;height:42px;display:grid;place-items:center;
+  border-radius:13px;
+  background:linear-gradient(135deg,#22d3ee,#2563eb);
+  box-shadow:0 8px 25px rgba(34,211,238,.18);
+  font-size:20px;
+}
+.brand strong{font-size:13px}.brand span{display:block;color:var(--muted);font-size:9px;margin-top:2px;letter-spacing:1px}
+.back{
+  padding:9px 12px;border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.05);
+  color:#cbd5e1;font-size:10px;font-weight:800;
+  text-decoration:none;
+}
+.container{width:min(470px,100%);margin:auto;padding:28px 15px 70px}
+.card{
+  position:relative;overflow:hidden;
+  padding:24px 19px;
+  border:1px solid var(--border);
+  border-radius:25px;
+  background:var(--panel);
+  backdrop-filter:blur(20px);
+  box-shadow:var(--shadow);
+}
+.card:before{
+  content:"";position:absolute;width:220px;height:220px;
+  top:-155px;left:50%;transform:translateX(-50%);
+  border-radius:50%;background:rgba(34,211,238,.12);filter:blur(15px);
+}
+.hero{position:relative;text-align:center}
+.icon{
+  width:60px;height:60px;display:grid;place-items:center;
+  margin:0 auto 12px;border-radius:19px;
+  background:linear-gradient(135deg,#22d3ee,#2563eb);
+  box-shadow:0 12px 35px rgba(34,211,238,.18);
+  font-size:28px;
+}
+.hero h1{margin:0;font-size:23px;letter-spacing:-.7px}
+.hero p{margin:6px 0 0;color:var(--muted);font-size:11px}
+.user-bar{
+  position:relative;margin-top:20px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;padding:12px 14px;
+  border:1px solid var(--border);border-radius:15px;
+  background:rgba(255,255,255,.045);
+}
+.user-bar small{display:block;color:var(--muted);font-size:8px;letter-spacing:.7px}
+.user-bar strong{display:block;margin-top:3px;font-size:12px}
+.balance{color:#93c5fd;font-size:13px;font-weight:800}
+.section-title{margin:23px 0 12px;font-size:15px}
+.qr-wrap{
+  position:relative;
+  padding:15px;
+  border:1px solid rgba(34,211,238,.15);
+  border-radius:19px;
+  background:#fff;
+  text-align:center;
+}
+.qr-wrap img{
+  display:block;
+  width:min(290px,100%);
+  aspect-ratio:1/1;
+  margin:auto;
+  object-fit:contain;
+  border-radius:11px;
+}
+.qr-label{
+  margin-top:10px;
+  color:#334155;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.steps{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:7px;margin-top:12px;
+}
+.step{
+  padding:10px 7px;text-align:center;
+  border:1px solid var(--border);border-radius:13px;
+  background:rgba(255,255,255,.035);
+}
+.step b{
+  width:22px;height:22px;display:grid;place-items:center;
+  margin:0 auto 6px;border-radius:50%;
+  background:rgba(34,211,238,.10);color:#67e8f9;font-size:9px;
+}
+.step span{color:#94a3b8;font-size:8px;line-height:1.35}
+.field{margin-top:13px}
+label{display:block;margin:0 0 6px 2px;color:#cbd5e1;font-size:10px;font-weight:700}
 input{
-width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:6px;
-border:none;
+  width:100%;padding:13px;color:white;
+  background:#0b1020;border:1px solid var(--border);
+  border-radius:13px;outline:none;
 }
-
-button{
-width:100%;
-padding:10px;
-margin-top:15px;
-border:none;
-border-radius:6px;
-background:#22c55e;
-color:white;
-font-weight:bold;
-cursor:pointer;
+input:focus{
+  border-color:rgba(34,211,238,.55);
+  box-shadow:0 0 0 3px rgba(34,211,238,.07);
 }
-
-button:hover{
-opacity:0.9;
+input::placeholder{color:#64748b}
+.hint{margin:6px 2px 0;color:#64748b;font-size:9px}
+.primary{
+  width:100%;margin-top:18px;padding:14px;
+  border:0;border-radius:13px;color:#041016;
+  background:linear-gradient(135deg,#22c55e,#22d3ee);
+  font-weight:900;cursor:pointer;
+  box-shadow:0 12px 30px rgba(34,197,94,.17);
+  transition:.25s;
 }
-
-.info{
-margin-top:10px;
-font-size:14px;
+.primary:hover{transform:translateY(-2px)}
+.primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.status{
+  display:none;margin-top:15px;padding:12px;
+  border-radius:13px;border:1px solid var(--border);
+  background:rgba(255,255,255,.045);
+  color:#cbd5e1;font-size:10px;line-height:1.5;text-align:center;
+}
+.footer-note{
+  margin-top:15px;text-align:center;color:#64748b;
+  font-size:9px;line-height:1.5;
+}
+.popup{
+  position:fixed;inset:0;z-index:9999;display:none;
+  align-items:center;justify-content:center;padding:20px;
+  background:rgba(0,0,0,.72);backdrop-filter:blur(8px);
+}
+.popup-box{
+  width:min(350px,100%);padding:24px;border-radius:20px;
+  text-align:center;background:#111827;border:1px solid var(--border);
+  box-shadow:var(--shadow);animation:pop .22s ease;
+}
+.popup-icon{font-size:34px}
+.popup-box p{color:#cbd5e1;font-size:12px;line-height:1.6;margin:10px 0 17px;white-space:pre-line}
+.popup-box button{
+  padding:10px 24px;border:0;border-radius:999px;
+  background:white;color:#0f172a;font-weight:800;cursor:pointer;
+}
+.loading{
+  display:inline-block;width:15px;height:15px;margin-right:7px;
+  vertical-align:-3px;border:2px solid rgba(4,16,22,.25);
+  border-top-color:#041016;border-radius:50%;animation:spin .7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(8px)}to{opacity:1;transform:none}}
+@media(max-width:380px){
+  .brand span{display:none}.container{padding:20px 10px 60px}.card{padding:21px 15px}
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<header class="header">
+  <a class="brand" href="account.html">
+    <div class="brand-icon">🎮</div>
+    <div>
+      <strong>Hari Battle Arena</strong>
+      <span>PLAYER WALLET</span>
+    </div>
+  </a>
+  <a class="back" href="account.html">← Account</a>
+</header>
 
-<h2>Scan & Deposit</h2>
+<main class="container">
+<section class="card">
 
-<img src="hariscanner.png" alt="Scanner QR">
+  <div class="hero">
+    <div class="icon">💳</div>
+    <h1>Scan & Deposit</h1>
+    <p>Add funds securely to your tournament wallet</p>
+  </div>
 
-<div class="info">
-<p>Username: <b id="username">Loading...</b></p>
-<p>Current Balance: ₹ <b id="balance">0</b></p>
+  <div class="user-bar">
+    <div>
+      <small>ACCOUNT</small>
+      <strong id="username">Loading...</strong>
+    </div>
+    <div class="balance">₹ <span id="balance">0</span></div>
+  </div>
+
+  <h2 class="section-title">1. Scan QR & Pay</h2>
+
+  <div class="qr-wrap">
+    <img src="hariscanner.png" alt="Payment QR Scanner">
+    <div class="qr-label">Scan using your UPI app</div>
+  </div>
+
+  <div class="steps">
+    <div class="step"><b>1</b><span>Scan QR</span></div>
+    <div class="step"><b>2</b><span>Complete payment</span></div>
+    <div class="step"><b>3</b><span>Submit UTR</span></div>
+  </div>
+
+  <h2 class="section-title">2. Submit Payment Details</h2>
+
+  <div class="field">
+    <label for="amount">DEPOSIT AMOUNT</label>
+    <input type="number" id="amount" min="1" step="1"
+           inputmode="numeric" placeholder="Enter paid amount">
+    <div class="hint">Enter the exact amount you paid.</div>
+  </div>
+
+  <div class="field">
+    <label for="utr">UTR / TRANSACTION NUMBER</label>
+    <input type="text" id="utr" maxlength="100"
+           placeholder="Enter your UTR number">
+    <div class="hint">Use the UTR shown in your payment transaction.</div>
+  </div>
+
+  <button class="primary" id="submitBtn" onclick="submitDeposit()">
+    SUBMIT DEPOSIT
+  </button>
+
+  <div class="status" id="statusBox"></div>
+
+  <div class="footer-note">
+    Deposits are submitted as pending requests. Your balance is updated after the payment is reviewed.
+  </div>
+
+</section>
+</main>
+
+<div id="popup" class="popup">
+  <div class="popup-box">
+    <div class="popup-icon" id="popupIcon">ℹ️</div>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">OK</button>
+  </div>
 </div>
-
-<input type="number" id="amount" placeholder="Enter Amount">
-<input type="text" id="utr" placeholder="Enter UTR Number">
-
-<button onclick="submitDeposit()">Submit Deposit</button>
-
-<p id="msg"></p>
-
-</div>
-
-
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged } 
-from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-
-import { 
-getFirestore, 
-doc, 
-getDoc, 
-addDoc, 
-collection 
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  addDoc,
+  collection,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-apiKey: "AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain: "ff-tournament-915ed.firebaseapp.com",
-projectId: "ff-tournament-915ed",
+const firebaseConfig={
+  apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+  authDomain:"ff-tournament-915ed.firebaseapp.com",
+  projectId:"ff-tournament-915ed"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-let currentUserData = null;
+let currentUserData=null;
+let currentUser=null;
+let unsubscribeUser=null;
+let submitting=false;
 
-// CHECK LOGIN
-onAuthStateChanged(auth, async (user) => {
+onAuthStateChanged(auth,(user)=>{
+  if(!user){
+    window.location.href="auth.html";
+    return;
+  }
 
-if(user){
+  currentUser=user;
 
-const docRef = doc(db,"users",user.uid);
-const snap = await getDoc(docRef);
+  if(unsubscribeUser) unsubscribeUser();
 
-if(snap.exists()){
+  const userRef=doc(db,"users",user.uid);
 
-currentUserData = snap.data();
+  unsubscribeUser=onSnapshot(userRef,(snap)=>{
+    if(!snap.exists()) return;
 
-document.getElementById("username").innerText = currentUserData.username;
-document.getElementById("balance").innerText = currentUserData.balance;
+    currentUserData=snap.data();
 
-}
+    document.getElementById("username").textContent=currentUserData.username || "Player";
+    document.getElementById("balance").textContent=Number(currentUserData.balance || 0);
 
-}else{
-window.location.href="auth.html";
-}
-
+    if(currentUserData.blocked){
+      showPopup("Your account is blocked. Please contact support.","error");
+    }
+  });
 });
 
+window.submitDeposit=async function(){
 
-// SUBMIT DEPOSIT
-window.submitDeposit = async function(){
+  if(submitting) return;
 
-if(!currentUserData){
-return;
+  if(!currentUser || !currentUserData){
+    showPopup("Please wait for your account to load.","error");
+    return;
+  }
+
+  if(currentUserData.blocked){
+    showPopup("Your account is blocked. Please contact support.","error");
+    return;
+  }
+
+  const amount=Number(document.getElementById("amount").value);
+  const utr=document.getElementById("utr").value.trim();
+
+  if(!Number.isFinite(amount) || amount<=0){
+    showPopup("Please enter a valid deposit amount.","error");
+    return;
+  }
+
+  if(!utr){
+    showPopup("Please enter your UTR / transaction number.","error");
+    return;
+  }
+
+  if(utr.length>100){
+    showPopup("UTR number is too long.","error");
+    return;
+  }
+
+  const btn=document.getElementById("submitBtn");
+  submitting=true;
+  btn.disabled=true;
+  btn.innerHTML='<span class="loading"></span>SUBMITTING…';
+
+  try{
+    await addDoc(collection(db,"deposits"),{
+      uid:currentUser.uid,
+      username:currentUserData.username || "Player",
+      amount:amount,
+      utr:utr,
+      status:"pending",
+      time:Date.now()
+    });
+
+    document.getElementById("amount").value="";
+    document.getElementById("utr").value="";
+
+    showStatus("Deposit request submitted successfully. Status: Pending.");
+    showPopup("Deposit request sent successfully.\nPlease wait for payment verification.","success");
+
+  }catch(error){
+    console.error(error);
+    showPopup("Unable to submit deposit right now.\nPlease try again.","error");
+  }finally{
+    submitting=false;
+    btn.disabled=false;
+    btn.textContent="SUBMIT DEPOSIT";
+  }
+};
+
+function showStatus(message){
+  const box=document.getElementById("statusBox");
+  box.textContent=message;
+  box.style.display="block";
 }
 
-let amount = document.getElementById("amount").value.trim();
-let utr = document.getElementById("utr").value.trim();
-let msg = document.getElementById("msg");
+function showPopup(message,type="info"){
+  document.getElementById("popupIcon").textContent=
+    type==="success" ? "✅" : type==="error" ? "❌" : "ℹ️";
 
-if(amount==="" || utr===""){
-msg.innerText="All fields required!";
-msg.style.color="red";
-return;
+  document.getElementById("popupText").textContent=message;
+  document.getElementById("popup").style.display="flex";
 }
 
-if(Number(amount) < 0){
-msg.innerText="Minimum deposit ₹0";
-msg.style.color="red";
-return;
-}
-
-try{
-
-await addDoc(collection(db,"deposits"),{
-uid: auth.currentUser.uid,
-username: currentUserData.username,
-amount: Number(amount),
-utr: utr,
-status: "pending",
-time: Date.now()
-});
-
-msg.innerText="Deposit Request Sent ✅";
-msg.style.color="lightgreen";
-
-document.getElementById("amount").value="";
-document.getElementById("utr").value="";
-
-}catch(error){
-
-msg.innerText="Error submitting request";
-msg.style.color="red";
-
-}
-
-}
+window.closePopup=function(){
+  document.getElementById("popup").style.display="none";
+};
 </script>
+
 <script>
-window.addEventListener("load",function(){
-if(document.documentElement.requestFullscreen){
-document.documentElement.requestFullscreen();
-}
+document.getElementById("popup").addEventListener("click",function(e){
+  if(e.target.id==="popup") closePopup();
+});
+
+document.getElementById("amount").addEventListener("input",function(){
+  if(Number(this.value)<0)this.value="";
 });
 </script>
+
 </body>
 </html>
