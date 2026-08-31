@@ -1,803 +1,579 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Dashboard</title>
+<meta name="theme-color" content="#070a12">
+<title>Admin Dashboard • Hari Battle Arena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-
+:root{
+ --bg:#070a12;--panel:rgba(17,24,39,.86);--panel2:#111827;--text:#f8fafc;
+ --muted:#94a3b8;--cyan:#22d3ee;--blue:#3b82f6;--green:#22c55e;
+ --yellow:#f59e0b;--red:#ef4444;--border:rgba(255,255,255,.09);
+ --shadow:0 20px 55px rgba(0,0,0,.35)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
 body{
-margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
-padding:20px;
+ margin:0;color:var(--text);font-family:Inter,Arial,sans-serif;
+ background:radial-gradient(circle at 5% 0%,rgba(34,211,238,.13),transparent 28%),
+ radial-gradient(circle at 95% 100%,rgba(59,130,246,.13),transparent 30%),
+ linear-gradient(135deg,#070a12,#0b1020 55%,#070a12);padding:0 0 50px
 }
-
-h1{text-align:center}
-
+body:before{
+ content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;
+ background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),
+ linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+ background-size:36px 36px
+}
+button,input{font:inherit}
+.topbar{
+ position:sticky;top:0;z-index:100;padding:13px 15px;
+ background:rgba(7,10,18,.88);backdrop-filter:blur(18px);
+ border-bottom:1px solid var(--border)
+}
+.top-inner{width:min(1100px,100%);margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+ width:44px;height:44px;display:grid;place-items:center;border-radius:14px;
+ background:linear-gradient(135deg,var(--cyan),var(--blue));box-shadow:0 10px 30px rgba(34,211,238,.18);font-size:21px
+}
+.brand h1{font-size:14px;margin:0}.brand p{font-size:9px;color:var(--muted);margin:3px 0 0;letter-spacing:1px}
+.lock{
+ padding:8px 11px;border:1px solid rgba(34,197,94,.22);border-radius:999px;
+ color:#86efac;background:rgba(34,197,94,.08);font-size:9px;font-weight:800
+}
+.wrap{width:min(1100px,100%);margin:auto;padding:22px 14px}
+.hero{
+ padding:23px;border:1px solid var(--border);border-radius:25px;background:var(--panel);
+ box-shadow:var(--shadow);margin-bottom:15px;position:relative;overflow:hidden
+}
+.hero:after{
+ content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-130px;top:-170px;
+ background:rgba(34,211,238,.12);filter:blur(5px)
+}
+.hero h2{margin:0;font-size:24px;letter-spacing:-.8px}.hero p{margin:7px 0 0;color:var(--muted);font-size:10px}
+.nav{
+ display:flex;gap:8px;overflow:auto;margin-top:17px;padding-bottom:2px;position:relative;z-index:2
+}
+.nav a{
+ white-space:nowrap;text-decoration:none;color:#cbd5e1;padding:9px 12px;border-radius:999px;
+ background:rgba(255,255,255,.045);border:1px solid var(--border);font-size:9px;font-weight:800
+}
+.nav a:hover{background:rgba(59,130,246,.16);color:white}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
 .card{
-background:#1e293b;
-padding:15px;
-border-radius:10px;
-margin-bottom:20px;
+ background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:18px;
+ box-shadow:var(--shadow);margin-bottom:15px
 }
-
+.card.full{grid-column:1/-1}
+.card h3{font-size:14px;margin:0 0 15px}.sub{font-size:9px;color:var(--muted);margin:-9px 0 14px}
+.room-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.room{
+ background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:16px;padding:12px
+}
+.room-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.room-title{font-size:11px;font-weight:900}.room-num{color:var(--cyan);font-size:9px}
+label{display:block;color:var(--muted);font-size:8px;font-weight:700;margin:8px 0 5px}
 input{
-width:100%;
-padding:8px;
-margin-top:5px;
-border:none;
-border-radius:6px;
+ width:100%;padding:10px 11px;border:1px solid var(--border);outline:none;border-radius:10px;
+ background:#0b1220;color:white;font-size:10px
 }
-
-button{
-margin-top:6px;
-padding:6px 10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-font-weight:bold;
+input:focus{border-color:rgba(34,211,238,.5);box-shadow:0 0 0 3px rgba(34,211,238,.07)}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.btn{
+ border:0;border-radius:10px;padding:9px 11px;color:white;font-size:9px;font-weight:800;cursor:pointer;
+ transition:.2s;flex:1;min-width:70px
 }
-
-.green{background:#22c55e;color:white}
-.red{background:#ef4444;color:white}
-.blue{background:#3b82f6;color:white}
-
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.green{background:linear-gradient(135deg,#16a34a,#22c55e)}.red{background:linear-gradient(135deg,#dc2626,#ef4444)}
+.blue{background:linear-gradient(135deg,#2563eb,#06b6d4)}.yellow{background:linear-gradient(135deg,#d97706,#f59e0b);color:#111827}
+.divider{border:0;border-top:1px solid var(--border);margin:12px 0}
+.time-grid,.prize-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.control{
+ background:rgba(255,255,255,.035);border:1px solid var(--border);padding:12px;border-radius:15px
+}
 .user-box{
-background:#111827;
-padding:10px;
-border-radius:8px;
-margin-bottom:10px;
+ background:rgba(255,255,255,.035);border:1px solid var(--border);padding:13px;border-radius:16px;margin-bottom:10px;
+ font-size:9px;line-height:1.8
 }
-
-hr{border:1px solid #334155}
-
+.user-box b{color:#cbd5e1}.user-box hr{border:0;border-top:1px solid var(--border);margin:12px 0}
+.user-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:7px}
+.list{max-height:620px;overflow:auto;padding-right:2px}
+.list::-webkit-scrollbar{width:5px}.list::-webkit-scrollbar-thumb{background:#334155;border-radius:20px}
+.search-row{display:flex;gap:7px}.search-row input{flex:1}.search-row .btn{flex:0 0 90px}
+.empty{padding:25px;text-align:center;color:#64748b;font-size:10px;border:1px dashed var(--border);border-radius:15px}
+.badge{
+ display:inline-block;padding:4px 7px;border-radius:999px;font-size:7px;font-weight:900;
+ background:rgba(245,158,11,.1);color:#fbbf24;border:1px solid rgba(245,158,11,.2)
+}
+@media(max-width:720px){
+ .grid{grid-template-columns:1fr}.card.full{grid-column:auto}
+ .room-grid,.time-grid,.prize-grid{grid-template-columns:1fr}
+}
+@media(max-width:430px){
+ .wrap{padding:14px 10px}.hero{padding:18px}.hero h2{font-size:20px}
+ .actions .btn{min-width:calc(33.33% - 6px);flex:1}
+}
 </style>
 </head>
 
 <body>
 
+<header class="topbar">
+ <div class="top-inner">
+  <div class="brand">
+   <div class="logo">⚡</div>
+   <div><h1>Hari Battle Arena</h1><p>ADMIN CONTROL CENTER</p></div>
+  </div>
+  <div class="lock">🔒 ADMIN MODE</div>
+ </div>
+</header>
+
+<main class="wrap">
+
+<section class="hero">
+ <h2>🔥 Admin Dashboard</h2>
+ <p>Manage rooms, match timings, prizes, users, deposits and withdrawals from one place.</p>
+ <nav class="nav">
+  <a href="#rooms">🎮 Rooms</a><a href="#times">⏱ Times</a><a href="#prizes">💰 Prizes</a>
+  <a href="#users">👥 Players</a><a href="#deposits">💳 Deposits</a><a href="#withdrawals">💸 Withdrawals</a>
+ </nav>
+</section>
+
+<section id="rooms" class="card full">
+ <h3>🎮 Room Control</h3>
+ <p class="sub">Room IDs, passwords, reset and match status.</p>
+ <div class="room-grid">
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 1</span><span class="room-num">#01</span></div>
+   <label>Room ID</label><input id="roomID_room1" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room1" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room1')">Save</button>
+    <button class="btn red" onclick="resetRoom('room1')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room1')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 2</span><span class="room-num">#02</span></div>
+   <label>Room ID</label><input id="roomID_room2" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room2" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room2')">Save</button>
+    <button class="btn red" onclick="resetRoom('room2')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room2')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 3</span><span class="room-num">#03</span></div>
+   <label>Room ID</label><input id="roomID_room3" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room3" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room3')">Save</button>
+    <button class="btn red" onclick="resetRoom('room3')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room3')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 4</span><span class="room-num">#04</span></div>
+   <label>Room ID</label><input id="roomID_room4" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room4" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room4')">Save</button>
+    <button class="btn red" onclick="resetRoom('room4')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room4')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 5</span><span class="room-num">#05</span></div>
+   <label>Room ID</label><input id="roomID_room5" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room5" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room5')">Save</button>
+    <button class="btn red" onclick="resetRoom('room5')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room5')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 6</span><span class="room-num">#06</span></div>
+   <label>Room ID</label><input id="roomID_room6" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room6" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room6')">Save</button>
+    <button class="btn red" onclick="resetRoom('room6')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room6')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 7</span><span class="room-num">#07</span></div>
+   <label>Room ID</label><input id="roomID_room7" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room7" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room7')">Save</button>
+    <button class="btn red" onclick="resetRoom('room7')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room7')">Match Over</button>
+   </div>
+  </div>
+
+  <div class="room">
+   <div class="room-head"><span class="room-title">ROOM 8</span><span class="room-num">#08</span></div>
+   <label>Room ID</label><input id="roomID_room8" placeholder="Enter room ID">
+   <label>Room Password</label><input id="roomPASS_room8" placeholder="Enter password">
+   <div class="actions">
+    <button class="btn green" onclick="saveRoom('room8')">Save</button>
+    <button class="btn red" onclick="resetRoom('room8')">Reset</button>
+    <button class="btn blue" onclick="matchOver('room8')">Match Over</button>
+   </div>
+  </div>
+
+ </div>
+</section>
+
+<section id="times" class="card">
+ <h3>⏱ Match Time</h3><p class="sub">Update the displayed match time.</p>
+ <div class="time-grid">
+
+  <div class="control">
+   <label>MATCH 1</label>
+   <input id="matchTime1" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match1')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 2</label>
+   <input id="matchTime2" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match2')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 3</label>
+   <input id="matchTime3" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match3')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 4</label>
+   <input id="matchTime4" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match4')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 5</label>
+   <input id="matchTime5" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match5')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 6</label>
+   <input id="matchTime6" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match6')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 7</label>
+   <input id="matchTime7" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match7')">Update Time</button>
+  </div>
+
+  <div class="control">
+   <label>MATCH 8</label>
+   <input id="matchTime8" placeholder="e.g. 8:30 PM">
+   <button class="btn green" onclick="updateMatchTime('match8')">Update Time</button>
+  </div>
+
+ </div>
+</section>
+
+<section id="prizes" class="card">
+ <h3>💰 Entry & Win Control</h3><p class="sub">Set tournament entry fee and winning amount.</p>
+ <div class="prize-grid">
+
+  <div class="control">
+   <label>ROOM 1 ENTRY</label><input id="entry1" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 1 WIN</label><input id="win1" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room1')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 2 ENTRY</label><input id="entry2" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 2 WIN</label><input id="win2" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room2')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 3 ENTRY</label><input id="entry3" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 3 WIN</label><input id="win3" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room3')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 4 ENTRY</label><input id="entry4" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 4 WIN</label><input id="win4" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room4')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 5 ENTRY</label><input id="entry5" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 5 WIN</label><input id="win5" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room5')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 6 ENTRY</label><input id="entry6" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 6 WIN</label><input id="win6" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room6')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 7 ENTRY</label><input id="entry7" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 7 WIN</label><input id="win7" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room7')">Update Prize</button>
+  </div>
+
+  <div class="control">
+   <label>ROOM 8 ENTRY</label><input id="entry8" type="number" min="0" placeholder="Entry ₹">
+   <label>ROOM 8 WIN</label><input id="win8" type="number" min="0" placeholder="Win ₹">
+   <button class="btn green" onclick="updatePrize('room8')">Update Prize</button>
+  </div>
+
+ </div>
+</section>
+
+<section id="users" class="card full">
+ <h3>👥 Players Registered <span class="badge">JOINED PLAYERS</span></h3>
+ <div class="search-row">
+  <input id="searchUser" placeholder="Search username">
+  <button class="btn blue" onclick="searchUser()">Search</button>
+ </div>
+ <div id="users" class="list" style="margin-top:12px"><div class="empty">Loading joined players…</div></div>
+</section>
+
+<section id="deposits" class="card">
+ <h3>💳 Pending Deposits</h3>
+ <div id="deposits" class="list"><div class="empty">Loading deposits…</div></div>
+</section>
+
+<section id="withdrawals" class="card">
+ <h3>💸 Pending Withdrawals</h3>
+ <div id="withdrawals" class="list"><div class="empty">Loading withdrawals…</div></div>
+</section>
+
+<section class="card full">
+ <h3>🎯 All Joined Users</h3>
+ <div id="allUsers" class="list"><div class="empty">Loading joined users…</div></div>
+</section>
+
+</main>
+
 <script>
 const adminPassword="1122334455";
 let pass=prompt("Enter Admin Password");
-
 if(pass!==adminPassword){
-document.body.innerHTML="<h1>Access Denied ❌</h1>";
-throw new Error("Blocked");
+ document.body.innerHTML='<div style="min-height:100vh;display:grid;place-items:center;background:#070a12;color:white;font-family:Arial"><h1>Access Denied ❌</h1></div>';
+ throw new Error("Blocked");
 }
 </script>
 
-<h1>🔥 Admin Dashboard</h1>
-
-<div class="card">
-
-<h3>Room Control</h3>
-
-<label>Room1 ID</label>
-<input id="roomID_room1">
-
-<label>Room1 PASS</label>
-<input id="roomPASS_room1">
-
-<button class="green" onclick="saveRoom('room1')">Save</button>
-<button class="red" onclick="resetRoom('room1')">Reset</button>
-<button class="blue" onclick="matchOver('room1')">Match Over</button>
-
-<hr>
-
-<label>Room2 ID</label>
-<input id="roomID_room2">
-
-<label>Room2 PASS</label>
-<input id="roomPASS_room2">
-
-<button class="green" onclick="saveRoom('room2')">Save</button>
-<button class="red" onclick="resetRoom('room2')">Reset</button>
-<button class="blue" onclick="matchOver('room2')">Match Over</button>
-
-<hr>
-
-<label>Room3 ID</label>
-<input id="roomID_room3">
-
-<label>Room3 PASS</label>
-<input id="roomPASS_room3">
-
-<button class="green" onclick="saveRoom('room3')">Save</button>
-<button class="red" onclick="resetRoom('room3')">Reset</button>
-<button class="blue" onclick="matchOver('room3')">Match Over</button>
-
-<hr>
-
-<label>Room4 ID</label>
-<input id="roomID_room4">
-
-<label>Room4 PASS</label>
-<input id="roomPASS_room4">
-
-<button class="green" onclick="saveRoom('room4')">Save</button>
-<button class="red" onclick="resetRoom('room4')">Reset</button>
-<button class="blue" onclick="matchOver('room4')">Match Over</button>
-<hr>
-
-<label>Room5 ID</label>
-<input id="roomID_room5">
-
-<label>Room5 PASS</label>
-<input id="roomPASS_room5">
-
-<button class="green" onclick="saveRoom('room5')">Save</button>
-<button class="red" onclick="resetRoom('room5')">Reset</button>
-<button class="blue" onclick="matchOver('room5')">Match Over</button>
-
-<hr>
-
-<label>Room6 ID</label>
-<input id="roomID_room6">
-
-<label>Room6 PASS</label>
-<input id="roomPASS_room6">
-
-<button class="green" onclick="saveRoom('room6')">Save</button>
-<button class="red" onclick="resetRoom('room6')">Reset</button>
-<button class="blue" onclick="matchOver('room6')">Match Over</button>
-
-<hr>
-
-<label>Room7 ID</label>
-<input id="roomID_room7">
-
-<label>Room7 PASS</label>
-<input id="roomPASS_room7">
-
-<button class="green" onclick="saveRoom('room7')">Save</button>
-<button class="red" onclick="resetRoom('room7')">Reset</button>
-<button class="blue" onclick="matchOver('room7')">Match Over</button>
-
-<hr>
-
-<label>Room8 ID</label>
-<input id="roomID_room8">
-
-<label>Room8 PASS</label>
-<input id="roomPASS_room8">
-
-<button class="green" onclick="saveRoom('room8')">Save</button>
-<button class="red" onclick="resetRoom('room8')">Reset</button>
-<button class="blue" onclick="matchOver('room8')">Match Over</button>
-</div>
-
-<div class="card">
-
-<h3>Match Time</h3>
-
-<input id="matchTime1" placeholder="Match1 Time">
-<button class="green" onclick="updateMatchTime('match1')">Update</button>
-
-<hr>
-
-<input id="matchTime2" placeholder="Match2 Time">
-<button class="green" onclick="updateMatchTime('match2')">Update</button>
-
-<hr>
-
-<input id="matchTime3" placeholder="Match3 Time">
-<button class="green" onclick="updateMatchTime('match3')">Update</button>
-
-<hr>
-
-<input id="matchTime4" placeholder="Match4 Time">
-<button class="green" onclick="updateMatchTime('match4')">Update</button>
-<hr>
-
-<input id="matchTime5" placeholder="Match5 Time">
-<button class="green" onclick="updateMatchTime('match5')">Update</button>
-
-<hr>
-
-<input id="matchTime6" placeholder="Match6 Time">
-<button class="green" onclick="updateMatchTime('match6')">Update</button>
-
-<hr>
-
-<input id="matchTime7" placeholder="Match7 Time">
-<button class="green" onclick="updateMatchTime('match7')">Update</button>
-
-<hr>
-
-<input id="matchTime8" placeholder="Match8 Time">
-<button class="green" onclick="updateMatchTime('match8')">Update</button>
-</div>
-
-<div class="card">
-
-<h3>Entry & Win Control</h3>
-
-<label>Room1 Entry</label>
-<input id="entry1" type="number">
-
-<label>Room1 Win</label>
-<input id="win1" type="number">
-
-<button class="green" onclick="updatePrize('room1')">Update</button>
-
-<hr>
-
-<label>Room2 Entry</label>
-<input id="entry2" type="number">
-
-<label>Room2 Win</label>
-<input id="win2" type="number">
-
-<button class="green" onclick="updatePrize('room2')">Update</button>
-
-<hr>
-
-<label>Room3 Entry</label>
-<input id="entry3" type="number">
-
-<label>Room3 Win</label>
-<input id="win3" type="number">
-
-<button class="green" onclick="updatePrize('room3')">Update</button>
-
-<hr>
-
-<label>Room4 Entry</label>
-<input id="entry4" type="number">
-
-<label>Room4 Win</label>
-<input id="win4" type="number">
-
-<button class="green" onclick="updatePrize('room4')">Update</button>
-<hr>
-
-<label>Room5 Entry</label>
-<input id="entry5" type="number">
-
-<label>Room5 Win</label>
-<input id="win5" type="number">
-
-<button class="green" onclick="updatePrize('room5')">Update</button>
-
-<hr>
-
-<label>Room6 Entry</label>
-<input id="entry6" type="number">
-
-<label>Room6 Win</label>
-<input id="win6" type="number">
-
-<button class="green" onclick="updatePrize('room6')">Update</button>
-
-<hr>
-
-<label>Room7 Entry</label>
-<input id="entry7" type="number">
-
-<label>Room7 Win</label>
-<input id="win7" type="number">
-
-<button class="green" onclick="updatePrize('room7')">Update</button>
-
-<hr>
-
-<label>Room8 Entry</label>
-<input id="entry8" type="number">
-
-<label>Room8 Win</label>
-<input id="win8" type="number">
-
-<button class="green" onclick="updatePrize('room8')">Update</button>
-</div>
-
-<div class="card">
-<h3>Players Registered</h3>
-<input id="searchUser" placeholder="Search Username">
-<button onclick="searchUser()">Search</button>
-<div id="users"></div>
-</div>
-
-<div class="card">
-<h3>Deposits</h3>
-<div id="deposits"></div>
-</div>
-
-<div class="card">
-<h3>Withdrawals</h3>
-<div id="withdrawals"></div>
-</div>
-<div class="card">
-<h3>All Joined Users</h3>
-<div id="allUsers"></div>
-</div>
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-
 import {
-getFirestore,
-collection,
-doc,
-onSnapshot,
-updateDoc,
-setDoc,
-getDoc,
-getDocs,
-deleteDoc,
-increment
+ getFirestore,collection,doc,onSnapshot,updateDoc,setDoc,getDoc,getDocs,increment
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig={
-apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
-authDomain:"ff-tournament-915ed.firebaseapp.com",
-projectId:"ff-tournament-915ed"
+ apiKey:"AIzaSyBG0LYrIEuV_eYK8rZvweoQASTBF_gfDfA",
+ authDomain:"ff-tournament-915ed.firebaseapp.com",
+ projectId:"ff-tournament-915ed"
 };
-
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 
-
-/* SAVE ROOM */
-
 window.saveRoom=async function(id){
-
-let roomID=document.getElementById("roomID_"+id).value;
-let roomPASS=document.getElementById("roomPASS_"+id).value;
-
-await setDoc(doc(db,"rooms",id),{
-roomID,
-roomPASS
-},{merge:true});
-
-alert("Room Saved");
-
-}
-
-
-/* RESET ROOM */
+ const roomID=document.getElementById("roomID_"+id).value;
+ const roomPASS=document.getElementById("roomPASS_"+id).value;
+ await setDoc(doc(db,"rooms",id),{roomID,roomPASS},{merge:true});
+ alert("Room Saved ✅");
+};
 
 window.resetRoom=async function(roomId){
+ await setDoc(doc(db,"rooms",roomId),{roomID:"",roomPASS:"",slots:0,over:false});
+ const usersSnap=await getDocs(collection(db,"users"));
+ for(const u of usersSnap.docs){
+  if(u.data().joinedRoom===roomId){
+   await updateDoc(doc(db,"users",u.id),{joinedRoom:"",gameName:""});
+  }
+ }
+ alert("Room Reset Done ✅");
+};
 
-await setDoc(doc(db,"rooms",roomId),{
-roomID:"",
-roomPASS:"",
-slots:0,
-over:false
-});
-
-const usersSnap=await getDocs(collection(db,"users"));
-
-for(const u of usersSnap.docs){
-
-if(u.data().joinedRoom===roomId){
-
-await updateDoc(doc(db,"users",u.id),{
-joinedRoom:"",
-gameName:""
-});
-
-}
-
-}
-
-alert("Room Reset Done");
-
-}
-
-
-/* MATCH OVER */
-
-window.matchOver = async function(roomId){
-
-await setDoc(doc(db,"rooms",roomId),{
-over:true
-},{merge:true})
-
-alert("Match marked as over")
-
-}
-
-/* MATCH TIME */
+window.matchOver=async function(roomId){
+ await setDoc(doc(db,"rooms",roomId),{over:true},{merge:true});
+ alert("Match marked as over ✅");
+};
 
 window.updateMatchTime=async function(match){
-
-let number=match.replace("match","");
-let time=document.getElementById("matchTime"+number).value;
-
-await setDoc(doc(db,"settings",match),{time});
-
-alert("Time Updated");
-
-}
-
-
-/* ENTRY WIN */
+ const number=match.replace("match","");
+ const time=document.getElementById("matchTime"+number).value;
+ await setDoc(doc(db,"settings",match),{time});
+ alert("Time Updated ✅");
+};
 
 window.updatePrize=async function(room){
-
-let number=room.replace("room","");
-
-let entry=document.getElementById("entry"+number).value;
-let win=document.getElementById("win"+number).value;
-
-await setDoc(doc(db,"settings",room+"Prize"),{
-entry:Number(entry),
-win:Number(win)
-});
-
-alert("Prize Updated");
-
-}
-
-
-/* PLAYERS (JOINED ONLY) */
+ const number=room.replace("room","");
+ const entry=document.getElementById("entry"+number).value;
+ const win=document.getElementById("win"+number).value;
+ await setDoc(doc(db,"settings",room+"Prize"),{entry:Number(entry),win:Number(win)});
+ alert("Prize Updated ✅");
+};
 
 const usersDiv=document.getElementById("users");
 
-onSnapshot(collection(db,"users"),async(snapshot)=>{
-
-usersDiv.innerHTML="";
-
-for(const docSnap of snapshot.docs){
-
-const data=docSnap.data();
-const uid=docSnap.id;
-
-if(!data.joinedRoom) continue;
-
-let room=data.joinedRoom;
-let gameName=data.gameName||"-";
-
-let deposit=data.balance||0;
-let winning=data.winningBalance||0;
-let total=deposit+winning;
-
-let entry="...";
-
-const prizeSnap=await getDoc(doc(db,"settings",room+"Prize"));
-
-if(prizeSnap.exists()) entry=prizeSnap.data().entry;
-
-usersDiv.innerHTML+=`
-
-<div class="user-box">
-
-<b>UID:</b> ${uid}<br>
-<b>Username:</b> ${data.username||"-"}<br>
-<b>Game Name:</b> ${gameName}<br>
-<b>Room:</b> ${room}<br>
-<b>Entry Fee:</b> ₹${entry}<br>
-
-<b>Deposit:</b> ₹${deposit}<br>
-<b>Winning:</b> ₹${winning}<br>
-<b>Total Balance:</b> ₹${total}
-
-<input type="number" id="amt_${uid}" placeholder="Amount">
-
-<button class="green" onclick="addBalance('${uid}')">Add</button>
-<button class="red" onclick="cutBalance('${uid}')">Cut</button>
-
-<button class="blue" onclick="blockUser('${uid}')">Block</button>
-<button class="blue" onclick="unblockUser('${uid}')">Unblock</button>
-
-</div>
-
-<hr>
-`;
-
+function userHTML(uid,data,entry=null){
+ const deposit=data.balance||0, winning=data.winningBalance||0, total=deposit+winning;
+ return `
+ <div class="user-box">
+  <b>Username:</b> ${data.username||"-"}<br>
+  <b>Game Name:</b> ${data.gameName||"-"}<br>
+  <b>Room:</b> ${data.joinedRoom||"-"}<br>
+  <b>Entry Fee:</b> ₹${entry??"-"}<br>
+  <b>Deposit:</b> ₹${deposit}<br>
+  <b>Winning:</b> ₹${winning}<br>
+  <b>Total Balance:</b> ₹${total}
+  <input type="number" id="amt_${uid}" min="1" placeholder="Amount">
+  <div class="user-actions">
+   <button class="btn green" onclick="addBalance('${uid}')">Add</button>
+   <button class="btn red" onclick="cutBalance('${uid}')">Cut</button>
+   <button class="btn blue" onclick="blockUser('${uid}')">Block</button>
+   <button class="btn yellow" onclick="unblockUser('${uid}')">Unblock</button>
+  </div>
+ </div>`;
 }
 
+onSnapshot(collection(db,"users"),async(snapshot)=>{
+ usersDiv.innerHTML="";
+ let count=0;
+ for(const docSnap of snapshot.docs){
+  const data=docSnap.data(),uid=docSnap.id;
+  if(!data.joinedRoom) continue;
+  count++;
+  let entry="...";
+  const prizeSnap=await getDoc(doc(db,"settings",data.joinedRoom+"Prize"));
+  if(prizeSnap.exists()) entry=prizeSnap.data().entry;
+  usersDiv.innerHTML+=userHTML(uid,data,entry);
+ }
+ if(!count) usersDiv.innerHTML='<div class="empty">No joined players found.</div>';
 });
-
-
-/* ADD BALANCE (WINNING) */
 
 window.addBalance=async function(uid){
-
-let amt=parseInt(document.getElementById("amt_"+uid).value);
-if(!amt) return;
-
-await updateDoc(doc(db,"users",uid),{
-winningBalance:increment(amt)
-});
-
-alert("Winning Balance Added");
-
-}
-
-
-/* CUT BALANCE */
+ const amt=parseInt(document.getElementById("amt_"+uid).value);
+ if(!amt||amt<1)return alert("Enter a valid amount");
+ await updateDoc(doc(db,"users",uid),{winningBalance:increment(amt)});
+ alert("Winning Balance Added ✅");
+};
 
 window.cutBalance=async function(uid){
+ const amt=parseInt(document.getElementById("amt_"+uid).value);
+ if(!amt||amt<1)return alert("Enter a valid amount");
+ const ref=doc(db,"users",uid),snap=await getDoc(ref),data=snap.data();
+ let deposit=data.balance||0,winning=data.winningBalance||0;
+ if(deposit>=amt){deposit-=amt}else{const remain=amt-deposit;deposit=0;winning-=remain}
+ if(winning<0)return alert("Insufficient total balance");
+ await updateDoc(ref,{balance:deposit,winningBalance:winning});
+ alert("Balance Cut ✅");
+};
 
-let amt=parseInt(document.getElementById("amt_"+uid).value);
-if(!amt) return;
+window.blockUser=async(uid)=>{await updateDoc(doc(db,"users",uid),{blocked:true});alert("User Blocked 🚫")};
+window.unblockUser=async(uid)=>{await updateDoc(doc(db,"users",uid),{blocked:false});alert("User Unblocked ✅")};
 
-const ref=doc(db,"users",uid);
-const snap=await getDoc(ref);
-let data=snap.data();
-
-let deposit=data.balance||0;
-let winning=data.winningBalance||0;
-
-let newDeposit=deposit;
-let newWinning=winning;
-
-if(deposit>=amt){
-newDeposit=deposit-amt;
-}else{
-let remain=amt-deposit;
-newDeposit=0;
-newWinning=winning-remain;
-}
-
-await updateDoc(ref,{
-balance:newDeposit,
-winningBalance:newWinning
+onSnapshot(collection(db,"deposits"),async(snapshot)=>{
+ const div=document.getElementById("deposits");div.innerHTML="";
+ let count=0;
+ for(const d of snapshot.docs){
+  const data=d.data();
+  if(data.status && data.status.toLowerCase()!=="pending")continue;
+  count++;
+  let username=data.username||"Unknown";
+  if(!data.username&&data.uid){const u=await getDoc(doc(db,"users",data.uid));if(u.exists())username=u.data().username}
+  div.innerHTML+=`<div class="user-box"><b>User:</b> ${username}<br><b>Amount:</b> ₹${data.amount}<br><b>UTR:</b> ${data.utr||"-"}
+  <div class="actions"><button class="btn green" onclick="approveDeposit('${d.id}','${data.uid}',${Number(data.amount)||0})">Approve</button>
+  <button class="btn red" onclick="rejectDeposit('${d.id}')">Reject</button></div></div>`;
+ }
+ if(!count)div.innerHTML='<div class="empty">No pending deposits.</div>';
 });
-
-alert("Balance Cut");
-
-}
-
-
-/* BLOCK */
-
-window.blockUser=async(uid)=>{
-await updateDoc(doc(db,"users",uid),{blocked:true})
-alert("User Blocked")
-}
-
-window.unblockUser=async(uid)=>{
-await updateDoc(doc(db,"users",uid),{blocked:false})
-alert("User Unblocked")
-}
-
-
-/* DEPOSITS */
-
-onSnapshot(collection(db,"deposits"), async (snapshot)=>{
-
-const div=document.getElementById("deposits");
-div.innerHTML="";
-
-snapshot.forEach(async (d)=>{
-
-let data=d.data();
-
-if(!data.status || data.status.toLowerCase()==="pending"){
-
-let username=data.username;
-
-if(!username && data.uid){
-const u=await getDoc(doc(db,"users",data.uid));
-if(u.exists()) username=u.data().username;
-}
-
-div.innerHTML+=`
-
-<div class="user-box">
-
-<b>User:</b> ${username||"Unknown"}<br>
-<b>Amount:</b> ₹${data.amount}<br>
-<b>UTR:</b> ${data.utr || "-"}
-
-<button class="green" onclick="approveDeposit('${d.id}','${data.uid}',${data.amount})">Approve</button>
-<button class="red" onclick="rejectDeposit('${d.id}')">Reject</button>
-
-</div>
-
-`;
-
-}
-
-});
-
-});
-
 
 window.approveDeposit=async(id,uid,amt)=>{
-
-await updateDoc(doc(db,"users",uid),{
-balance:increment(amt)
-})
-
-await updateDoc(doc(db,"deposits",id),{
-status:"Approved"
-})
-
-alert("Deposit Approved")
-
-}
-
+ await updateDoc(doc(db,"users",uid),{balance:increment(amt)});
+ await updateDoc(doc(db,"deposits",id),{status:"Approved"});
+ alert("Deposit Approved ✅");
+};
 window.rejectDeposit=async(id)=>{
+ await updateDoc(doc(db,"deposits",id),{status:"Rejected"});
+ alert("Deposit Rejected");
+};
 
-await updateDoc(doc(db,"deposits",id),{
-status:"Rejected"
-})
-
-alert("Deposit Rejected")
-
-}
-
-
-/* WITHDRAWALS */
-
-onSnapshot(collection(db,"withdrawals"), async (snapshot)=>{
-
-const div=document.getElementById("withdrawals");
-div.innerHTML="";
-
-snapshot.forEach(async (d)=>{
-
-let data=d.data();
-
-if(!data.status || data.status.toLowerCase()==="pending"){
-
-let username=data.username || "Unknown"
-
-if(!username && data.uid){
-const u=await getDoc(doc(db,"users",data.uid));
-if(u.exists()) username=u.data().username;
-}
-
-div.innerHTML+=`
-
-<div class="user-box">
-
-<b>User:</b> ${username||"Unknown"}<br>
-<b>Amount:</b> ₹${data.amount}<br>
-<b>Method:</b> ${data.method || "-"}<br>
-<b>Details:</b> ${data.details || "-"}
-
-<button class="green" onclick="approveWithdraw('${d.id}')">Approve</button>
-<button class="red" onclick="rejectWithdraw('${d.id}')">Reject</button>
-
-</div>
-
-`;
-
-}
-
+onSnapshot(collection(db,"withdrawals"),async(snapshot)=>{
+ const div=document.getElementById("withdrawals");div.innerHTML="";
+ let count=0;
+ for(const d of snapshot.docs){
+  const data=d.data();
+  if(data.status && data.status.toLowerCase()!=="pending")continue;
+  count++;
+  const username=data.username||"Unknown";
+  div.innerHTML+=`<div class="user-box"><b>User:</b> ${username}<br><b>Amount:</b> ₹${data.amount}<br><b>Method:</b> ${data.method||"-"}<br><b>Details:</b> ${data.details||"-"}
+  <div class="actions"><button class="btn green" onclick="approveWithdraw('${d.id}')">Approve</button>
+  <button class="btn red" onclick="rejectWithdraw('${d.id}')">Reject</button></div></div>`;
+ }
+ if(!count)div.innerHTML='<div class="empty">No pending withdrawals.</div>';
 });
-
-});
-
 
 window.approveWithdraw=async(id)=>{
-
-await updateDoc(doc(db,"withdrawals",id),{
-status:"Approved"
-})
-
-alert("Withdrawal Approved")
-
-}
-
+ await updateDoc(doc(db,"withdrawals",id),{status:"Approved"});
+ alert("Withdrawal Approved ✅");
+};
 window.rejectWithdraw=async(id)=>{
+ await updateDoc(doc(db,"withdrawals",id),{status:"Rejected"});
+ alert("Withdrawal Rejected");
+};
 
-await updateDoc(doc(db,"withdrawals",id),{
-status:"Rejected"
-})
+window.searchUser=async function(){
+ const name=document.getElementById("searchUser").value.toLowerCase().trim();
+ const snap=await getDocs(collection(db,"users"));usersDiv.innerHTML="";
+ let count=0;
+ snap.forEach(docSnap=>{
+  const data=docSnap.data(),uid=docSnap.id;
+  if(!data.username||!data.username.toLowerCase().includes(name))return;
+  count++;
+  usersDiv.innerHTML+=userHTML(uid,data,null);
+ });
+ if(!count)usersDiv.innerHTML='<div class="empty">No matching user found.</div>';
+};
 
-alert("Withdrawal Rejected")
-
-}
-
-
-/* SEARCH USER */
-
-window.searchUser = async function(){
-
-let name = document.getElementById("searchUser").value.toLowerCase().trim()
-
-const snap = await getDocs(collection(db,"users"))
-
-usersDiv.innerHTML=""
-
-snap.forEach(docSnap=>{
-
-const data = docSnap.data()
-const uid = docSnap.id
-
-if(!data.username || data.username.trim()==="") return
-
-if(data.username.toLowerCase().includes(name)){
-
-let deposit = data.balance || 0
-let winning = data.winningBalance || 0
-let total = deposit + winning
-
-let game = data.gameName ? data.gameName : "-"
-let room = data.joinedRoom ? data.joinedRoom : ""
-
-usersDiv.innerHTML += `
-
-<div class="user-box">
-
-<b>UID:</b> ${uid}<br>
-<b>Username:</b> ${data.username}<br>
-<b>Game Name:</b> ${game}<br>
-
-${room ? `<b>Room:</b> ${room}<br>` : ""}
-
-<b>Deposit:</b> ₹${deposit}<br>
-<b>Winning:</b> ₹${winning}<br>
-<b>Total:</b> ₹${total}
-
-<input type="number" id="amt_${uid}" placeholder="Amount">
-
-<button class="green" onclick="addBalance('${uid}')">Add</button>
-<button class="red" onclick="cutBalance('${uid}')">Cut</button>
-
-<button class="blue" onclick="blockUser('${uid}')">Block</button>
-<button class="blue" onclick="unblockUser('${uid}')">Unblock</button>
-
-</div>
-
-<hr>
-
-`
-
-}
-
-})
-
-}
-
-/* ALL JOINED USERS */
-
-const allUsersDiv=document.getElementById("allUsers")
-
+const allUsersDiv=document.getElementById("allUsers");
 onSnapshot(collection(db,"users"),(snapshot)=>{
-
-allUsersDiv.innerHTML=""
-
-snapshot.forEach(docSnap=>{
-
-const data=docSnap.data()
-const uid=docSnap.id
-
-if(!data.joinedRoom || data.joinedRoom==="") return
-
-let deposit=data.balance||0
-let winning=data.winningBalance||0
-let total=deposit+winning
-
-allUsersDiv.innerHTML+=`
-
-<div class="user-box">
-
-<b>UID:</b> ${uid}<br>
-<b>Username:</b> ${data.username}<br>
-<b>Game Name:</b> ${data.gameName || "-"}<br>
-<b>Room:</b> ${data.joinedRoom}<br>
-
-<b>Deposit:</b> ₹${deposit}<br>
-<b>Winning:</b> ₹${winning}<br>
-<b>Total:</b> ₹${total}
-
-<input type="number" id="amt_${uid}" placeholder="Amount">
-
-<button class="green" onclick="addBalance('${uid}')">Add</button>
-<button class="red" onclick="cutBalance('${uid}')">Cut</button>
-
-<button class="blue" onclick="blockUser('${uid}')">Block</button>
-<button class="blue" onclick="unblockUser('${uid}')">Unblock</button>
-
-</div>
-
-<hr>
-
-`
-
-})
-
-})
+ allUsersDiv.innerHTML="";let count=0;
+ snapshot.forEach(docSnap=>{
+  const data=docSnap.data(),uid=docSnap.id;
+  if(!data.joinedRoom) return;
+  count++;
+  const deposit=data.balance||0,winning=data.winningBalance||0,total=deposit+winning;
+  allUsersDiv.innerHTML+=`<div class="user-box"><b>Username:</b> ${data.username||"-"}<br>
+  <b>Game Name:</b> ${data.gameName||"-"}<br><b>Room:</b> ${data.joinedRoom}<br>
+  <b>Deposit:</b> ₹${deposit}<br><b>Winning:</b> ₹${winning}<br><b>Total:</b> ₹${total}</div>`;
+ });
+ if(!count)allUsersDiv.innerHTML='<div class="empty">No joined users.</div>';
+});
 </script>
 
 </body>
