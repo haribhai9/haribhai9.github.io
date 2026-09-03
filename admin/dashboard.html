@@ -52,7 +52,7 @@ async function checkAdmin(user){
 }
 onAuthStateChanged(auth,async user=>{
  if(!user){location.replace("./admin-login.html");return}
- if(!(await checkAdmin(user))){await signOut(auth);location.replace("./admin-login.html")}
+ if(!(await checkAdmin(user))){await signOut(auth);location.replace("admin-login.html")}
 });
 
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
@@ -76,7 +76,7 @@ window.matchOver=async id=>{try{await setDoc(doc(db,"rooms",id),{over:true},{mer
 window.updateMatchTime=async match=>{try{const n=match.replace("match",""),time=document.getElementById("matchTime"+n).value.trim();if(!time)return alert("Enter match time");await setDoc(doc(db,"settings",match),{time});alert("Time Updated ✅")}catch(e){console.error(e);alert("Update failed ❌")}};
 window.updatePrize=async room=>{try{const n=room.replace("room",""),entry=Number(document.getElementById("entry"+n).value),win=Number(document.getElementById("win"+n).value);if(entry<0||win<0)return alert("Invalid amount");await setDoc(doc(db,"settings",room+"Prize"),{entry,win});alert("Prize Updated ✅")}catch(e){console.error(e);alert("Update failed ❌")}};
 
-const usersDiv=document.getElementById("users");
+const usersDiv=document.getElementById("userList");
 let allUsersCache=[];
 let selectedUid=null;
 
