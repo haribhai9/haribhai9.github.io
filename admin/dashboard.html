@@ -398,7 +398,7 @@ const firebaseConfig={
  authDomain:"ff-tournament-915ed.firebaseapp.com",
  projectId:"ff-tournament-915ed"
 };
-const app=initializeApp(firebaseConfig);
+const app=initializeApp(firebaseConfig,"adminApp");
 const db=getFirestore(app);
 const auth=getAuth(app);
 
@@ -424,7 +424,7 @@ onAuthStateChanged(auth,async(user)=>{
 
   if(!allowed){
     await signOut(auth);
-    location.replace("index.html");
+    location.replace("admin-login.html");
   }
 }); 
 
