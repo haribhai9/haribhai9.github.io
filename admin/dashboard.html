@@ -51,8 +51,8 @@ async function checkAdmin(user){
  try{const snap=await getDoc(doc(db,"users",user.uid));return snap.exists()&&snap.data()?.admin===true}catch(e){console.error(e);return false}
 }
 onAuthStateChanged(auth,async user=>{
- if(!user){location.replace("admin-login.html");return}
- if(!(await checkAdmin(user))){await signOut(auth);location.replace("admin-login.html")}
+ if(!user){location.replace("./admin-login.html");return}
+ if(!(await checkAdmin(user))){await signOut(auth);location.replace("./admin-login.html")}
 });
 
 const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
