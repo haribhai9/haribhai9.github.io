@@ -26,7 +26,7 @@
 
 <section id="prizes" class="card"><h3>💰 Entry & Win Control</h3><p class="sub">Set tournament entry fee and winning amount.</p><div class="prize-grid"><div class="control"><label>ROOM 1 ENTRY</label><input id="entry1" type="number" min="0" placeholder="Entry ₹"><label>ROOM 1 WIN</label><input id="win1" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room1')">Update Prize</button></div><div class="control"><label>ROOM 2 ENTRY</label><input id="entry2" type="number" min="0" placeholder="Entry ₹"><label>ROOM 2 WIN</label><input id="win2" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room2')">Update Prize</button></div><div class="control"><label>ROOM 3 ENTRY</label><input id="entry3" type="number" min="0" placeholder="Entry ₹"><label>ROOM 3 WIN</label><input id="win3" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room3')">Update Prize</button></div><div class="control"><label>ROOM 4 ENTRY</label><input id="entry4" type="number" min="0" placeholder="Entry ₹"><label>ROOM 4 WIN</label><input id="win4" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room4')">Update Prize</button></div><div class="control"><label>ROOM 5 ENTRY</label><input id="entry5" type="number" min="0" placeholder="Entry ₹"><label>ROOM 5 WIN</label><input id="win5" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room5')">Update Prize</button></div><div class="control"><label>ROOM 6 ENTRY</label><input id="entry6" type="number" min="0" placeholder="Entry ₹"><label>ROOM 6 WIN</label><input id="win6" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room6')">Update Prize</button></div><div class="control"><label>ROOM 7 ENTRY</label><input id="entry7" type="number" min="0" placeholder="Entry ₹"><label>ROOM 7 WIN</label><input id="win7" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room7')">Update Prize</button></div><div class="control"><label>ROOM 8 ENTRY</label><input id="entry8" type="number" min="0" placeholder="Entry ₹"><label>ROOM 8 WIN</label><input id="win8" type="number" min="0" placeholder="Win ₹"><button class="btn green" onclick="updatePrize('room8')">Update Prize</button></div></div></section>
 
-<section id="users" class="card full"><h3>👥 User Search & Joined Details <span class="badge">LIVE</span></h3><div class="search-row"><input id="searchUser" placeholder="Search username, game name or UID" autocomplete="off"><button class="btn blue" onclick="searchUser()">Search</button></div><div id="users" class="list" style="margin-top:12px"><div class="empty">Search a username to view user details.</div></div></section>
+<section id="userSearch" class="card full"><h3>👥 User Search & Joined Details <span class="badge">LIVE</span></h3><div class="search-row"><input id="searchUser" placeholder="Search username, game name or UID" autocomplete="off"><button class="btn blue" onclick="searchUser()">Search</button></div><div id="userList" class="list" style="margin-top:12px"><div class="empty">Search a username to view user details.</div></div></section>
 
 <section id="deposits" class="card"><h3>💳 Pending Deposits</h3><div id="deposits" class="list"><div class="empty">Loading deposits…</div></div></section>
 <section id="withdrawals" class="card"><h3>💸 Pending Withdrawals</h3><div id="withdrawals" class="list"><div class="empty">Loading withdrawals…</div></div></section>
@@ -76,7 +76,7 @@ window.matchOver=async id=>{try{await setDoc(doc(db,"rooms",id),{over:true},{mer
 window.updateMatchTime=async match=>{try{const n=match.replace("match",""),time=document.getElementById("matchTime"+n).value.trim();if(!time)return alert("Enter match time");await setDoc(doc(db,"settings",match),{time});alert("Time Updated ✅")}catch(e){console.error(e);alert("Update failed ❌")}};
 window.updatePrize=async room=>{try{const n=room.replace("room",""),entry=Number(document.getElementById("entry"+n).value),win=Number(document.getElementById("win"+n).value);if(entry<0||win<0)return alert("Invalid amount");await setDoc(doc(db,"settings",room+"Prize"),{entry,win});alert("Prize Updated ✅")}catch(e){console.error(e);alert("Update failed ❌")}};
 
-const usersDiv=document.getElementById("users");
+const usersDiv=document.getElementById("userList");
 let allUsersCache=[];
 let selectedUid=null;
 
@@ -123,16 +123,11 @@ function showUser(uid,data){
 }
 
 window.searchUser=async function(){
- const query=document.getElementById("searchUser").value.trim().toLowerCase();
- if(!query){usersDiv.innerHTML='<div class="empty">Enter username, game name or UID to search.</div>';return}
+ const name=document.getElementById("searchUser").value.trim().toLowerCase();
+ if(!name){usersDiv.innerHTML='<div class="empty">Enter username, game name or UID to search.</div>';return}
  try{
   const snap=await getDocs(collection(db,"users"));
-  const matches=snap.docs.filter(d=>{
-   const data=d.data();
-   return String(d.id).toLowerCase().includes(query)||
-          String(data.username||"").toLowerCase().includes(query)||
-          String(data.gameName||"").toLowerCase().includes(query);
-  });
+  const matches=snap.docs.filter(d=String(d.data().username||"").toLowerCase().includes(name));
   if(!matches.length){usersDiv.innerHTML='<div class="empty">No matching user found.</div>';return}
   usersDiv.innerHTML=matches.map(d=>renderUser(d.id,d.data())).join("");
   matches.forEach(d=>renderMatchDetails(d.id,d.data()));
